@@ -1,0 +1,123 @@
+/* Ejercicio 4.1
+Diseñar un algoritmo para acceder, eliminar o insertar el k-ésimo elemento de una lista.
+Si la lista está vacía o k está fuera de rango, invocar ERROR.
+*/
+
+ACCION Ejercicio4_1 ES
+    Ambiente
+        Nodo = Registro
+            Dato : AN(60)
+            prox : Puntero a Nodo
+        Fin_Registro
+
+        P, Ant, Prim, Q : Puntero a Nodo
+        NumeroK, cont, sel : Entero
+        msg : AN(60)
+
+    Procedimiento ERROR(err : AN(80)) ES
+        ESC("ERROR: " + err)
+    Fin_Procedimiento
+
+    Procedimiento UbicarPuntero ES
+        P := Prim
+        Ant := NIL
+        cont := 1
+        Mientras (P <> NIL) Y (cont < NumeroK) HACER
+            Ant := P
+            P := *P.prox
+            cont := cont + 1
+        Fin_Mientras
+    Fin_Procedimiento
+
+    Procedimiento Acceder ES
+        Si Prim = NIL ENTONCES
+            ERROR("lista vacía")
+        Sino
+            UbicarPuntero
+            Si (P <> NIL) Y (cont = NumeroK) ENTONCES
+                ESC("Dato en la posición " + NumeroK + ": " + *P.Dato)
+            Sino
+                ERROR("posición fuera de rango")
+            Fin_Si
+        Fin_Si
+    Fin_Procedimiento
+
+    Procedimiento Eliminar ES
+        Si Prim = NIL ENTONCES
+            ERROR("lista vacía")
+        Sino
+            UbicarPuntero
+            Si (P = NIL) O (cont <> NumeroK) ENTONCES
+                ERROR("posición fuera de rango")
+            Sino
+                Si Ant = NIL ENTONCES
+                    // k = 1
+                    Prim := *P.prox
+                Sino
+                    // k > 1 (medio o último)
+                    *Ant.prox := *P.prox
+                Fin_Si
+                DISPONER(P)
+                ESC("Dato eliminado con éxito")
+            Fin_Si
+        Fin_Si
+    Fin_Procedimiento
+
+    Procedimiento Insertar ES
+        Si (Prim = NIL) Y (NumeroK <> 1) ENTONCES
+            ERROR("lista vacía; posición fuera de rango")
+        Sino
+            ESC("Ingrese el dato")
+            LEER(msg)
+
+            NUEVO(Q)
+            *Q.Dato := msg
+            *Q.prox := NIL
+
+            Si NumeroK = 1 ENTONCES
+                *Q.prox := Prim
+                Prim := Q
+                ESC("Dato insertado al inicio")
+            Sino
+                UbicarPuntero
+                Si (P <> NIL) Y (cont = NumeroK) ENTONCES
+                    // Insertar antes del k-ésimo (medio)
+                    *Ant.prox := Q
+                    *Q.prox := P
+                    ESC("Dato insertado en la posición " + NumeroK)
+                Sino
+                    // k = n + 1 (insertar al final)
+                    Si (P = NIL) Y (cont = NumeroK) ENTONCES
+                        *Ant.prox := Q
+                        ESC("Dato insertado al final")
+                    Sino
+                        ERROR("posición fuera de rango")
+                    Fin_Si
+                Fin_Si
+            Fin_Si
+        Fin_Si
+    Fin_Procedimiento
+
+    Proceso
+        ESC("Ingrese la posición k")
+        LEER(NumeroK)
+
+        Si NumeroK < 1 ENTONCES
+            ERROR("número inválido")
+        Sino
+            ESC("Elija: 1-Acceder, 2-Eliminar, 3-Insertar")
+            LEER(sel)
+
+            SEGUN sel HACER
+                = 1:
+                    Acceder
+                = 2:
+                    Eliminar
+                = 3:
+                    Insertar
+                otros:
+                    ERROR("selección inválida")
+            FIN_SEGUN
+        Fin_Si
+    Fin_Proceso
+FIN_ACCION

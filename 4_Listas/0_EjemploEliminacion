@@ -1,0 +1,118 @@
+ACCION EliminarElementoLista ES
+    Ambiente
+        Nodo = Registro
+            Apellido    : AN(30)
+            Nombre      : AN(30)
+            EMAIL       : AN(45)
+            prox        : Puntero a Nodo
+        Fin_Registro
+
+        Prim, P, Ant, Resg: Puntero a Nodo
+        NombEliminacion : AN(30)
+    Proceso
+        Si Prim = NIL ENTONCES
+            ESC("Lista vacía")
+        Sino
+            ESC("Ingrese el nombre que desea eliminar de la lista")
+            LEER(NombEliminacion)
+
+            P := Prim
+
+            Si *P.Nombre = NombEliminacion ENTONCES
+
+                //caso 1 : Unico nodo en la lista
+                Si *P.prox = NIL ENTONCES
+                    Prim := NIL
+                //caso 2 : Primer nodo en la lista
+                Sino
+                    Prim := *P.prox
+                Fin_Si
+                DISPONER(P)
+            Fin_Si
+            
+            P := *P.prox
+            Resg:= P
+            Ant := NIL
+
+            Mientras (P <> NIL) HACER
+                
+                SI *P.Nombre = NombEliminacion ENTONCES
+                    
+                    //caso 3 : Nodo de en medio
+                    Si *P.prox <> NIL ENTONCES
+                        *Ant.prox:= *P.prox
+                    //caso 4 : Ultimo nodo en la lista
+                    Sino
+                        *Ant.prox:= NIL
+                    Fin_Si
+                    P := *P.prox
+                    DISPONER(Resg)
+                Fin_Si
+            
+                // Avanzar punteros
+                Ant := P
+
+                //Si se elimino un registro se avanzó anteriormente, así que se omite, sino, se avanza aqui
+                Si Resg <> NIL ENTONCES
+                    P := *P.prox
+                Fin_Si
+
+                Resg := P
+            Fin_Mientras
+        Fin_Si
+
+FIN_ACCION
+
+
+//ejemplo2
+
+ACCION EliminarElementoLista ES
+    Ambiente
+        Nodo = Registro
+            Apellido    : AN(30)
+            Nombre      : AN(30)
+            EMAIL       : AN(45)
+            prox        : Puntero a Nodo
+        Fin_Registro
+
+        Prim, P, Ant, Resg: Puntero a Nodo
+        NombEliminacion : AN(30)
+    Proceso
+        Si Prim = NIL ENTONCES
+            ESC("Lista vacía")
+        Sino
+            ESC("Ingrese el nombre que desea eliminar de la lista")
+            LEER(NombEliminacion)
+
+            // Eliminar coincidencias al inicio (caso 1: único nodo, caso 2: primer nodo)
+            Mientras (Prim <> NIL) Y (*Prim.Nombre = NombEliminacion) HACER
+                Resg := Prim
+                Prim := *Prim.prox
+                DISPONER(Resg)
+            Fin_Mientras
+
+            // Si la lista quedó vacía, terminar
+            Si Prim = NIL ENTONCES
+                ESC("Eliminación completada")
+            Sino
+                // Recorrer desde el segundo nodo en adelante
+                Ant := Prim
+                P := *Prim.prox
+
+                Mientras (P <> NIL) HACER
+                    Si *P.Nombre = NombEliminacion ENTONCES
+                        // Enlace salteando P (caso 3: medio, caso 4: último)
+                        *Ant.prox := *P.prox
+                        Resg := P
+                        P := *P.prox
+                        DISPONER(Resg)
+                    Sino
+                        Ant := P
+                        P := *P.prox
+                    Fin_Si
+                Fin_Mientras
+
+                ESC("Eliminación completada")
+            Fin_Si
+        Fin_Si
+FIN_ACCION

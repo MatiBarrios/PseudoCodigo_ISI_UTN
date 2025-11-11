@@ -1,0 +1,9 @@
+/*
+Para cada una de las consignas siguientes, genere un algoritmo que permita solucionarla (3 algoritmos) usando un arreglo de 100 números enteros:
+
+- Almacenar 100 números.
+- Localizar el número de mayor valor y el de menor valor, informar sus valores y sus posiciones.
+- Contar y sumar todos los números pares.
+
+*/
+
