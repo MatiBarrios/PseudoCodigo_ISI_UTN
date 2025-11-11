@@ -14,7 +14,7 @@ ACCION Ejercicio4_1 ES
         NumeroK, cont, sel : Entero
         msg : AN(60)
 
-    Procedimiento ERROR(err : AN(80)) ES
+    Procedimiento ERROR(err : AN(60)) ES
         ESC("ERROR: " + err)
     Fin_Procedimiento
 
