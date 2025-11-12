@@ -1,0 +1,33 @@
+/*
+Ejercicio 4.4
+
+Se dispone de una lista simplemente encadenada cuyos registros están ordenados en forma ascendente por una clave de tipo entero;
+diseñar un algoritmo que invierta el orden de la lista.
+*/
+
+ACCION Eje4_4 ES
+    Ambiente
+        Nodo = Registro
+            Dato : N(8)
+            prox : Puntero a Nodo
+        Fin_Registro
+
+        Prim, P, Ant, Sig : Puntero a Nodo
+    Fin_Ambiente
+
+    Procedimiento InvertirLista ES
+        Ant := NIL
+        P := Prim
+        Mientras P <> NIL HACER
+            Sig := *P.prox        // guardar siguiente
+            *P.prox := Ant        // invertir enlace
+            Ant := P              // avanzar Ant
+            P := Sig              // avanzar P
+        Fin_Mientras
+        Prim := Ant               // nueva cabeza
+    Fin_Procedimiento
+
+    Proceso
+        InvertirLista
+    Fin_Proceso
+FIN_ACCION
