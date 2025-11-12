@@ -1,11 +1,79 @@
 /*
+Ejercicio 4.2
 
-Ejercicio 4.2¶
-
-Se dispone de una lista simplemente encadenada de números enteros, 
-diseñar un algoritmo que a partir de ella genere otra lista conteniendo los nodos cuyos datos terminan en cero; 
-dichos elementos, deberán ser eliminados de la lista original. 
-Se asume que la lista está cargada, y que el algoritmo recibe como parámetro de entrada la dirección del primer elemento.
-
+Generar otra lista con los nodos cuyos datos terminan en cero.
+Luego eliminar esos nodos de la lista original.
+Se asume lista original cargada (Prim).
 */
 
+ACCION Ejer4_2Elim ES
+    Ambiente
+        Nodo = Registro
+            Dato : N(8)
+            prox : Puntero a Nodo
+        Fin_Registro
+
+        Prim : Puntero a Nodo          // lista original (entrada / salida)
+        P, Ant : Puntero a Nodo        // trabajo para eliminación
+
+        NPrim, NUlt, NP : Puntero a Nodo   // nueva lista (copia de nodos con dato terminado en 0)
+
+        Procedimiento TerminaCero(nro : N(8)) : Logico ES
+            Si (nro MOD 10) = 0 ENTONCES
+                TerminaCero := Verdadero
+            Sino
+                TerminaCero := Falso
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento GenerarNuevaLista ES
+            NPrim := NIL
+            NUlt := NIL
+            P := Prim
+            Mientras P <> NIL HACER
+                Si TerminaCero(*P.Dato) ENTONCES
+                    NUEVO(NP)
+                    *NP.Dato := *P.Dato
+                    *NP.prox := NIL
+
+                    Si NPrim = NIL ENTONCES
+                        NPrim := NP
+                        NUlt := NP
+                    Sino
+                        *NUlt.prox := NP
+                        NUlt := NP
+                    Fin_Si
+                Fin_Si
+                P := *P.prox
+            Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento EliminarCerosLista ES
+            P := Prim
+            Ant := NIL
+            Mientras P <> NIL HACER
+                //variable de recorrido
+                Sig := *P.prox 
+                Si TerminaCero(*P.Dato) ENTONCES
+                    // Ajustar enlaces
+                    Si Ant = NIL ENTONCES
+                        Prim := Sig          // era primer nodo
+                    Sino
+                        // medio o último
+                        *Ant.prox := Sig
+                    Fin_Si
+                    DISPONER(P)
+                    // No avanzar Ant (queda igual)
+                Sino
+                    // avanzar Ant solo si NO se eliminó
+                    Ant := P                 
+                Fin_Si
+                P := Sig
+            Fin_Mientras
+        Fin_Procedimiento
+
+    Proceso
+        GenerarNuevaLista       // construye copia de nodos terminados en 0
+        EliminarCerosLista      // elimina esos nodos de la lista original
+    Fin_Proceso
+FIN_ACCION
