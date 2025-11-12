@@ -1,0 +1,53 @@
+/*
+Ejercicio 4.3¶
+Dada una lista simplemente encadenada de números diseñar un algoritmo que calcule en forma independiente: 
+La suma de los números impares, y la suma de los números pares.
+*/
+
+Accion Eje4_3 ES
+    Ambiente
+        Nodo = Registro
+            Dato : N(8)
+            prox : Puntero a Nodo
+        Fin_Registro
+
+        Prim, P : Puntero a Nodo
+        SumImpar, SumPar: N(8)
+
+    Funcion EsPar(nro: N(8)): logico es
+        Si (nro MOD 2) = 0 ENTONCES
+            EsPar := Verdadero
+        Sino
+            EsPar := Falso
+        Fin_Si
+    Fin_Funcion
+
+    Procedimiento InicializarValores es
+        SumImpar := 0
+        SumPar := 0
+    Fin_Procedimiento
+
+    Procedimiento ObtenerValores es
+        P := Prim
+
+        Mientras (P<>NIL) HACER
+            Si (EsPar(*P.Dato)) ENTONCES
+                SumPar := SumPar + *P.Dato 
+            Sino
+                SumImpar := SumImpar + *P.Dato
+            Fin_Si
+            P := *P.prox
+        Fin_Mientras
+    Fin_Procedimiento
+
+    Procedimiento MostrarValores ES
+        ESC("Sumatoria Impares: "+ SumImpar)
+        ESC("Sumatoria Pares: "+ SumPar)
+    Fin_Procedimiento
+
+    Proceso
+        InicializarValores
+        ObtenerValores
+        MostrarValores
+    Fin_Proceso
+FIN_ACCION
