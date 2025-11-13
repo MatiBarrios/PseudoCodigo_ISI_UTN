@@ -1,0 +1,224 @@
+/*
+Escenario
+
+Una biblioteca digital desea mantener actualizada una lista doblemente enlazada con los libros disponibles para préstamo.  
+Cada libro se representa con un nodo que contiene:  
+• ISBN: número único de identificación del libro  
+• titulo: nombre del libro  
+
+La lista debe mantenerse ordenada por ISBN, permitiendo realizar:  
+1. 🔍 Búsqueda de un libro por ISBN.  
+2. ➕ Inserción de un nuevo libro en el lugar correcto.  
+3. ❌ Eliminación de un libro que fue dado de baja.  
+
+Mostrar:  
+- Listado completo de libros disponibles  
+- Contar cuántos libros hay en un rango de ISBN  
+- Cantidad de libros que se han dado de baja
+*/
+
+ACCION EjListaDoble ES
+    Ambiente
+        Nodo = Registro
+            ISBN   : N(8)
+            Titulo : AN(80)
+            Estado : Logico           // Verdadero = Alta, Falso = Baja
+            ant, prox : Puntero a Nodo
+        Fin_Registro
+
+        Prim, Ult, P, Q : Puntero a Nodo
+        ISBNLib, sel : N(8)
+        TituloLib : AN(80)
+
+        Procedimiento ERROR(err: AN(80)) ES
+            ESC("ERROR: " + err)
+        Fin_Procedimiento
+
+        Procedimiento MostrarLibro(lib : Puntero a Nodo) ES
+            ESC("ISBN: " + *lib.ISBN)
+            ESC("Titulo: " + *lib.Titulo)
+            Si (*lib.Estado) ENTONCES
+                ESC("Estado: Alta")
+            Sino
+                ESC("Estado: Baja")
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento UbicarPuntero ES
+            P := Prim
+            Mientras (P <> NIL) Y (*P.ISBN < ISBNLib) HACER
+                P := *P.prox
+            Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento BuscarLibro ES
+            Si Prim = NIL ENTONCES
+                ERROR("Lista vacía")
+            Sino
+                ESC("Ingrese el ISBN del libro a buscar")
+                LEER(ISBNLib)
+                UbicarPuntero
+                Si (P <> NIL) Y (*P.ISBN = ISBNLib) ENTONCES
+                    MostrarLibro(P)
+                Sino
+                    ERROR("ISBN no encontrado")
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento InsertarLibro ES
+            ESC("Ingrese ISBN")
+            LEER(ISBNLib)
+            ESC("Ingrese título")
+            LEER(TituloLib)
+
+            UbicarPuntero
+
+            // Actualización si ya existe
+            Si (P <> NIL) Y (*P.ISBN = ISBNLib) ENTONCES
+                *P.Titulo := TituloLib
+                *P.Estado := Verdadero
+                ESC("Libro actualizado")
+            Sino
+                // Insertar nuevo manteniendo orden
+                NUEVO(Q)
+                *Q.ISBN := ISBNLib
+                *Q.Titulo := TituloLib
+                *Q.Estado := Verdadero
+                *Q.ant := NIL
+                *Q.prox := NIL
+
+                Si Prim = NIL ENTONCES
+                    // lista vacía
+                    Prim := Q
+                    Ult := Q
+                Sino Si P = NIL ENTONCES
+                    // insertar al final
+                    *Q.ant := Ult
+                    *Ult.prox := Q
+                    Ult := Q
+                Sino Si P = Prim ENTONCES
+                    // insertar al inicio (antes de Prim)
+                    *Q.prox := Prim
+                    *Prim.ant := Q
+                    Prim := Q
+                Sino
+                    // insertar antes de P (en medio)
+                    *Q.ant := *P.ant
+                    *Q.prox := P
+                    *(*P.ant).prox := Q
+                    *P.ant := Q
+                Fin_Si
+                ESC("Libro insertado")
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento EliminarLibro ES
+            Si (Prim = NIL) ENTONCES
+                ERROR("Lista vacía")
+            Sino
+                ESC("Ingrese ISBN a eliminar")
+                LEER(ISBNLib)
+
+                UbicarPuntero
+                Si (P = NIL) O (*P.ISBN <> ISBNLib) ENTONCES
+                    ERROR("ISBN no encontrado")
+                Sino
+                    Si (*P.Estado) ENTONCES
+                        ERROR("Debe estar dado de baja para poder eliminarlo")
+                    Sino
+                        Si (Prim = Ult) ENTONCES
+                            Prim := NIL
+                            Ult := NIL
+                        Sino Si (P = Prim) ENTONCES
+                            Prim := *P.prox
+                            *Prim.ant := NIL
+                        Sino Si (P = Ult) ENTONCES
+                            Ult := *P.ant
+                            *Ult.prox := NIL
+                        Sino
+                            *(*P.ant).prox := *P.prox
+                            *(*P.prox).ant := *P.ant
+                        Fin_Si
+                        DISPONER(P)
+                        ESC("Registro eliminado")
+                    Fin_Si
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento BajaAltaLibro ES
+            Si (Prim = NIL) ENTONCES
+                ERROR("Lista vacía")
+            Sino
+                ESC("Ingrese ISBN para cambiar estado")
+                LEER(ISBNLib)
+
+                UbicarPuntero
+                Si (P = NIL) O (*P.ISBN <> ISBNLib) ENTONCES
+                    ERROR("ISBN no encontrado")
+                Sino
+                    Si (*P.Estado) ENTONCES
+                        *P.Estado := Falso
+                        ESC("Se dio de baja el libro")
+                    Sino
+                        *P.Estado := Verdadero
+                        ESC("Se dio de alta el libro")
+                    Fin_Si
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento ListarLibrosISBN ES
+            ESC("Listar hasta ISBN (inclusive). Ingrese límite")
+            LEER(ISBNLib)
+            P := Prim
+            Mientras (P <> NIL) HACER
+                Si (*P.ISBN <= ISBNLib) ENTONCES
+                    MostrarLibro(P)
+                Fin_Si
+                P := *P.prox
+            Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento ListarLibrosCompleto ES
+            P := Prim
+            Mientras (P <> NIL) HACER
+                MostrarLibro(P)
+                P := *P.prox
+            Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento ListarLibrosBaja ES
+            P := Prim
+            Mientras (P <> NIL) HACER
+                Si NO (*P.Estado) ENTONCES
+                    MostrarLibro(P)
+                Fin_Si
+                P := *P.prox
+            Fin_Mientras
+        Fin_Procedimiento
+
+    Proceso
+        ESC("Seleccione OPCION 1-Buscar 2-Insertar 3-Eliminar 4-Baja/Alta 5-Lista hasta ISBN 6-Lista Completa 7-Listar Baja")
+        LEER(sel)
+        SEGUN sel HACER
+            = 1:
+                BuscarLibro
+            = 2:
+                InsertarLibro
+            = 3:
+                EliminarLibro
+            = 4:
+                BajaAltaLibro
+            = 5:
+                ListarLibrosISBN
+            = 6:
+                ListarLibrosCompleto
+            = 7:
+                ListarLibrosBaja
+            otros:
+                ERROR("Selección fuera de rango")
+        FIN_SEGUN
+    Fin_Proceso
+FIN_ACCION
