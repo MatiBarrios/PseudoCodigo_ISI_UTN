@@ -1,0 +1,45 @@
+ACCION EJ_Busqueda_Circular ES
+    AMBIENTE
+        Nodo = REGISTRO
+            VALOR : ENTERO
+            PROX  : Puntero a Nodo
+        Fin_Registro
+
+        PRIM, T : Puntero a Nodo
+        DATO    : ENTERO
+        encontrado : Logico
+    Fin_Ambiente
+
+    Procedimiento ERROR(err: AN(80)) ES
+        ESC("ERROR: " + err)
+    Fin_Procedimiento
+
+    Procedimiento BuscarValor ES
+        SI PRIM = NIL ENTONCES
+            ERROR("Lista vacía")
+        SINO
+            ESC("Ingrese valor a buscar")
+            LEER(DATO)
+            T := PRIM
+            encontrado := Falso
+
+            Repetir
+                SI *T.VALOR = DATO ENTONCES
+                    encontrado := Verdadero
+                SINO
+                    T := *T.PROX
+                Fin_Si
+            Hasta encontrado O (T = PRIM)
+
+            SI encontrado ENTONCES
+                ESC("Hallado valor: " + DATO)
+            SINO
+                ERROR("Valor no está en la lista")
+            Fin_Si
+        Fin_Si
+    Fin_Procedimiento
+
+    PROCESO
+        BuscarValor
+    Fin_Proceso
+FIN_ACCION
