@@ -1,0 +1,53 @@
+ACCION EliminarElementoListaDoble (DATO : ENTERO) ES
+    AMBIENTE
+        Tipo
+            Puntero = Puntero a Nodo;
+            Nodo = REGISTRO
+                VALOR : ENTERO;
+                ANT   : Puntero;
+                SIG   : Puntero;
+            FREG;
+
+        PRIMERO, ULTIMO, T : Puntero;
+
+    PROCESO
+        SI (PRIMERO = NIL) ENTONCES
+            ESC("ERROR: Lista vacía");
+        SINO
+            T := PRIMERO;
+
+            // Buscar el nodo que contiene el valor DATO (búsqueda segura)
+            MIENTRAS (T <> NIL) Y (*T.VALOR <> DATO) HACER
+                T := *T.SIG;
+            FIN_MIENTRAS;
+
+            // Verificar si el dato fue encontrado
+            SI (T = NIL) ENTONCES
+                ESC("ERROR: ", DATO, " no está en la lista");
+            SINO
+                // CASO 1: Lista con un solo elemento
+                SI (PRIMERO = ULTIMO) ENTONCES
+                    PRIMERO := NIL;
+                    ULTIMO  := NIL;
+
+                // CASO 2: Eliminar el primer nodo
+                SINO SI (PRIMERO = T) ENTONCES
+                    *(*T.SIG).ANT := NIL;
+                    PRIMERO := *T.SIG;
+
+                // CASO 3: Eliminar el último nodo
+                SINO SI (ULTIMO = T) ENTONCES
+                    *(*T.ANT).SIG := NIL;
+                    ULTIMO := *T.ANT;
+
+                // CASO 4: Eliminar nodo intermedio
+                SINO
+                    *(*T.ANT).SIG := *T.SIG;
+                    *(*T.SIG).ANT := *T.ANT;
+                FIN_SI;
+
+                DISPONER(T);
+                ESC("Elemento eliminado correctamente.");
+            FIN_SI;
+        FIN_SI;
+FIN_ACCION
