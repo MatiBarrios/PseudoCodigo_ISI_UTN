@@ -1,0 +1,42 @@
+Accion EJ_PILA es
+    Ambiente
+        Nodo: Registro
+            Dato: N(8)
+            prox: Puntero a Nodo
+        Fin_Registro
+
+        P, Q: Puntero a Nodo
+        sel, valaux : N(1)
+
+        Procedimiento PUSH(Tope: Puntero a Nodo, EntDato : N(8)) es
+            Nuevo(Q)
+            *Q.prox := Tope
+            *Q.Dato := EntDato
+            Tope := Q
+        Fin_Procedimiento
+
+        Procedimiento Pop(Tope: Puntero a Nodo, SelDato : N(8)) es
+            Si (Tope <> NIL) ENTONCES
+                P := Tope
+                Tope := *Tope.prox
+                Disponer(P)
+            Sino
+                ESC("Pila vacía")
+            Fin_Si
+        Fin_Procedimiento
+
+    Proceso
+        Esc("Ingrese el valor")
+        LEER(valaux)
+        ESC("Seleccione una acción 1-PUSH, 2-POP")
+        LEER(sel)
+        Segun sel hacer
+            =1:
+                PUSH(Tope, valaux)
+            =2:
+                POP(Tope, valaux)
+            otro caso:
+                ESC("ERRO")
+        FIN_SEGUN
+    Fin_Proceso
+FIN_ACCION
