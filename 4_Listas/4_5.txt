@@ -12,3 +12,11 @@ L2: 16 a 25 % analfabetos
 L3: => 26 % analfabetos
 
 */
+Accion Eje_4_5 ES
+    Ambiente
+        Nodo : Registro
+            Nombre: AN(40)
+            Capital: AN(40)
+            cantHab: N(16)
+            cantAnal: N(16)
+            

@@ -1,0 +1,58 @@
+ACCION EJ_COLA_QUEUE ES
+    Ambiente
+        Nodo = Registro
+            Dato : N(8)
+            prox : Puntero a Nodo
+        Fin_Registro
+
+        Prim, Ult, Q : Puntero a Nodo
+        LectDato, sel : N(8)
+    Fin_Ambiente
+
+    Procedimiento ERROR(err : AN(80)) ES
+        ESC("ERROR: " + err)
+    Fin_Procedimiento
+
+    Procedimiento Encolar ES
+        ESC("Inserte el dato")
+        LEER(LectDato)
+        NUEVO(Q)
+        *Q.Dato := LectDato
+        *Q.prox := NIL
+        Si Prim = NIL ENTONCES
+            Prim := Q
+            Ult := Q
+        Sino
+            *Ult.prox := Q
+            Ult := Q
+        Fin_Si
+        ESC("Encolado: " + LectDato)
+    Fin_Procedimiento
+
+    Procedimiento Desencolar ES
+        Si Prim = NIL ENTONCES
+            ERROR("Cola vacía")
+        Sino
+            Q := Prim
+            Prim := *Prim.prox
+            Si Prim = NIL ENTONCES
+                Ult := NIL
+            Fin_Si
+            ESC("Desencolado: " + *Q.Dato)
+            DISPONER(Q)
+        Fin_Si
+    Fin_Procedimiento
+
+    Proceso
+        ESC("ELIJA OPCIÓN 1-Encolar, 2-Desencolar")
+        LEER(sel)
+        SEGUN sel HACER
+            = 1:
+                Encolar
+            = 2:
+                Desencolar
+            otros:
+                ERROR("Fallo en selección")
+        FIN_SEGUN
+    Fin_Proceso
+FIN_ACCION
