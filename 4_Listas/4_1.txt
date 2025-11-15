@@ -1,10 +1,15 @@
 /* Ejercicio 4.1
-Diseñar un algoritmo para acceder, eliminar o insertar el k-ésimo elemento de una lista.
+Diseñar un algoritmo para 
+acceder al k-ésimo elemento de una lista,
+eliminar al k-ésimo elemento de una lista,
+insertar al k-ésimo elemento de una lista,
+
 Si la lista está vacía o k está fuera de rango, invocar ERROR.
 */
 
-ACCION Ejercicio4_1 ES
+ACCION Ejercicio4_1(Prim: Puntero a Nodo) ES
     Ambiente
+
         Nodo = Registro
             Dato : AN(60)
             prox : Puntero a Nodo
@@ -19,14 +24,17 @@ ACCION Ejercicio4_1 ES
     Fin_Procedimiento
 
     Procedimiento UbicarPuntero ES
-        P := Prim
-        Ant := NIL
-        cont := 1
-        Mientras (P <> NIL) Y (cont < NumeroK) HACER
+
+        P := Prim//SE ASIGNA EL INICIO A P
+        Ant := NIL//SE INICIALIZA EL ANT COMO NUL
+        cont := 1//SE GENERA EL CONTADOR
+        
+        Mientras (P <> NIL) Y (cont < NumeroK) HACER //SIEMPRE QUE P NO SEA NULO Y Y QUE EL CONTADOR SEA MENOR AL NUMERO QUE INGRESA
             Ant := P
             P := *P.prox
             cont := cont + 1
         Fin_Mientras
+
     Fin_Procedimiento
 
     Procedimiento Acceder ES
@@ -43,6 +51,7 @@ ACCION Ejercicio4_1 ES
     Fin_Procedimiento
 
     Procedimiento Eliminar ES
+    //caso lista vacia
         Si Prim = NIL ENTONCES
             ERROR("lista vacía")
         Sino
@@ -50,10 +59,12 @@ ACCION Ejercicio4_1 ES
             Si (P = NIL) O (cont <> NumeroK) ENTONCES
                 ERROR("posición fuera de rango")
             Sino
+            //caso particular de eliminar el primer nodo
                 Si Ant = NIL ENTONCES
                     // k = 1
                     Prim := *P.prox
                 Sino
+                    //Caso elemento del medio o ultimo
                     // k > 1 (medio o último)
                     *Ant.prox := *P.prox
                 Fin_Si
@@ -67,14 +78,14 @@ ACCION Ejercicio4_1 ES
         Si (Prim = NIL) Y (NumeroK <> 1) ENTONCES
             ERROR("lista vacía; posición fuera de rango")
         Sino
-            ESC("Ingrese el dato")
+            ESC("Ingrese el dato")//PIDO QUE EL USUARIO INGRESE EL DATO PARA INSERTAR
             LEER(msg)
 
-            NUEVO(Q)
-            *Q.Dato := msg
+            NUEVO(Q)//SE CREA UN NUEVO PUNTERO
+            *Q.Dato := msg //ESCRIBO EL DATO EN EL NODO
             *Q.prox := NIL
 
-            Si NumeroK = 1 ENTONCES
+            Si NumeroK = 1 ENTONCES//CASO INSERCIÓN EN LA PRIEMERA POSICION
                 *Q.prox := Prim
                 Prim := Q
                 ESC("Dato insertado al inicio")
@@ -99,6 +110,7 @@ ACCION Ejercicio4_1 ES
     Fin_Procedimiento
 
     Proceso
+        //SE ASUME QUE LA LISTA VIENE CARGADA Y QUE EL NODO DE INICIO ES PRIM
         ESC("Ingrese la posición k")
         LEER(NumeroK)
 
