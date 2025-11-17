@@ -1,22 +1,88 @@
 /*
-
-Ejercicio 4.5¶
-Dada una lista simplemente encadenada que contiene datos de todas las provincias de la República Argentina: 
-nombre, capital, cantidad total de habitantes y cantidad de analfabetos, 
-está ordenada en forma decreciente por número de habitantes analfabetos, 
-generar otras tres listas que contengan el nombre, 
-la capital y el porcentaje de analfabetos de las Provincias que respondan a las siguientes restricciones.
-
-L1: <= 10 % analfabetos
-L2: 16 a 25 % analfabetos
-L3: => 26 % analfabetos
-
+Ejercicio 4.5
+Dada una lista simplemente encadenada con: nombre, capital, cantHab, cantAnalf (ordenada en forma decreciente por cantAnalf),
+generar tres listas con nombre, capital y porcentaje de analfabetos:
+L1: <= 10 %, L2: 16 a 25 %, L3: >= 26 %.
 */
-Accion Eje_4_5 ES
+ACCION Eje_4_5 (Prim: Puntero a Prov) ES
     Ambiente
-        Nodo : Registro
-            Nombre: AN(40)
-            Capital: AN(40)
-            cantHab: N(16)
-            cantAnal: N(16)
-            
+        Prov = Registro
+            Nombre    : AN(40)
+            Capital   : AN(40)
+            cantHab   : N(16)
+            cantAnalf : N(16)
+            prox      : Puntero a Prov
+        Fin_Registro
+
+        ProvAnalf = Registro
+            Nombre    : AN(40)
+            Capital   : AN(40)
+            PorcAnalf : FLOTANTE
+            prox      : Puntero a ProvAnalf
+        Fin_Registro
+
+        // Lista de entrada
+        P : Puntero a Prov
+
+        // Listas de salida
+        L1Prim, L1Ult : Puntero a ProvAnalf
+        L2Prim, L2Ult : Puntero a ProvAnalf
+        L3Prim, L3Ult : Puntero a ProvAnalf
+        LQ : Puntero a ProvAnalf
+
+        porc : FLOTANTE
+
+        Procedimiento ERROR(err : AN(80)) ES
+            ESC("ERROR: " + err)
+        Fin_Procedimiento
+
+        Procedimiento InicializarListas ES
+            L1Prim := NIL; L1Ult := NIL
+            L2Prim := NIL; L2Ult := NIL
+            L3Prim := NIL; L3Ult := NIL
+        Fin_Procedimiento
+
+        Procedimiento SumarProvAnalf(P_val : Puntero a Prov; porc_val : FLOTANTE, LiPrim : Puntero a ProvAnalf, LiUlt: Puntero a ProvAnalf) ES
+            NUEVO(LQ)
+            *LQ.Nombre := *P_val.Nombre
+            *LQ.Capital := *P_val.Capital
+            *LQ.PorcAnalf := porc_val
+            *LQ.prox := NIL
+            Si LiPrim = NIL ENTONCES
+                LiPrim := LQ
+                LiUlt := LQ
+            Sino
+                *LiUlt.prox := LQ
+                LiUlt := LQ
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento GenerarListas ES
+            Si Prim = NIL ENTONCES
+                ERROR("lista vacía")
+            Sino
+                InicializarListas
+                P := Prim
+                Mientras P <> NIL HACER
+                    // porcentaje con división en flotante
+                    porc := ( (*P.cantAnalf) * 100.0 ) / (*P.cantHab)
+
+                    Si porc <= 10.0 ENTONCES
+                        SumarProvAnalf(P, porc, L1Prim, L1Ult)
+                    Sino Si (porc >= 16.0) Y (porc <= 25.0) ENTONCES
+                        SumarProvAnalf(P, porc, L2Prim, L2Ult)
+                    Sino Si porc >= 26.0 ENTONCES
+                        SumarProvAnalf(P, porc, L3Prim, L3Ult)
+                    Fin_Si
+
+                    P := *P.prox
+                Fin_Mientras
+            Fin_Si
+        Fin_Procedimiento
+    Fin_Ambiente
+
+    Proceso
+        GenerarListas
+        // Resultados en L1Prim, L2Prim, L3Prim
+    Fin_Proceso
+FIN_ACCION
