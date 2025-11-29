@@ -1,0 +1,106 @@
+/*
+Ejercicio 4.7¶
+Genere un algoritmo que recorra una secuencia texto 
+y genere una lista simplemente encadenada 
+con la frecuencia de utilización de cada letra. 
+La lista debe mantenerse ordenada alfabéticamente 
+y al final informar cual fue la frecuencia de cada letra 
+y cuáles fueron la de mayor y menor frecuencia.
+*/
+
+Accion Eje4_7 es
+    Ambiente
+        S1 : Secuencia de caracter
+        car : Caracter
+
+        alfabeto : Registro
+            car : Caracter
+            frecuencia: Entero
+            prox: puntero a alfabeto
+        fin_registro
+
+        Prim, Ant, P, Q: Puntero a alfabeto
+        maxfrec, minfrec: Entero
+        maxcar, mincar: Caracter
+    
+        Procedimiento Inicializar es
+            ARR(S1)
+            AVZ(S1, car)
+            maxfrec := 0
+            minfrec := 0
+        Fin_Procedimiento
+
+        Procedimiento EscribirAlfabeto es
+            Ant := NIL
+            P := Prim
+            //insertr al inicio
+            Si (Prim = Nil) o (car < *Prim.car) Entonces
+                Nuevo(Q)
+                *Q.car := car
+                *Q.frecuencia := 1
+                *Q.prox :=Prim
+                Prim := Q
+            Sino
+                //ubicar
+                Mientras (P <> NIL) y (*P.car < car) ENTONCES
+                    Ant := P
+                    P := *P.prox
+                Fin_Mientras
+                //caso Q mayor que P (ultimo elemento)
+                Si P = Nil Entonces
+                    Nuevo(Q)
+                    *Q.car := car
+                    *Q.frecuencia := 1
+                    *Ant.prox := Q
+                    *Q.prox := P
+                Sino
+                //si es igual aumenta la frecuencia    
+                    Si *P.car = car ENTONCES
+                        *P.frecuencia := *P.frecuencia + 1
+                    Sino
+                    //Caso P mayor que Q
+                        Nuevo(Q)
+                        *Q.car := car
+                        *Q.frecuencia := 1
+                        *Ant.prox := Q
+                        *Q.prox := P
+                    Fin_Si
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento MostrarFrecuencias es
+            P := Prim
+            Mientras P <> NIL HACER
+                ESC("Letra: "+*P.car +" ,frecuencia:"+ *P.frecuencia)
+                Si (*P.frecuencia > maxfrec) ENTONCES
+                    maxcar := *P.car
+                    maxfrec := *P.frecuencia
+                Fin_Si
+                Si (*P.frecuencia < minfrec) ENTONCES
+                    mincar := *P.car
+                    minfrec := *P.frecuencia
+                Fin_Si
+                P := *P.prox
+            Fin_Mientras
+            Esc("Mayor frecuencia: "+maxfrec+ " letra: "+maxcar)
+            Esc("Menor frecuencia: "+minfrec+ " letra: "+mincar)
+        Fin_Procedimiento
+
+        Procedimiento leerSecuencia es
+            Mientras NFDS(S1) HACER
+                EscribirAlfabeto
+                AVZ(S1, car)
+            Fin_Mientras
+            Cerrar(S1)
+            MostrarFrecuencias
+        Fin_Procedimiento
+
+    Proceso
+
+        Inicializar
+        leerSecuencia
+        EscribirAlfabeto
+        MostrarFrecuencias
+
+FIN_ACCION
