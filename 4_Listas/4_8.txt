@@ -1,0 +1,120 @@
+/*
+Ejercicio 4.8¶
+Escribir un algoritmo que permita 
+- buscar
+- insertar 
+- borrar 
+un elemento identificado con una clave determinada 
+en una lista circular simplemente encadenada.
+*/
+
+Accion Eje4_8 es
+    Ambiente
+        Nodo : Registro
+            Clave : N(4)
+            prox: Puntero a Nodo
+        Fin_Registro
+
+        Prim, aux, P, Ant, Q: Puntero a Nodo
+        Clave, sel: N(4)
+
+        Procedimiento ERROR(err : AN(40)) es
+            ESC("ERROR: "+ err)
+        Fin_Procedimiento
+
+        Procedimiento BuscarListaCircular es
+            P:= Prim
+            Si Prim = NIL ENTONCES
+                ERROR("Lista vacía")
+            Sino
+                //caso primer elemento
+                Si *P.Clave = Clave ENTONCES
+                    ESC("Clave encontrada")
+                Sino
+                    P := *P.prox
+                    Mientras (P <> Prim) y (*P.Clave <> Clave) HACER
+                        P:= *P.prox
+                    Fin_Mientras
+                    
+                    Si *P.Clave = Clave ENTONCES
+                        ESC("Clave encontrada")
+                    Sino
+                        ERROR("La clave no está en la lista")
+                    Fin_Si
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento InsertarListaCircular es
+            P := Prim
+            Si Prim = NIL ENTONCES
+                Nuevo(Q)
+                *Q.Clave := Clave
+                *Q.prox := Q
+                Prim := Q
+            Sino
+                Ant:= P
+                P := *P.prox
+                Mientras (P <> Prim ) y (*P.Clave <> Clave) HACER
+                    Ant := P
+                    P:= *P.prox
+                Fin_Mientras
+                
+                Si *P.Clave = Clave Entonces
+                    ERROR("YA EXISTE ESTA CLAVE")
+                Sino
+                    Nuevo(Q)
+                    *Q.Clave := Clave
+                    *Q.prox := P
+                    *Ant.prox := Q
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento BorrarListaCircular es
+            P:= Prim
+            Si Prim = NIL ENTONCES
+                ERROR("LISTA VACIA")
+            Sino
+                //caso primer elemento
+                Si *P.Clave = Clave ENTONCES
+                    P := *P.prox
+                    Mientras (P <> Prim) HACER
+                        Ant := P
+                        P := *P.prox
+                    Fin_Mientras
+                    *Ant.prox := *P.prox
+                    Prim := *P.prox
+                    DISPONER(P)
+                Sino
+                    //caso elemento del medio o final
+                    P := *P.prox
+                    Mientras (P <> Prim) y (*P.Clave <> Clave) HACER
+                        Ant := P
+                        P := *P.prox
+                    Fin_Mientras
+                    Si *P.Clave = Clave ENTONCES
+                        *Ant.prox := *P.prox
+                        DISPONER(P)
+                    Sino
+                        ERROR("No existe el elemento con esa clave")
+                    Fin_Si
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+    Proceso
+        ESC("Ingrese clave")
+        leer(Clave)
+        ESC("Ingrese 1 insertar 2 buscar 3 eliminar")
+        leer(sel)
+        Segun sel HACER
+            = 1:
+                InsertarListaCircular
+            = 2:
+                BuscarListaCircular
+            = 3:
+                BorrarListaCircular
+        Fin_Segun
+    Fin_Proceso
+Fin_Accion

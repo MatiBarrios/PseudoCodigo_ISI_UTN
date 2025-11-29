@@ -1,0 +1,125 @@
+/*
+tuturu tata
+*/
+
+ACCION Ejercicio4_10 ES
+    Ambiente
+        NodoCirc = Registro
+            valor : N(6)
+            prox  : Puntero a NodoCirc
+        Fin_Registro
+
+        NodoProm = Registro
+            prom : Real
+            cant : N(6)
+            ant  : Puntero a NodoProm
+            prox : Puntero a NodoProm
+        Fin_Registro
+
+        PrimCirc : Puntero a NodoCirc
+        PrimProm, PProm, AntProm, QProm : Puntero a NodoProm
+        P : Puntero a NodoCirc
+        encabezado, valorGrupo, suma : N(6)
+        gruposProcesados : N(2)
+        maxProm, minProm : Real
+        maxCant, minCant : N(6)
+
+        Procedimiento ERROR(msg : AN(80)) ES
+            ESC("ERROR: " + msg)
+        Fin_Procedimiento
+
+        Procedimiento InsertarOrdenado(promedio : Real; cantidad : N(6)) ES
+            NUEVO(QProm)
+            *QProm.prom := promedio
+            *QProm.cant := cantidad
+            *QProm.ant := NIL
+            *QProm.prox := NIL
+            // inserción ordenada ascendente por prom
+            AntProm := NIL
+            PProm := PrimProm
+            Mientras (PProm <> NIL) Y (*PProm.prom < promedio) HACER
+                AntProm := PProm
+                PProm := *PProm.prox
+            Fin_Mientras
+            Si AntProm = NIL ENTONCES
+                // inserción al inicio
+                *QProm.prox := PrimProm
+                Si PrimProm <> NIL ENTONCES
+                    *PrimProm.ant := QProm
+                Fin_Si
+                PrimProm := QProm
+            Sino
+                *QProm.prox := PProm
+                *QProm.ant := AntProm
+                *AntProm.prox := QProm
+                Si PProm <> NIL ENTONCES
+                    *PProm.ant := QProm
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento ProcesarGrupos ES
+            Si PrimCirc = NIL ENTONCES
+                ERROR("lista circular vacía")
+            Sino
+                P := PrimCirc
+                gruposProcesados := 0
+                Mientras (gruposProcesados < 6) Y (P <> NIL) HACER
+                    encabezado := *P.valor
+                    P := *P.prox
+                    suma := 0
+                    valorGrupo := 0
+                    Mientras (encabezado > 0) Y (P <> NIL) HACER
+                        suma := suma + *P.valor
+                        valorGrupo := valorGrupo + 1
+                        encabezado := encabezado - 1
+                        P := *P.prox
+                        Si P = PrimCirc ENTONCES
+                            // si volvemos al inicio antes de completar grupos parametrizados, salimos
+                            encabezado := 0
+                        Fin_Si
+                    Fin_Mientras
+                    Si valorGrupo > 0 ENTONCES
+                        InsertarOrdenado( (suma / valorGrupo), valorGrupo )
+                    Fin_Si
+                    gruposProcesados := gruposProcesados + 1
+                    Si P = PrimCirc ENTONCES
+                        Salir
+                    Fin_Si
+                Fin_Mientras
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento CalcularMinMax ES
+            Si PrimProm = NIL ENTONCES
+                ERROR("Lista de promedios vacía")
+            Sino
+                PProm := PrimProm
+                maxProm := *PProm.prom
+                minProm := *PProm.prom
+                maxCant := *PProm.cant
+                minCant := *PProm.cant
+                Mientras PProm <> NIL HACER
+                    ESC("Grupo cant=" + *PProm.cant + " prom=" + *PProm.prom)
+                    Si *PProm.prom > maxProm ENTONCES
+                        maxProm := *PProm.prom
+                        maxCant := *PProm.cant
+                    Fin_Si
+                    Si *PProm.prom < minProm ENTONCES
+                        minProm := *PProm.prom
+                        minCant := *PProm.cant
+                    Fin_Si
+                    PProm := *PProm.prox
+                Fin_Mientras
+                ESC("Máximo promedio: " + maxProm + " (cant=" + maxCant + ")")
+                ESC("Mínimo promedio: " + minProm + " (cant=" + minCant + ")")
+            Fin_Si
+        Fin_Procedimiento
+    Fin_Ambiente
+
+    Proceso
+        // Se asume 'PrimCirc' ya construido circularmente y con al menos un grupo.
+        ProcesarGrupos
+        CalcularMinMax
+    Fin_Proceso
+FIN_ACCION
