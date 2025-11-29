@@ -11,24 +11,137 @@ Registrar su consumo (Acumular el Total Consumido en valores de montos).
 (Actualizar el valor consumido, lo tomo como unicamente el importe para abstraer complejidad)
 
 Realizar el cobro (emitir ticket con Nombre, Fecha, Número de Mesa y Total).
+
 Eliminar del listado de atención.
+
 La información almacenada debe mantenerse ordenada por Nombre del cliente.
 */
-
-Accion Eje_4_6(Prim : Puntero a Cliente) es
+//faltan correcciones en cuanto a controles, se asume mucho a la hora de la eliminacion
+Accion Eje_4_6 ( Prim: Puntero a Cliente) es
+    
     Fecha : Registro
-        Dia: 1...31
-        Mes: 1...12
-        Anio: N(4)
+        dia: 1..31
+        mes: 1..12
+        anio: N(4)
     Fin_Registro
 
     Cliente : Registro
-        Nombre : AN(120)
-        Importe: FLOTANTE
-        Fecha_reg : Fecha
-        Mesa: N(8)
+        Nombre : AN(60)
+        ImporteTotalConsumido : REAL
+        Mesa: N(4)
+        reg_Fecha : Fecha
         prox: Puntero a Cliente
     Fin_Registro
+    
+    Ant, P, Q: Puntero a Cliente
+    NombBusqueda : AN(60)
+    ImporteIngreso : Real
+    MesaIngreso: N(4)
+    aux_Fecha: Fecha
+    seleccion : N(1)
 
-    P : Puntero a Cliente
-    Total : Flotante
+    Procedimiento ERROR(err: AN(60)) es
+        ESC("ERROR: " + err)
+    Fin_Procedimiento
+
+    Procedimiento Encontrar_Cliente es
+        ESC("Ingrese Nombre del cliente")
+        Leer(NombBusqueda)
+        Ant:=NIL
+        P:= Prim
+        Mientras (P <> Nil) y (NombBusqueda > *P.Nombre) HACER
+            Ant := P
+            P:= *P.prox
+        Fin_Mientras
+    Fin_Procedimiento
+
+    Procedimiento Crear_NodoQ es
+        Esc("Ingrese mesa")
+        Leer(MesaIngreso)
+        Esc("Ingrese la fecha actual dia, mes, anio")
+        Leer(aux_Fecha.dia, aux_Fecha.mes, aux_Fecha.anio)
+        NUEVO(Q)
+        *Q.Nombre := NombBusqueda
+        *Q.ImporteTotalConsumido := 0
+        *Q.Mesa := MesaIngreso
+        *Q.reg_Fecha := aux_Fecha
+    Fin_Procedimiento
+
+    Procedimiento Registrar_Cliente es
+        Encontrar_Cliente
+        //caso que ya exista cliente
+        Si *P.Nombre = NombBusqueda ENTONCES
+            ERROR("El cliente ya está registrado")
+        Sino
+            //caso lista vacia o nuevo primer elemento
+            Si (Prim = NIL) O (*Prim.Nombre > NombBusqueda) ENTONCES
+                Crear_NodoQ
+                *Q.prox := Prim
+                Prim := Q
+            Sino
+                //caso elemento del medio
+                Si *P.Nombre > NombBusqueda ENTONCES
+                    Crear_NodoQ
+                    *Ant.prox := Q
+                    *Q.prox := P
+                //caso elemento final
+                Sino
+                    Crear_NodoQ
+                    *P.prox := Q
+                Fin_Si
+            Fin_Si
+        Fin_SI
+    Fin_Procedimiento
+
+    Procedimiento Registrar_Consumo es
+        Encontrar_Cliente
+
+        Si *P.Nombre <> NombBusqueda ENTONCES
+            ERROR("El cliente no está registrado")
+        Sino
+            ESC("Ingrese el monto a añadir")
+            Leer(ImporteIngreso)
+            *P.ImporteTotalConsumido := *P.ImporteTotalConsumido + ImporteIngreso
+        Fin_Si
+    Fin_Procedimiento
+
+    Procedimiento Cobrar_Cliente es
+        Encontrar_Cliente
+
+        Si *P.Nombre <> NombBusqueda ENTONCES
+            ERROR("El cliente no está registrado")
+        Sino
+            ESC("Nombre: "+ *P.Nombre+" fecha:"+ *P.reg_Fecha+" mesa:"+ *P.Mesa+" Importe"+ *P.ImporteTotalConsumido)
+            //procedimiento eliminar cliente
+        Fin_Si
+    Fin_Procedimiento
+
+    Procedimiento Eliminar_Cliente es
+        //Caso primer elemento
+        Si P = Prim ENTONCES
+            Prim:= *Prim.prox
+            Disponer(P)
+        Sino
+            //Caso elemento del medio o ultimo
+            *Ant.prox := *P.prox
+            Disponer(P)
+        Fin_Si
+    Fin_Procedimiento
+
+    Proceso
+        Esc("Ingrese nombre del cliente")
+        Leer(NombBusqueda)
+        Esc("Ingrese 1-Añadir cliente 2-Añadir monto 3-CobrarConsumo")
+        Leer(seleccion)
+        Segun seleccion HACER
+            =1:
+                Registrar_Cliente
+            =2:
+                Registrar_Consumo
+            =3:
+                Cobrar_Cliente
+            Otro caso:
+                ERROR("Seleccion invalida")
+        FIN_SEGUN
+    Fin_Proceso
+FIN_ACCION
