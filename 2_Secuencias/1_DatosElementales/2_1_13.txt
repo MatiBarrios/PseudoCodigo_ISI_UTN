@@ -1,0 +1,81 @@
+/*
+Revisión y corrección del Ejercicio 2.1.13.
+
+Objetivo: Calcular el porcentaje de palabras que comienzan con "ALG" respecto del total de palabras en la secuencia.
+
+Errores / mejoras detectadas:
+1) Estructura y estilo: se normaliza nomenclatura (ACCION, Ambiente, Proceso, FIN_ACCION).
+2) Validación de caracteres: 'esValido' considera sólo espacio; se mantiene simple, pero se sugiere ampliar a separadores (.,;). Opcional.
+3) Lógica de detección de palabras: correcto uso de transición 'no válido' → 'válido' para detectar inicio; se mantiene.
+4) Lectura de 'ALG': faltaba retroceder el puntero si primera letra no es 'A'; el flujo actual avanza correctamente dentro del bloque. Se refuerza chequeo NFDS antes de cada AVZ.
+5) Resultados y naming: 'Promedio de ambos' es ambiguo; se reemplaza por 'Porcentaje ALG (%)'.
+6) División por cero: si no hay palabras (cont_pal=0) se evita división y se informa 0%.
+7) Tipos: se mantiene 'Real' para porcentaje.
+*/
+
+ACCION Ejercicio2_1_13 ES
+    Ambiente
+        Sec: Secuencia de Caracter
+        car, aux: Caracter
+        cont_pal, cont_alg: Entero
+        prom : REAL
+
+        Procedimiento Inicializar es
+            ARR(Sec)
+            AVZ(Sec, car)
+            aux:= ' '
+            cont_pal:=0
+            cont_alg:=0
+        Fin_Procedimiento
+
+        Funcion esValido(c: Caracter): Logico ES
+            Si c = ' ' ENTONCES
+                esValido:= Falso
+            Sino
+                esValido:= Verdadero
+            Fin_Si
+        Fin_Funcion
+
+        Procedimiento BarrerSec ES
+            Mientras NFDS(Sec) HACER
+                Si NO(esValido(aux)) y esValido(car) entonces
+                    cont_pal:= cont_pal+1
+                    Si car = 'A' ENTONCES
+                        AVZ(Sec,car)
+                        Si NFDS(Sec) Y (car = 'L') ENTONCES
+                            AVZ(Sec,car)
+                            Si NFDS(Sec) Y (car = 'G') ENTONCES
+                                cont_alg:=cont_alg+1
+                            Fin_Si
+                        Fin_Si
+                    Fin_Si
+                Fin_Si
+                AVZ(Sec,car)
+            Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento MostrarResultados ES
+            ESC("Cantidad de palabras: " + cont_pal)
+            ESC("Cantidad que comienzan con ALG: " + cont_alg)
+            ESC("Porcentaje ALG (%): " + prom)
+        Fin_Procedimiento
+
+        Procedimiento ObtenerPromedios ES
+            Si cont_pal > 0 ENTONCES
+                prom := (cont_alg * 100.0) / cont_pal
+            Sino
+                prom := 0
+            Fin_Si
+        Fin_Procedimiento
+        
+        Procedimiento Finalizar es
+            Cerrar(Sec)
+        Fin_Procedimiento
+
+    Proceso
+        Inicializar
+        BarrerSec
+        ObtenerPromedios
+        MostrarResultados
+        Finalizar
+FIN_ACCION

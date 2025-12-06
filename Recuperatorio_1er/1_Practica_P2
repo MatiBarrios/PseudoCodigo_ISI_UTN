@@ -1,0 +1,116 @@
+ACCION EjeParcial es
+    Ambiente
+        Fecha = Registro
+            dia : 1..31
+            mes : 1..12
+            anio: N(4)
+        Fin_Registro
+
+        sesion = Registro
+            NroEst : N(4)
+            TipoV : (SD, SV, UT)
+            NroCarga: N(4)
+            FechaCarga : Fecha
+            DuracionCarga: N(4)
+            CostoCarga: REAL
+        Fin_Registro
+
+        secCread = Registro
+            NroEst : N(4)
+            TotalRec : REAL
+        Fin_Registro
+
+        SecSes : Secuencia de Sesion
+        SecCrea : Archivo de secCread
+        ses: sesion
+        secc: secCread
+        tot_rec: real
+        aux_sedan : real
+        est_util : real
+
+        Procedimiento MostrarSesion es
+            ESC("estacion:"+ses.NroEst)
+            ESC("TipoVehiculo:"+ses.TipoV)
+            ESC("NroCarga:"+ses.NroCarga)
+            ESC("Costo:"+ses.CostoCarga)
+        Fin_Procedimiento
+
+        Procedimiento BarrerSesiones es
+            Ambiente
+                aux_NroEst: N(4)
+                aux_TipoV : (SD,SV,UT)
+            Proceso
+                Si ses.FechaCarga.dia < 16 ENTONCES
+                    MostrarSesion
+                Fin_Si
+                aux_NroEst:= ses.NroEst
+                aux_TipoV:= ses.TipoV
+                tot_rec:= ses.CostoCarga
+    
+                Si ses.TipoV = "UT" ENTONCES
+                    est_util:= est_util+ ses.CostoCarga
+                Fin_Si
+
+                Si ses.TipoV = "SD" ENTONCES
+                    aux_sedan:= aux_sedan+ ses.CostoCarga
+                Fin_Si
+
+                Mientras NFDS(SecSes) hacer
+                    Si ses.FechaCarga.dia < 16 ENTONCES
+                        MostrarSesion
+                    Fin_Si
+
+                    Si aux_NroEst <> ses.NroEst ENTONCES
+                        ESC("estacion:"+aux_NroEst)
+                        ESC("Tipo Vehiculo"+ aux_TipoV)
+                        ESC("total recaudado"+ tot_rec)
+                        
+                        secCread.NroEst := aux_NroEst
+                        secCread.TotalRec:= est_util
+
+                        ESC(SecCrea,secCread)
+
+                        Si aux_sedan > est_util entonces
+                            ESC("Estasion con más recaudacion en sedan")
+                        FIN_SI
+
+                        aux_NroEst:= ses.NroEst
+                        aux_TipoV:= ses.TipoV
+
+                        tot_rec:= 0
+                        est_util:= 0
+                        aux_sedan:= 0
+                    Sino
+                        Si  aux_TipoV <> ses.TipoV ENTONCES
+                            ESC("estacion:"+aux_NroEst)
+                            ESC("Tipo Vehiculo"+ aux_TipoV)
+                            ESC("total recaudado"+ tot_rec)
+                            
+                            aux_TipoV:= ses.TipoV
+                            tot_rec:= 0
+                        Fin_Si
+                    Fin_Si
+
+                    Si ses.TipoV = "UT" ENTONCES
+                        est_util:= est_util+ ses.CostoCarga
+                    Fin_Si
+
+                    Si ses.TipoV = "SD" ENTONCES
+                        aux_sedan:= aux_sedan+ ses.CostoCarga
+                    Fin_Si
+
+                    tot_rec:= tot_rec+ ses.CostoCarga
+                    AVZ(SecSes,ses)
+                Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento Inicializar es
+            ARR(secc)
+            ABRIR E/(SecCrea)
+        Fin_Procedimiento
+    Proceso
+        Inicializar
+        BarrerSesiones
+        Cerrar(secc)
+        Cerrar(SecCrea)
+Fin_Accion
