@@ -1,0 +1,131 @@
+Accion Practica_Recuperatorio es
+    Ambiente
+        edit,lib, sal: Secuencia de caracter
+        car_edit, car_lib: caracter
+        prom_pal_res: REAL
+        p_mayor, lib_mayor: entero
+        prov: entero
+        
+        Funcion ConvDec(car: caracter): Entero es
+            Segun car Hacer
+                ='0': ConvDec := 0
+                ='1': ConvDec := 1
+                ='2': ConvDec := 2
+                ='3': ConvDec := 3
+                ='4': ConvDec := 4
+                ='5': ConvDec := 5
+                ='6': ConvDec := 6
+                ='7': ConvDec := 7
+                ='8': ConvDec := 8
+                ='9': ConvDec := 9
+            Fin_Segun
+        Fin_Funcion
+
+        Procedimiento LibroTratarL es
+            Ambiente
+                aux: entero
+            proceso
+                aux:= 0
+                Para i = 1 Hasta 3 Hacer
+                    AVZ(lib,car_lib)
+                    aux:= (aux*10)+ConvDec(car_lib)
+                Fin_Para
+                AVZ(lib,car_lib)
+                Si aux > 200  y aux <= 300 ENTONCES
+                    Mientras NFDS(lib) y (car_lib <> '&') HACER
+                        ESC(sal,car_lib)
+                        AVZ(lib,car_lib)
+                    Fin_Mientras
+                    ESC(sal,'$')
+                Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento TratarLibroResumen es
+            Mientras NFDS(lib) y (car_lib <> '#') hacer
+                Si lib_aux = ' ' y car_lib <> ' ' ENTONCES
+                    palResumen:=palResumen+1
+                Fin_Si
+                lib_aux:= car_lib
+                AVZ(lib,car_lib)
+            Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento BarrerLibroAResumen es
+            Mientras NFDS(lib) y (car_lib <> '&') hacer
+                AVZ(lib,car_lib)
+            Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento TratarLibro es
+            Ambiente
+                lib_aux: caracter
+            Proceso
+                Mientras NFDS(lib) y (car_lib <> '@') HACER
+                    Si car_lib = 'L' ENTONCES
+                        LibroTratarL
+                    Fin_Si
+
+                    BarrerLibroAResumen
+                    lib_aux:=' '
+                    TratarLibroResumen
+
+                    cantLibs:= cantLibs+1
+                    AVZ(lib,car_lib)
+                Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento Inicializar es
+            ARR(lib)
+            ARR(edit)
+            AVZ(lib, car_lib)
+            AVZ(edit, car_edit)
+            CREAR(sal)
+            p_mayor:= 0
+            lib_mayor:= 0
+        Fin_Procedimiento
+
+        Procedimiento BarrerNombreEdit es
+            Mientras NFDS(edit) y (car_edit <> '&') HACER
+                AVZ(edit,car_edit)
+            Fin_Mientras
+        Fin_Procedimiento
+
+        Procedimiento TratarProvEdit es
+            prov:= 0
+            Para i=1 Hasta 2 HACER
+                prov:= prov*10 + ConvDec(car_edit)
+                AVZ(edit,car_edit)
+            Fin_Para
+        Fin_Procedimiento
+
+        Procedimiento Finalizar es
+            Cerrar(edit)
+            Cerrar(lib)
+            Cerrar(sal)
+        Fin_Procedimiento
+
+    Procedimiento
+        Inicializar
+        Mientras NFDS(edit) HACER
+
+            palResumen:= 0
+            cantLibs:= 0
+
+            BarrerNombreEdit
+            TratarProvEdit            
+
+            TratarLibro
+
+            Si cantLibs > lib_mayor ENTONCES
+                p_mayor:= prov
+                lib_mayor:= cantLibs
+            Fin_Si
+
+            prom_pal_res:= palResumen/cantLibs
+            ESC("cant prom de pal:"+prom_pal_res)
+        Fin_Mientras
+
+        Finalizar
+
+        ESC("provincia: "+p_mayor+" mayor cantidad de libros:"+ lib_mayor)
+Fin_Accion
