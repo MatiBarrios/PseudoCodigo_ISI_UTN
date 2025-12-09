@@ -1,0 +1,75 @@
+ACCION Eje_2_2_9 ES
+    Ambiente
+        Producto = Registro
+            Cod_Producto: N(12)
+            Tipo: (1,2,3)
+            Marca: AN(60)
+            Modelo: AN(60)
+            Descripcion: AN(160)
+            Cantidad_Existente: N(12)
+            Precio_Unitario: REAL
+        Fin_Registro
+
+        Productos, ProductosN: Archivo de Producto ordenado por Cod_Producto
+        prod: Producto
+        precio_aux: REAL
+        cant_tipo1, cant_tipo2, cant_tipo3, cant_general: Entero
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/(Productos)
+            LEER(Productos,prod)
+            ABRIR S/(ProductosN)
+            cant_tipo1:=0
+            cant_tipo2:=0
+            cant_tipo3:=0
+            cant_general:=0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Productos)
+            CERRAR(ProductosN)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Tipo ES
+            SEGUN prod.Tipo HACER
+                =1:
+                    cant_tipo1:=cant_tipo1+1
+                    Tratar_Monto(10)
+                =2:
+                    cant_tipo2:=cant_tipo2+1
+                    Tratar_Monto(25)
+                =3: 
+                    cant_tipo3:=cant_tipo3+1
+                    Tratar_Monto(50)
+            FIN_SEGUN
+        Fin_Procedimiento
+
+        PROCEDIMIENTO Tratar_Monto(monto: ENTERO) ES
+            prod.Precio_Unitario:= prod.Precio_Unitario+(prod.Precio_Unitario*monto)/100
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Escribir_Archivo ES
+            ESC(ProductosN,prod)
+        FIN_PROCEDIMIENTO
+
+        Procedimiento Tratar_Producto ES
+            Mientras NFDA(Productos) HACER
+                Tratar_Tipo
+                Escribir_Archivo
+                cant_general:=cant_general+1
+                LEER(Productos,prod)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("CANTIDAD DE TIPOS 1:", cant_tipo1)
+            ESC("CANTIDAD DE TIPOS 2:", cant_tipo2)
+            ESC("CANTIDAD DE TIPOS 3:", cant_tipo3)
+            ESC("CANTIDAD GENERAL:", cant_general)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        Tratar_Producto
+        MOSTRAR_RESULTADOS
+        Finalizar
+FIN_ACCION

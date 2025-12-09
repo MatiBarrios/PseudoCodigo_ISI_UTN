@@ -1,0 +1,6 @@
+ACCION Eje_2_2_15 ES
+    Ambiente
+        
+    Proceso
+        
+FIN_ACCION

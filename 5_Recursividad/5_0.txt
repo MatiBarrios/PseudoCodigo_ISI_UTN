@@ -1,0 +1,27 @@
+/*
+Ejemplo de recursividad: sumar todos los naturales desde 1 hasta N.
+*/
+
+ACCION Ejemplo_Rec ES
+    Ambiente
+        N1, Total : N(8)
+
+    Fin_Ambiente
+
+    Funcion SumarN(n : N(8)) : N(8) ES
+        Si n <= 0 ENTONCES
+            SumarN := 0
+        Sino Si n = 1 ENTONCES
+            SumarN := 1
+        Sino
+            SumarN := n + SumarN(n - 1)
+        Fin_Si
+    Fin_Funcion
+
+    Proceso
+        ESC("Ingrese N")
+        LEER(N1)
+        Total := SumarN(N1)
+        ESC("Suma 1.."+ N1 + " = " + Total)
+    Fin_Proceso
+FIN_ACCION

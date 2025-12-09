@@ -1,0 +1,45 @@
+/*
+Ejercicio 5.1.3¶
+Dados dos números: 
+a
+ y 
+b
+. Calcule la potencia 
+a
+b
+, usando sólo multiplicaciones sucesivas.
+*/
+
+ACCION Eje5_3 ES
+    Ambiente
+        a, b, x : N(8)
+    Fin_Ambiente
+
+    Procedimiento ERROR(err : AN(80)) ES
+        ESC("ERROR: " + err)
+    Fin_Procedimiento
+
+    Funcion Potencia(base : N(8); exp : N(8)) : N(8) ES
+        Si exp = 0 ENTONCES
+            Potencia := 1
+        Sino Si exp = 1 ENTONCES
+            Potencia := base
+        Sino
+            Potencia := base * Potencia(base, exp - 1)
+        Fin_Si
+    Fin_Funcion
+
+    Proceso
+        ESC("Ingrese base (a) y exponente (b)")
+        LEER(a, b)
+
+        Si b < 0 ENTONCES
+            ERROR("exponente negativo no soportado")
+        Sino Si (a = 0) Y (b = 0) ENTONCES
+            ERROR("indeterminado: 0^0")
+        Sino
+            x := Potencia(a, b)
+            ESC("Resultado: " + x)
+        Fin_Si
+    Fin_Proceso
+FIN_ACCION

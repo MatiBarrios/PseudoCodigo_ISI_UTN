@@ -1,0 +1,143 @@
+ACCION Eje_2_2_13 ES
+    Ambiente
+        Reparacion = Registro
+            cod_sucursal: N(8)
+            marca: AN(120)
+            modelo: AN(120)
+            cod_tragamonedas: N(8)
+            fecha_rep = Registro
+                dia:1..31
+                mes:1..12
+                anio:N(4)
+            Fin_Registro
+            costo_rep: REAL
+        Fin_Registro
+
+        Reparaciones: Archivo de Reparacion ordenado por cod_sucursal, marca, modelo, cod_tragamonedas
+        rep: Reparacion
+
+        resg_modelo: AN(120)
+        resg_marca: AN(120)
+        resg_cod_sucursal: N(8)
+
+        cont_modelo: N(8)
+        cont_marca: N(8)
+        cont_sucursal: N(8)
+
+        cont_total:N(8)
+
+        costo_modelo:Real
+        costo_marca:Real
+        costo_sucursal:Real
+
+        costo_total:Real
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/(Reparaciones)
+            LEER(Reparaciones, rep)
+            
+            resg_modelo:= rep.modelo
+            resg_marca:= rep.marca
+            resg_cod_sucursal:= rep.cod_sucursal
+
+            cont_modelo:= 0
+            cont_marca:= 0
+            cont_sucursal:= 0
+
+            cont_total:= 0
+
+            costo_modelo:= 0
+            costo_marca:= 0
+            costo_sucursal:= 0
+
+            costo_total:= 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Reparaciones)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Corte1 ES
+            ESC("MODELO", resg_modelo)
+            ESC("Cantidad:", cont_modelo)
+            ESC("COSTO:", costo_modelo)
+            
+            cont_marca:= cont_marca + cont_modelo
+            costo_marca:= costo_marca + costo_modelo
+
+            cont_modelo:= 0
+            costo_modelo:= 0
+
+            resg_modelo:= rep.modelo
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Corte2 ES
+            Tratar_Corte1
+
+            ESC("MARCA", resg_marca)
+            ESC("Cantidad:", cont_marca)
+            ESC("COSTO:", costo_marca)
+
+            cont_sucursal:= cont_sucursal + cont_marca
+            costo_sucursal:= costo_sucursal + costo_marca
+
+            cont_marca:= 0
+            costo_marca:= 0
+
+            resg_marca:= rep.marca
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Corte3 ES
+            Tratar_Corte2
+
+            ESC("SUCURSAL", resg_cod_sucursal)
+            ESC("Cantidad:", cont_sucursal)
+            ESC("COSTO:", costo_sucursal)
+
+            cont_total:= cont_total + cont_sucursal
+            costo_total:= costo_total + costo_sucursal
+
+            cont_sucursal:= 0
+            costo_sucursal:= 0
+
+            resg_cod_sucursal:= rep.cod_sucursal
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Cortes ES
+            SI resg_cod_sucursal <> rep.cod_sucursal ENTONCES
+                Tratar_Corte3
+            Sino
+                Si resg_marca <> rep.marca ENTONCES
+                    Tratar_Corte2
+                Sino
+                    Si resg_modelo <> rep.modelo ENTONCES
+                        Tratar_Corte1
+                    Fin_Si
+                Fin_Si
+            Fin_Si
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("TOTAL DE TRAGAMONEDAS:", cont_total)
+            ESC("COSTO TOTAL:", costo_total)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Registro ES
+            cont_modelo:= cont_modelo + 1
+            costo_modelo:= costo_modelo + rep.costo_rep
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Total ES
+            MIENTRAS NFDA(Reparaciones) HACER
+                Tratar_Cortes
+                Tratar_Registro
+                LEER(Reparaciones,rep)
+            FIN_MIENTRAS
+            Tratar_Corte3
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        Tratar_Total
+        MOSTRAR_RESULTADOS
+        Finalizar
+FIN_ACCION

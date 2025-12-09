@@ -1,0 +1,96 @@
+ACCION eje_2_2_12 ES
+    Ambiente
+        Poblacion = Registro
+            provincia: AN(40)
+            departamento: AN(40)
+            ciudad: AN(40)
+            barrio: AN(40)
+            id_casa: N(4)
+            cant_habitantes: N(12)
+        Fin_Registro
+
+        Poblaciones: Secuencia de Poblacion Ordenada por provincia, departamento, ciudad, barrio, id_casa
+        pob: Poblacion
+
+        Poblacion_Sal = Registro
+            provincia: AN(40)
+            departamento: AN(40)
+            cant_habitantes: N(12)
+        Fin_Registro
+
+        Poblaciones_Sal: Secuencia de Poblacion Ordenada por provincia, departamento
+        pob_sal: Poblacion_Sal
+
+        resg_provincia: AN(40)
+        resg_departamento: AN(40)
+
+        cont_habitantes: N(12)
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/(Poblaciones)
+            LEER(Poblaciones,pob)
+            ABRIR /S(archivo)(Poblaciones_Sal)
+
+            cont_habitantes:= 0
+            resg_provincia:= pob.provincia
+            resg_departamento:= pob.departamento
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Poblaciones)
+            Cerrar(Poblaciones_Sal)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Variables ES
+            pob_sal.provincia:= resg_provincia
+            pob_sal.departamento:= resg_departamento
+            pob_sal.cant_habitantes:= cont_habitantes
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Grabar_Archivo ES
+            ESC(Poblacion_Sal,pob_sal)
+        FIN_PROCEDIMIENTO
+
+        Procedimiento Tratar_Corte1 ES
+            Tratar_Variables
+            Grabar_Secuencia
+
+            //está re al pedo tratar varios cortes acá pero bueno
+            resg_departamento:= pob.departamento
+            cont_habitantes:= 0
+        Fin_Procedimiento
+
+        Procedimiento Tratar_Corte2 ES
+            Tratar_Corte1
+
+            resg_provincia:= pob.provincia
+        Fin_Procedimiento
+
+        Procedimiento Tratar_Corte ES
+            Si resg_provincia <> pob.provincia ENTONCES
+                Tratar_Corte2
+            Sino
+                Si resg_departamento <> pob.departamento ENTONCES
+                    Tratar_Corte1
+                Fin_Si
+            Fin_Si
+        Fin_Procedimiento
+
+        Procedimiento Tratar_Registro ES
+            cont_habitantes:= cont_habitantes+ pob.cant_habitantes
+        Fin_Procedimiento
+
+        Procedimiento Tratar_Total ES
+            Mientras NFDS(Poblaciones) HACER
+                Tratar_Corte
+                Tratar_Registro
+                LEER(Poblaciones, pob)
+            Fin_Mientras
+            Tratar_Corte2
+        Fin_Procedimiento
+    Proceso
+        Inicializar
+        Tratar_Total
+        Finalizar
+        
+FIN_ACCION

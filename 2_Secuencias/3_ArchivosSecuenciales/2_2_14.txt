@@ -1,0 +1,94 @@
+ACCION Eje_2_2_14 ES
+    Ambiente
+        Censo = Registro
+            radio: N(8)
+            manzana: AN(120)
+            nro_vivienda: N(8)
+            condicion: 1..10
+            cant_habitantes: N(6)
+        Fin_Registro
+
+        Censos: Archivo de Censo ordenado por radio, manzana, nro_vivienda
+        cen: Censo
+
+        resg_manzana: AN(120)
+        resg_radio: N(8)
+
+        cont_manzana: N(8)
+        cont_radio: N(8)
+        cont_total: N(8)
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/(Censos)
+            LEER(Censos,cen)
+            resg_manzana:= cen.manzana
+            resg_radio:= cen.radio
+
+            cont_manzana:= 0
+            cont_radio:= 0
+            cont_total:= 0
+        FIN_PROCEDIMIENTO
+
+        Procedimiento Finalizar ES
+            CERRAR(Censos)
+        FIN_PROCEDIMIENTO
+
+        Procedimiento Tratar_Corte1 ES
+            ESC("MANZANA: ", resg_manzana)
+            ESC("Cantidad de habitantes de viviendas muy buenas :", cont_manzana)
+
+            cont_radio:= cont_radio + cont_manzana
+
+            cont_manzana:= 0
+
+            resg_manzana:= cen.manzana
+        Fin_Procedimiento
+
+        PROCEDIMIENTO Tratar_Corte2 ES
+            Tratar_Corte1
+
+            ESC("Radio: ", resg_radio)
+            ESC("Cantidad de habitantes de viviendas muy buenas :", cont_radio)
+
+            cont_total:= cont_total + cont_radio
+
+            cont_radio:= 0
+
+            resg_radio:= cen.radio
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Cortes ES
+            Si resg_radio <> cen.radio ENTONCES
+                Tratar_Corte2
+            Sino
+                Si resg_manzana <> cen.manzana ENTONCES
+                    Tratar_Corte1
+                Fin_Si
+            Fin_Si
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Registro ES
+            Si cen.condicion > 7 ENTONCES
+                cont_manzana:= cont_manzana + cen.cant_habitantes
+            Fin_Si
+        FIN_PROCEDIMIENTO
+
+        Procedimiento Tratar_Total ES
+            Mientras NFDA(Censos) Hacer
+                Tratar_Cortes
+                Tratar_Registro
+                LEER(Censos, cen)
+            FIN_MIENTRAS
+            Tratar_Corte2
+        Fin_Procedimiento
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("TOTAL")
+            ESC("Cantidad de habitantes viviendo en buenas condiciones es:", cont_total)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        Tratar_Total
+        MOSTRAR_RESULTADOS
+        Finalizar
+FIN_ACCION
