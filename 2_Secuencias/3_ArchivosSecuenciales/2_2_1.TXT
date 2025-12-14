@@ -1,0 +1,51 @@
+ACCION EJE_2_2_1 ES
+    Ambiente
+        Fecha = Registro
+            dia: 1..31
+            mes: 1..12
+            anio: N(4)
+        Fin_Registro
+
+        Alumno = Registro
+            Nomb: AN(90)
+            CARRERA: (ISI,IEM,IQ)
+            leg: N(5)
+            nac: Fecha
+            ing: Fecha
+            DNI: N(9)
+            sexo: (M,F)
+            ult_ex: Fecha
+            Nota: N(2)
+        Fin_Registro
+
+        Alumnos: Secuencia de Alumnos
+        al: Alumno
+
+        PROCEDIMIENTO Inicilizar ES
+            ARR(Alumnos)
+            AVZ(Alumno,al)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            Cerrar(Alumnos)
+        FIN_PROCEDIMIENTO
+
+        Procedimiento Barrer_PRINCIPAL es
+            MIENTRAS NFDS(Alumnos) HACER
+                MOSTRAR_RESULTADOS
+                AVZ(Alumnos,al)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("LEGAJO:"+ al.leg)
+            ESC("Nombre:"+al.Nomb)
+            ESC("DOCUMENTO:"+al.DNI)
+            ESC("carrera:"+al.CARRERA)
+        FIN_PROCEDIMIENTO
+
+    Proceso
+        Inicializar
+        Barrer_PRINCIPAL
+        Finalizar
+Fin_Accion

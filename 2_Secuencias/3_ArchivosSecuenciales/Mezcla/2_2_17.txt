@@ -1,0 +1,99 @@
+ACCION Eje_2_2_17 ES
+    Ambiente
+        Fecha = Registro
+            dia : 1..31
+            mes : 1..12
+            anio: N(4)
+        Fin_Registro
+
+        ASPIRANTE = Registro
+            DNI : N(8)
+            Nomb: AN(120)
+            Carrera: AN(120)
+            F_Nac: Fecha
+            Email : AN(80)
+            ColegioSec : AN(80)
+            F_Insc : Fecha
+            Aprobado : Logico
+        Fin_Registro
+
+        SEGUIMIENTO = Registro
+            DNI : N(8)
+            Nomb: AN(120)
+            Email : AN(80)
+            ColegioSec : AN(80)
+        Fin_Registro
+
+        Aspirantes_Ag, Aspirantes_Fb: Archivo de ASPIRANTE ordenado por DNI
+        Seguimientos: Archivo de SEGUIMIENTO
+
+        asp_ag, asp_fb : ASPIRANTE ORDENADO POR DNI
+        seg : SEGUIMIENTO 
+
+        cont_seg: N(4)
+
+        PROCEDIMIENTO ESCRIBIR_SEGUIMIENTOS ES
+            SI No(asp_ag.Aprobado) y No(asp_fb.Aprobado) ENTONCES
+                seg.DNI:= asp_ag.DNI
+                seg.Nomb:= asp_ag.Nomb
+                seg.Email:= asp_ag.Email
+                seg.ColegioSec:= asp_ag.ColegioSec
+                ESC(Seguimientos,seg)
+                cont_seg:=cont_seg+1
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_ASPIRANTES_AG ES
+            LEER(Aspirantes_Ag,asp_ag)
+            SI FDA(Aspirantes_Ag) ENTONCES
+                asp_ag.DNI := HV
+            Fin_Si
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_ASPIRANTES_FB ES
+            LEER(Aspirantes_Fb,asp_fb)
+            SI FDA(Aspirantes_Fb) ENTONCES
+                asp_fb.DNI := HV
+            Fin_Si
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_ASPIRANTES ES
+            Mientras (asp_ag.DNI <> HV) o (asp_fb.DNI <> HV) HACER
+                Si asp_ag.DNI < asp_fb.DNI ENTONCES
+                    LEER_ASPIRANTES_AG
+                    SINO
+                        SI (asp_ag.DNI > asp_fb.DNI) ENTONCES
+                            LEER_ASPIRANTES_FB
+                        SINO
+                            ESCRIBIR_SEGUIMIENTOS
+                            LEER_ASPIRANTES_AG
+                            LEER_ASPIRANTES_FB
+                        FIN_SI
+                Fin_Si
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar es
+            ABRIR E/(Aspirantes_Fb)
+            ABRIR E/(Aspirantes_Ag)
+            ABRIR S/(Seguimientos)
+            LEER(Aspirantes_Fb,asp_fb)
+            LEER(Aspirantes_Ag,asp_ag)
+            cont_seg:=0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Aspirantes_Fb)
+            CERRAR(Aspirantes_Ag)
+            CERRAR(Seguimientos)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("LA CANTIDAD DE SEGUIMIENTOS ES:", cont_seg)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        BARRER_ASPIRANTES
+        MOSTRAR_RESULTADOS
+        Finalizar
+FIN_ACCION

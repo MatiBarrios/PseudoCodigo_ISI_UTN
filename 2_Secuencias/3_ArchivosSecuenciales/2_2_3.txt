@@ -1,0 +1,43 @@
+ACCION EJE_2_2_3 ES
+    AMBIENTE
+        Socio = REGISTRO
+            nro     : N(6)
+            tel     : N(12)
+            nom     : AN(90)
+            carrera : (ISI, IEM, IQ, LAR)
+            dom     : AN(120)
+            unidades: N(4)
+        FIN_REGISTRO
+
+        Socios, Socios_Prestados : SECUENCIA DE Socio
+        soc : Socio
+
+        PROCEDIMIENTO Inicializar ES
+            ARR(Socios)
+            AVZ(Socios, soc)
+            CREAR(Socios_Prestados)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Socios)
+            CERRAR(Socios_Prestados)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Agregar_A_Secuencia ES
+            GRABAR(Socios_Prestados, soc)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Barrer_Principal ES
+            MIENTRAS NFDS(Socios) HACER
+                SI (soc.carrera = ISI) Y (soc.unidades > 4) ENTONCES
+                    Agregar_A_Secuencia
+                FIN_SI
+                AVZ(Socios, soc)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        Inicializar
+        Barrer_Principal
+        Finalizar
+FIN_ACCION

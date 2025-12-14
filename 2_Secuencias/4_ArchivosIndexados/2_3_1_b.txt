@@ -1,0 +1,88 @@
+ACCION EJE_2_3_1_b ES
+    Ambiente
+        Clave = Registro
+            Nro_Cliente : N(12)
+        Fin_Registro
+
+        Factura = Registro
+            Clave_F : Clave
+            Nro_Factura : N(12)
+            Fecha = Registro
+                dia:1..31
+                mes:1..12
+                anio:N(4)
+            Fin_Fecha
+            Importe: Real
+        Fin_Registro
+
+        Cliente = Registro
+            Clave_C : Clave
+            Nombre : AN(120)
+            DNI: N(9)
+            CUIT: N(12)
+            Domicilio: AN(120)
+        Fin_Registro
+
+        Facturas: Archivo de Factura ordenado por Clave_F, Nro_Factura
+        fac: Factura
+
+        Clientes: Archivo de Cliente indexado por Clave_C
+        cli: Cliente
+
+        cont_f : N(4)
+        total_f : Real
+
+        PROCEDIMIENTO IMPRIMIR_CABEZALES ES
+            ESC("NRO CLIENTE / NOMBRE CLIENTE / Total Facturado / Numero Factura")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_TODO ES
+            MIENTRAS NFDA(Facturas) HACER
+                TRATAR_CLIENTE
+                cont_f:=0
+                total_f:=0
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_CLIENTE ES
+            cli.Clave_C:=fac.Clave_F
+            Leer(Clientes,cli)
+            SI EXISTE ENTONCES
+                OPERAR_FACTURAS
+                ESCRIBIR_CLIENTE
+            SINO
+                LEER(Facturas,fac)
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO OPERAR_FACTURAS ES
+            MIENTRAS cli.Clave_C = fac.Clave_F y NFDA(Facturas) HACER
+                cont_f:=cont_f+1
+                total_f:=total_f+fac.Importe
+                LEER(Facturas,fac)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_CLIENTE ES
+            ESC(cli.Clave_C," / ",cli.Nombre," / ", total_f, " / ", cont_f)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/ (Facturas)
+            ABRIR E/ (Clientes)
+            LEER(Facturas, fac)
+
+            cont_f:=0
+            total_f:=0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Facturas)
+            CERRAR(Clientes)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        IMPRIMIR_CABEZALES
+        TRATAR_TODO
+        Finalizar
+FIN_ACCION

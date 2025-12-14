@@ -8,3 +8,43 @@ y que las subsecuencias inicial y final deben descartarse por no cumplir la cond
 Supóngase que las comas son siempre contiguas al último caracter de la palabra.
 */
 
+Accion eje_1_14 es
+    Ambiente
+        S1: Secuencia de caracter
+        car: caracter
+        cont: Natural
+
+        PROCEDIMIENTO Inicilizar ES
+            ARR(S1)
+            AVZ(S1,car)
+            cont:=0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(S1)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_COMA ES
+            MIENTRAS NFDS(S1) y (car <> ',') HACER
+                cont:=cont+1
+                AVZ(S1,car)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESCRIBIR("CANTIDAD DE COMAS: "+cont)
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        Inicilizar
+        BARRER_COMA
+        MIENTRAS NFDS(S1) HACER
+            cont:=0
+            BARRER_COMA
+            SI NFDS(S1) ENTONCES
+                MOSTRAR_RESULTADOS
+                AVZ(S1,car)
+            FIN_SI
+        FIN_MIENTRAS
+        Finalizar
+FIN_ACCION

@@ -1,0 +1,84 @@
+ACCION EJE_2_2_6 ES
+    AMBIENTE
+        Alumno = REGISTRO
+            Nomb : AN(120)
+            prom : REAL
+        FIN_REGISTRO
+
+        AlumnoRec = REGISTRO
+            Nomb : AN(120)
+            prom : REAL
+            rec  : ("NO", "SI", "F", "MF")
+        FIN_REGISTRO
+
+        Alumnos     : SECUENCIA DE Alumno
+        AlumnosRec  : SECUENCIA DE AlumnoRec
+        al    : Alumno
+        alrec : AlumnoRec
+
+        cont : ENTERO
+        prom_acum : REAL
+        prom_general : REAL
+
+        PROCEDIMIENTO Inicializar ES
+            ARR(Alumnos)
+            AVZ(Alumnos, al)
+            CREAR(AlumnosRec)
+            prom_acum := 0
+            cont := 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Alumnos)
+            CERRAR(AlumnosRec)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Variables ES
+            alrec.Nomb := al.Nomb
+            alrec.prom := al.prom
+
+            SI al.prom < 7 ENTONCES
+                alrec.rec := "NO"
+            SINO
+                SI al.prom < 8 ENTONCES
+                    alrec.rec := "SI"
+                SINO
+                    SI al.prom < 9 ENTONCES
+                        alrec.rec := "F"
+                    SINO
+                        alrec.rec := "MF"
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Agregar_A_Secuencia ES
+            GRABAR(AlumnosRec, alrec)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Barrer_Principal ES
+            MIENTRAS NFDS(Alumnos) HACER
+                prom_acum := prom_acum + al.prom
+                cont := cont + 1
+                Tratar_Variables
+                Agregar_A_Secuencia
+                AVZ(Alumnos, al)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Calcular_Promedios ES
+            prom_general := prom_acum / cont
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_Resultados ES
+            ESC("Cantidad de estudiantes: ", cont)
+            ESC("Promedio general: ", prom_general)
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        Inicializar
+        Barrer_Principal
+        Calcular_Promedios
+        Mostrar_Resultados
+        Finalizar
+FIN_ACCION

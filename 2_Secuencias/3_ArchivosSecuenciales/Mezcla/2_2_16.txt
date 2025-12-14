@@ -1,0 +1,63 @@
+ACCION Eje_2_2_16 ES
+    Ambiente
+        Pelicula = Registro
+            Nro_Pelicula : N(8)
+            Titulo: AN(120)
+            Genero: AN(120)
+            Cant_Copias: N(12)
+            Fecha_Estreno = Registro
+                dia : 1..31
+                mes : 1..12
+                anio: N(4)
+            Fin_Registro
+        Fin_Registro
+
+        Peliculas_Viejas, Peliculas_Nuevas: Archivo de Pelicula ordenado por Nro_Pelicula
+        Peliculas: Archivo de Pelicula
+
+        Plv, Pln : Pelicula
+
+        PROCEDIMIENTO Escribir_Pelicula_Vieja ES
+            ESC(Peliculas, Plv)
+            LEER(Peliculas_Viejas, Plv)
+            SI FDA(Peliculas_Viejas) ENTONCES
+                Plv.Nro_Pelicula := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Escribir_Pelicula_Nueva ES
+            ESC(Peliculas, Pln)
+            LEER(Peliculas_Nuevas, Pln)
+            SI FDA(Peliculas_Nuevas) ENTONCES
+                Pln.Nro_Pelicula := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Escribir_Peliculas ES
+            Mientras (Plv.Nro_Pelicula <> HV) o (Pln.Nro_Pelicula <> HV) HACER
+                Si Plv.Nro_Pelicula < Pln.Nro_Pelicula ENTONCES
+                    Escribir_Pelicula_Vieja
+                SINO
+                    Escribir_Pelicula_Nueva
+                Fin_Si
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar es
+            ABRIR E/(Peliculas_Nuevas)
+            ABRIR E/(Peliculas_Viejas)
+            ABRIR S/(Peliculas)
+            LEER(Peliculas_Nuevas,Pln)
+            LEER(Peliculas_Viejas,Plv)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Peliculas_Nuevas)
+            CERRAR(Peliculas_Viejas)
+            CERRAR(Peliculas)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        Escribir_Peliculas
+        Finalizar
+FIN_ACCION

@@ -1,0 +1,22 @@
+ACCION Eje_2_2_7 ES
+    Ambiente
+        Padron = Registro
+            Nomb: AN(120)
+            Clase: N(12)
+            DNI: N(12)
+            Dirección: AN(120)
+            Mesa: N(4)
+            Observaciones: AN(120)
+            Circuito: N(4)
+            Partido : (0, 1, 2, 3)
+        Fin_Registro
+
+        PadronRed = Registro
+            Nomb: AN(120)
+            DNI: N(12)
+            Dirección: AN(120)
+        Fin_Registro
+
+    Proceso
+        
+FIN_ACCION

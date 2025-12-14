@@ -1,0 +1,159 @@
+ACCION Eje_2_2_19 ES
+    Ambiente
+        MAE_Remedio = Registro
+            Farmacia : N(4)
+            Medicamento : N(4)
+            Cant_Actual: N(4)
+            Fecha_Vencimiento : Registro
+                dia : 1..31
+                mes : 1..12
+                anio : N(4)
+            Fin_Registro
+        Fin_Registro
+
+        Movimiento = Registro
+            Farmacia : N(4)
+            Medicamento : N(4)
+            Cod_Mov : N(4)
+            Cant_Recibida : N(4)
+        Fin_Registro
+
+        Rem_Vencido = Registro
+            Medicamento : N(4)
+            Cant_Vencida : N(4)
+        Fin_Registro
+
+        MAE_Remedios, Remedios : Archivo de MAE_Remedio ORDENADO POR Farmacia, Medicamento
+        Movimientos :Archivo de Movimiento ORDENADO POR Farmacia, Medicamento, Cod_Mov
+        Rem_Vencidos : Archivo de Rem_Vencido
+
+        mae, rem : MAE_Remedio
+        mov : Movimiento
+        rem_ven : Rem_Vencido
+
+        fecha_actual:Fecha
+
+        PROCEDIMIENTO LEER_MAESTRO ES
+            LEER(MAE_Remedios, mae)
+            SI FDA(MAE_Remedios) ENTONCES
+                mae.Farmacia := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_MOVIMIENTO ES
+            LEER(Movimientos, mov)
+            SI FDA(Movimientos) ENTONCES
+                mov.Farmacia := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_IGUALES ES
+            SEGUN mov.Cod_Mov HACER
+                =1:
+                    ESC("Error, codigo de movimiento 1")
+                =2:
+                    ESCRIBIR_VENCIDO
+                =3:
+                    ESCRIBIR_REMEDIO((mae.Cant_Actual + mov.Cant_Recibida),mae.Fecha_Vencimiento)
+            Fin_segun
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_VENCIDO ES
+            rem_ven.Medicamento := mae.Medicamento
+            rem_ven.Cant_Vencida := mae.Cant_Actual
+            ESC(Rem_Vencidos, rem_ven)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_REMEDIO(cant_remedio: N(4), fecha_remedio: Fecha) ES
+            rem.Farmacia:=mae.Farmacia
+            rem.Medicamento:=mae.Medicamento
+            rem.Cant_Actual:=cant_remedio
+            rem.Fecha_Vencimiento:= fecha_remedio
+            ESC(Remedios,rem)
+        FIN_PROCEDIMIENTO
+
+        FUNCION OBTENER_FECHA(fec: Fecha):Fecha ES
+            SI (fec.dia+30) > 31 ENTONCES
+                OBTENER_FECHA.dia:= fec.dia - 1
+                Si (fec.mes+1) > 12 ENTONCES
+                    OBTENER_FECHA.mes:= fec.mes - 11
+                    OBTENER_FECHA.anio:= fec.anio+1
+                Sino
+                    OBTENER_FECHA.mes:= fec.mes+1
+                    OBTENER_FECHA.anio:= fec.anio
+                Fin_Si
+            Sino
+                OBTENER_FECHA.dia:= fec.dia +30
+                OBTENER_FECHA.mes:= fec.mes
+                OBTENER_FECHA.anio:= fec.anio
+            Fin_Si
+        FIN_FUNCION
+
+        PROCEDIMIENTO TRATAR_INGRESO ES
+            SI mov.Cod_Mov = 1 ENTONCES
+                ESCRIBIR_REMEDIO(mov.Cant_Recibida, OBTENER_FECHA(fecha_actual))
+            SINO
+                ESC("Error en el ingreso, codigo de movimiento:", mov.Cod_Mov)
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_MAESTRO ES
+            ESCRIBIR_REMEDIO(mae.Cant_Actual, mae.Fecha_Vencimiento)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_MEDICAMENTOS ES
+            MIENTRAS (mae.Farmacia <> HV) o (mov.Farmacia <> HV) HACER
+                SI (mae.Farmacia = mov.Farmacia) ENTONCES
+                    Si (mae.Medicamento = mov.Medicamento) ENTONCES
+                        TRATAR_IGUALES
+                        LEER_MAESTRO
+                        LEER_MOVIMIENTO
+                    SINO
+                        si (mae.Medicamento < mov.Medicamento) ENTONCES
+                            ESCRIBIR_MAESTRO
+                            LEER_MAESTRO
+                        SINO
+                            TRATAR_INGRESO
+                            LEER_MOVIMIENTO
+                        FIN_SI
+                    Fin_Si
+                SINO
+                    SI (mae.Farmacia < mov.Farmacia) ENTONCES
+                        ESCRIBIR_MAESTRO
+                        LEER_MAESTRO
+                    SINO
+                        TRATAR_INGRESO
+                        LEER_MOVIMIENTO
+                    FIN_SI
+                FIN_SI
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicilizar ES
+            ABRIR E/(MAE_Remedios)
+            ABRIR E/(Movimientos)
+            ABRIR S/(Rem_Vencidos)
+            ABRIR S/(Remedios)
+
+            LEER(MAE_Remedios,mae)
+            LEER(Movimientos,mov)
+
+            OBTENER_FECHA_ACTUAL
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO OBTENER_FECHA_ACTUAL ES
+            ESC("INGRESE DIA, MES, AÑO")
+            LEER(fecha_actual.dia,fecha_actual.mes,fecha_actual.anio)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(MAE_Remedios)
+            CERRAR(Movimientos)
+            CERRAR(Rem_Vencidos)
+            CERRAR(Remedios)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        BARRER_MEDICAMENTOS
+        Finalizar
+FIN_ACCION

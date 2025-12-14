@@ -1,0 +1,63 @@
+ACCION EJE_2_2_4 ES
+    AMBIENTE
+        Fecha = REGISTRO
+            dia  : 1..31
+            mes  : 1..12
+            anio : N(4)
+        FIN_REGISTRO
+
+        Alumno = REGISTRO
+            Nomb    : AN(90)
+            CARRERA : (ISI, IEM, IQ)
+            leg     : N(5)
+            nac     : Fecha
+            ing     : Fecha
+            DNI     : N(9)
+            sexo    : (M, F)
+            ult_ex  : Fecha
+            Nota    : N(2)
+        FIN_REGISTRO
+
+        Alumnos, AlumnosSel : SECUENCIA DE Alumno
+        al : Alumno
+        anio_act : ENTERO
+        carrera_sel : (ISI, IEM, IQ)
+
+        PROCEDIMIENTO Inicializar ES
+            ARR(Alumnos)
+            AVZ(Alumnos, al)
+            CREAR(AlumnosSel)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Alumnos)
+            CERRAR(AlumnosSel)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Agregar_A_Secuencia ES
+            GRABAR(AlumnosSel, al)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Barrer_Principal ES
+            MIENTRAS NFDS(Alumnos) HACER
+                SI (al.CARRERA = carrera_sel) Y 
+                   (al.Nota > 7) Y 
+                   (al.ult_ex.anio = anio_act)
+                ENTONCES
+                    Agregar_A_Secuencia
+                FIN_SI
+                AVZ(Alumnos, al)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        ESC("Ingrese año actual:")
+        LEER(anio_act)
+
+        ESC("Ingrese carrera (ISI, IEM, IQ):")
+        LEER(carrera_sel)
+
+        Inicializar
+        Barrer_Principal
+        Finalizar
+FIN_ACCION

@@ -1,0 +1,129 @@
+ACCION Eje_2_2_21 ES
+    Ambiente
+        Fecha = Registro
+            dia : 1..31
+            mes : 1..12
+            anio : N(4)
+        Fin_Registro    
+
+        AMIGO = Registro
+            Cod_Usuario : N(4)
+            Cod_Amigo : N(4)
+            Fecha_Amistad: Fecha
+            Mensaje_Muro: AN(120)
+        Fin_Registro
+
+        Notificacion = Registro
+            Cod_Usuario : N(4)
+            Cod_Amigo : N(4)
+            Cod_Mov: (A,B,M-)
+            Fecha_Amistad: Fecha
+            Mensaje_Muro: AN(120)
+        Fin_Registro
+
+        MAE_AMIGOS, AMIGOS : Archivo de AMIGO ORDENADO POR Cod_Usuario, Cod_Amigo
+        Movimientos :Archivo de Notificacion ORDENADO POR Cod_Usuario, Cod_Amigo, Cod_Movimiento
+
+        mae, ami : AMIGO
+        mov : Notificacion
+
+        PROCEDIMIENTO LEER_MAESTRO ES
+            LEER(MAE_AMIGOS, mae)
+            SI FDA(MAE_AMIGOS) ENTONCES
+                mae.Cod_Usuario := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_MOVIMIENTO ES
+            LEER(Movimientos, mov)
+            SI FDA(Movimientos) ENTONCES
+                mov.Cod_Usuario := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_IGUALES ES
+            SEGUN mov.Cod_Mov HACER
+                ='A':
+                    ESC("Error, los usuarios ya son amigos")
+                ='B':
+                    ELIMINAR_AMIGO
+                ='C':
+                    ESCRIBIR_MENSAJE_AMIGO
+            Fin_segun
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ELIMINAR_AMIGO ES
+            //no hacemos nada, en la eliminación fisica no lo escribimos en el archivo
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_MENSAJE_AMIGO ES
+            ESCRIBIR_AMIGO(mov.Cod_Amigo, mov.Fecha_Amistad, mov.Mensaje_Muro)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_AMIGO(Cod_Amigo : N(4), Fecha_Amistad: Fecha, Mensaje_Muro: AN(120)) ES
+            ami.Cod_Usuario:=mae.Cod_Usuario
+            ami.Cod_Amigo:=Cod_Amigo
+            ami.Fecha_Amistad:=Fecha_Amistad
+            ami.Mensaje_Muro:=Mensaje_Muro
+            ESC(AMIGOS,ami)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_INGRESO ES
+            Si mov.Cod_Mov = 'A' ENTONCES
+                ESCRIBIR_AMIGO(mov.Cod_Amigo, mov.Fecha_Amistad, mov.Mensaje_Muro)
+            SINO
+                ESC("error, codigo de movimento incorrecto")
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_MAESTRO ES
+            ESCRIBIR_AMIGO(mae.Cod_Amigo, mae.Fecha_Amistad, mae.Mensaje_Muro)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_AMIGOS ES
+            MIENTRAS (mae.Cod_Usuario <> HV) o (mov.Cod_Usuario <> HV) HACER
+                SI (mae.Cod_Usuario = mov.Cod_Usuario) ENTONCES
+                    Si (mae.Cod_Amigo = mov.Cod_Amigo) ENTONCES
+                        TRATAR_IGUALES
+                        LEER_MAESTRO
+                        LEER_MOVIMIENTO
+                    SINO
+                        si (mae.Cod_Amigo < mov.Cod_Amigo) ENTONCES
+                            ESCRIBIR_MAESTRO
+                            LEER_MAESTRO
+                        SINO
+                            TRATAR_INGRESO
+                            LEER_MOVIMIENTO
+                        FIN_SI
+                    Fin_Si
+                SINO
+                    SI (mae.Cod_Usuario < mov.Cod_Usuario) ENTONCES
+                        ESCRIBIR_MAESTRO
+                        LEER_MAESTRO
+                    SINO
+                        TRATAR_INGRESO
+                        LEER_MOVIMIENTO
+                    FIN_SI
+                FIN_SI
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicilizar ES
+            ABRIR E/(MAE_AMIGOS)
+            ABRIR E/(Movimientos)
+            ABRIR S/(AMIGOS)
+
+            LEER(MAE_AMIGOS,mae)
+            LEER(Movimientos,mov)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(MAE_AMIGOS)
+            CERRAR(Movimientos)
+            CERRAR(AMIGOS)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        BARRER_AMIGOS
+        Finalizar
+FIN_ACCION

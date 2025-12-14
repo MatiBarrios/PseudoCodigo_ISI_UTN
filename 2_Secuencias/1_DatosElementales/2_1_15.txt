@@ -1,0 +1,70 @@
+/*
+Ejercicio 2.1.15¶
+Se desea saber la cantidad promedio de palabras 
+que contienen las oraciones de una secuencia de caracteres. 
+Supóngase que los puntos 
+son siempre contiguos al último caracter de la palabra. 
+La secuencia finaliza con una marca.
+*/
+
+ACCION EJE2_1_5 ES
+    Ambiente
+        S1: Secuencia de caracter
+        car: caracter
+        cont_pal, cont_caracter, cont_oracion: entero
+        prom: REAL
+
+        FUNCION EsValido(c:caracter):logico ES
+            SI (c = ' ') ENTONCES
+                EsValido:=FALSO
+            SINO
+                EsValido:=VERDADERO
+            FIN_SI
+        FIN_FUNCION
+
+        PROCEDIMIENTO Inicilizar ES
+            ARR(S1)
+            AVZ(S1,car)
+            cont_oracion:=0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(S1)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_ORACION ES
+            cont_pal:=0
+            cont_caracter:=0
+            MIENTRAS NFDS(S1) y (car <> '.') HACER
+                SI (EsValido(car)) ENTONCES
+                    cont_caracter:=cont_caracter+1
+                SINO
+                    cont_caracter:=cont_caracter+1
+                    cont_pal:=cont_pal+1
+                FIN_SI
+                AVZ(S1,car)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_TEXTO ES
+            MIENTRAS NFDS(S1) HACER
+                cont_oracion:=cont_oracion+1
+                BARRER_ORACION
+                CALCULAR_PROMEDIOS
+                MOSTRAR_RESULTADOS
+                AVZ(S1,car)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO CALCULAR_PROMEDIOS ES
+            prom:=cont_caracter/cont_pal
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESCRIBIR("EL PROMEDIO DE PALABRAS DE LA ORACION: "+ cont_oracion + " ES :"+prom)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicilizar
+        BARRER_TEXTO
+        Finalizar
+FIN_ACCION

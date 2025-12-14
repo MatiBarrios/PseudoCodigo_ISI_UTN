@@ -1,0 +1,88 @@
+ACCION Eje_2_2_8 ES
+    Ambiente
+        Fecha = Registro
+            dia: 1..31
+            mes: 1..12
+            anio: N(4)
+        Fin_Registro
+
+        Crompa = Registro
+            nro: N(12)
+            fec_ult: Fecha
+            monto: REAL
+        Fin_Registro
+
+        Cliente = Registro
+            nro: N(12)
+            Nomb: AN(120)
+            dom: AN(120)
+            tel: N(16)
+            DNI: N(9)
+        Fin_Registro
+
+        Compras: Archivo de Crompa ordenado por nro
+        Clientes: Archivo de Cliente ordenado por nro
+        comp: Compra
+        cli: Cliente
+
+        fec: Fecha
+        monto: REAL
+
+        FUNCION FechaMayor(f1 : Fecha; f2 : Fecha) : LOGICO ES
+            SI f1.anio > f2.anio ENTONCES
+                FechaMayor := VERDADERO
+            SINO
+                SI (f1.anio = f2.anio) Y (f1.mes > f2.mes) ENTONCES
+                    FechaMayor := VERDADERO
+                SINO
+                    SI (f1.anio = f2.anio) Y (f1.mes = f2.mes) Y (f1.dia > f2.dia) ENTONCES
+                        FechaMayor := VERDADERO
+                    SINO
+                        FechaMayor := FALSO
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+        FIN_FUNCION
+
+        PROCEDIMIENTO Inicilizar ES
+            ABRIR E/(Compras)
+            ABRIR E/(Clientes)
+            LEER(Compras,comp)
+            LEER(Clientes,cli)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Compras)
+            CERRAR(Clientes)    
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Secuencia_Clientes ES
+            MIENTRAS NFDS(Clientes) y (cli.nro < comp.nro) HACER
+                LEER(Clientes,cli)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_Resultados ES
+            ESC("nombre del cliente", cli.Nomb)
+            ESC("Fecha de la ultima compra:",comp.fec_ult.dia,"/",comp.fec_ult.mes,"/",comp.fec_ult.anio)
+            ESC("Monto:", comp.monto)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Secuencia_Compras ES
+            Mientras NFDA(Compras) HACER
+                Si FechaMayor(comp.fec_ult, fec) y (comp.monto > monto) ENTONCES
+                    Tratar_Secuencia_Clientes
+                    MOSTRAR_RESULTADOS
+                Fin_Si
+                LEER(Compras,comp)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+    Proceso
+        ESC("Ingrese Monto")
+        LEER(monto)
+        ESC("INGRESE FECHA DD,MM,AAAA")
+        LEER(fec.dia, fec.mes, fec.anio)
+        Inicializar
+        Tratar_Secuencia_Compras
+        Finalizar
+FIN_ACCION
