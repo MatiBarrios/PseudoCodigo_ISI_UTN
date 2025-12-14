@@ -1,0 +1,107 @@
+ACCION Eje_2_2_11 ES
+    Ambiente
+        Fecha = Registro
+            dia: 1..31
+            mes: 1..12
+            anio: N(4)
+        Fin_Registro
+
+        Producto = Registro //yo agarro y lo meto producto pero claramente esto debería ser alumno
+            Clave = Registro
+                sexo: (F,M)
+                carrera: AN(120)
+                legajo: N(12)
+            Fin_Registro
+            fecha_ing: Fecha
+            materias_aprob: N(4)
+        Fin_Registro
+
+        Productos: Archivo de Producto ordenado por Clave
+        prod: Producto
+
+        resg_carrera: AN(120)
+        resg_sexo: (F,M)
+
+        carrera_prob:N(4)
+        carrera_desap: N(4)
+        sexo_aprob:N(4)
+        sexo_desap:N(4)
+        total_aprob:N(4)
+        total_desap:N(4)
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/(Productos)
+            LEER(Productos,prod)
+            carrera_aprob:= 0
+            carrera_desap:= 0
+            sexo_aprob:= 0
+            sexo_desap:= 0
+            total_aprob:= 0
+            total_desap:= 0
+            resg_carrera:= prod.Clave.carrera
+            resg_sexo:= prod.Clave.sexo
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Productos)
+        FIN_PROCEDIMIENTO
+
+        Procedimiento Tratar_Corte1 ES //carrera
+            ESC("Carrera:", resg_carrera," con más de 20 materias aprob es: ", carrera_aprob)
+            ESC("Carrera:", resg_carrera," con menos de 20 materias aprob es: ", carrera_desap)
+            sexo_aprob:= sexo_aprob+carrera_aprob
+            sexo_desap:= sexo_desap+carrera_desap
+            carrera_aprob:= 0
+            carrera_desap:= 0
+            resg_carrera:= prod.Clave.carrera
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Corte2 ES //sexo
+            Tratar_Corte1
+            ESC("Sexo", resg_sexo," con más de 20 materias aprob es: ", sexo_aprob)
+            ESC("Sexo", resg_sexo," con más de 20 materias desap es: ", sexo_desap)
+            total_aprob:= total_aprob+sexo_aprob
+            total_desap:= total_desap+sexo_desap
+            sexo_aprob:=0
+            sexo_desap:=0
+            resg_sexo:= prod.Clave.sexo
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Emitir_Totales ES
+            ESC("total de alumnos con más de 20 materias aprob es:",total_aprob)
+            ESC("total de alumnos con más de 20 materias desap es:",total_desap)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Registro ES
+            Si prod.fecha_ing.anio = 2009 y prod.materias_aprob > 20 ENTONCES
+                carrera_aprob:= carrera_aprob+1
+            Fin_Si
+            Si prod.fecha_ing.anio = 2009 y prod.materias_aprob < 20 ENTONCES
+                carrera_desap:= carrera_desap+1
+            Fin_Si
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Corte ES
+            Si  resg_sexo <> prod.Clave.sexo ENTONCES
+                Tratar_Corte2
+            Sino
+                Si resg_carrera <> prod.Clave.carrera ENTONCES
+                    Tratar_Corte1
+                Fin_Si
+            Fin_Si
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Total ES
+            MIENTRAS NFDA(Productos) HACER
+                Tratar_Corte
+                Tratar_Registro
+                LEER(Productos,prod)
+            FIN_MIENTRAS
+            Tratar_Corte2
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        Tratar_Total
+        Emitir_Totales
+        Finalizar
+FIN_ACCION
