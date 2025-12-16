@@ -1,0 +1,118 @@
+ACCION EJE_3_28 ES
+    Ambiente
+
+        Terreno = Registro
+            Nro_Terreno : N(8)
+            Zona : ('A','B','C','D','E','F')
+            Ubicacion : 1..10
+            Superficie : N(12)
+        Fin_Registro
+
+        Terrenos : Archivo de Terreno ordenado por Nro_Terreno, Zona, Ubicacion
+        ter: Terreno
+
+        V : arreglo de [1..6] de REAL
+
+
+
+        PROCEDIMIENTO TRATAR_CORTE1 ES
+            ESC("ubicacion:", resg_ubi)
+            ESC("valor ubicacion: ", val_ubi)
+
+            val_zona := val_zona + val_ubi
+
+            val_ubi:= 0
+            resg_ubi := ter.ubicacion
+
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_CORTE2 ES
+            TRATAR_CORTE1
+            ESC("ZONA:", resg_zona)
+            ESC("valor zona:", val_zona)
+
+            val_terr := val_zona + val_terr
+
+            val_zona := 0
+            resg_zona := terr.Zona
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_CORTE3 ES
+            TRATAR_CORTE2
+            ESC("TERRENO:", resg_nro_terreno)
+            ESC("VALOR:", val_terr)
+
+            val_total := val_total + val_terr
+            
+            val_terr := 0
+            resg_nro_terreno:= terr.Nro_Terreno
+        PROCEDIMIENTO TRATAR_CORTES ES
+            SI resg_nro_terreno <> terr.Nro_Terreno ENTONCES
+                TRATAR_CORTE3
+            SINO
+                SI resg_zona <> terr.ZONA ENTONCES
+                    TRATAR_CORTE2
+                    SI resg_ubi <> terr.Ubicacion ENTONCES
+                        TRATAR_CORTE1
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_REGISTRO ES
+            val_ubi := val_ubi + (terr.Superficie)*(OBTENER_M2_ZONA(terr.Zona))*terr.ubicacion //tomo a la ubicacion como coeficiente de incremento
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_TODO ES
+            MIENTRAS NFDA(Terrenos) HACER
+                TRATAR_REGISTRO
+                TRATAR_CORTES
+                LEER(Terrenos, terr)
+            FIN_MIENTRAS
+            TRATAR_CORTE3
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("el valor total de todos los terrenos es:", val_total)
+        FIN_PROCEDIMIENTO
+
+        FUNCION OBTENER_M2_ZONA(Z : ('A','B','C','D','E','F')):REAL ES
+            SEGUN Z HACER
+                ='A':
+                    OBTENER_M2_ZONA:= V[1]
+                ='B':
+                    OBTENER_M2_ZONA:= V[2]
+                ='C':
+                    OBTENER_M2_ZONA:= V[3]
+                ='D':
+                    OBTENER_M2_ZONA:= V[4]
+                ='E':
+                    OBTENER_M2_ZONA:= V[5]
+                ='F': 
+                    OBTENER_M2_ZONA:= V[6]
+            FIN_SEGUN
+        FIN_FUNCION
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/ (Terrenos)
+            leer(Terrenos,terr)
+
+            resg_ubi := terr.Ubicacion
+            resg_zona := terr.Zona
+            resg_nro_terreno := terr.Nro_Terreno
+
+            val_ubi := 0
+            val_zona := 0
+            val_terr := 0
+            val_total:= 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Terrenos)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        TRATAR_TODO
+        MOSTRAR_RESULTADOS
+        Finalizar
+FIN_ACCION
