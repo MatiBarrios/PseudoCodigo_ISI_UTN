@@ -1,0 +1,138 @@
+ACCION EJE_2_3_9 ES
+    Ambiente
+        Fecha = Registro
+            dia: 1..31
+            mes: 1..12
+            anio: N(4)
+        Fin_Registro
+
+        Clave1 = Registro
+            ClienteID : N(4)
+        Fin_Registro
+
+        Cliente = Registro
+            Clave_C : Clave1
+            Cliente_Nombre: AN(120)
+            Cliente_CUIT: N(12)
+            Cliente_Saldo: Real
+        Fin_Registro
+
+        Clientes: Archivo de Cliente indexado por Clave_C
+        cli: Cliente
+
+        Clave2 = Registro
+            Nro_Operacion: N(8)
+        Fin_Registro
+
+        Detalle_Cliente = Registro
+            Clave_DC : Clave2
+            Fecha_Operacion : Fecha
+            Clave_C : Clave1
+            Importe : Real
+            Factura_Numero : N(4)
+        Fin_Registro
+
+        Detalle_Clientes: Archivo de Detalle_Cliente indexado por Clave_DC
+        det_cli: Detalle_Cliente
+
+        Clave3 = Registro
+            Venta_Numero : N(4)
+        Fin_Registro
+
+        Venta = Registro
+            Clave_V : Clave3
+            Venta_Fecha : Fecha
+            Factura_Numero : N(4)
+            Clave_P : Clave4
+            Cantidad_Vendida : N(4)
+            Clave_C : Clave1
+        Fin_Registro
+
+        Ventas: Archivo de Venta ordenado por Clave_v
+        ven: Venta
+
+        Clave4 = Registro
+            ProductoID: N(4)
+        Fin_Registro
+
+        Producto = Registro
+            Clave_P : Clave4
+            Stock : N(4)
+            Producto_Detalle : AN(120)
+            Costo_Unitario : Real
+        Fin_Registro
+
+        Productos: Archivo de Producto indexado por Clave_P
+        prod: Producto
+
+        total_prod_vend: N(12)
+        importe_venta : Real
+
+        PROCEDIMIENTO BARRER_VENTAS ES
+            MIENTRAS NFDA(Ventas) HACER
+                TRATAR_PRODUCTOS
+                TRATAR_CLIENTES
+                TRATAR_DETALLE_CLIENTES
+                LEER(Ventas,ven)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_PRODUCTOS ES
+            prod.Clave_P := ven.Clave_P
+            LEER(Productos, prod)
+            SI EXISTE ENTONCES
+                importe_venta := (ven.Cantidad_Vendida*prod.Costo_Unitario)
+                prod.Stock:= prod.Stock - ven.Cantidad_Vendida
+                total_prod_vend:= total_prod_vend + ven.Cantidad_Vendida
+                ESC(Productos,prod)
+            SINO
+                importe_venta := 0
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_CLIENTES ES
+            cli.Clave_C := ven.Clave_C
+            LEER(Clientes,cli)
+            SI EXISTE ENTONCES
+                cli.Cliente_Saldo:= cli.Cliente_Saldo + importe_venta
+                ESC(Clientes, cli)
+                ESC("CLIENTE: ",cli.Cliente_Nombre, "id:",cli.Clave_C," saldo actualizado:",cli.Cliente_Saldo)
+            Fin_Si
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_DETALLE_CLIENTES ES
+            det_cli.Clave_DC:= GENERAR_DET_CLI_CLAVE() //asumo esta funcion
+            det_cli.Fecha_Operacion:= ven.Venta_Fecha
+            det_cli.Clave_C := ven.Clave_C
+            det_cli.Importe := importe_venta
+            det_cli.Factura_Numero := ven.Factura_Numero
+            ESC(Detalle_Clientes, det_cli)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("TOTAL VENDIDO:", total_prod_vend)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/ (Ventas)
+            ABRIR E/S (Productos)
+            ABRIR E/S (Clientes)
+            ABRIR /S (Detalle_Clientes)
+            LEER(Ventas,ven)
+
+            total_prod_vend:=0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Ventas)
+            CERRAR(Productos)
+            CERRAR(Clientes)
+            CERRAR(Detalle_Clientes)
+        FIN_PROCEDIMIENTO
+
+    Proceso
+        Inicializar
+        BARRER_VENTAS
+        MOSTRAR_RESULTADOS
+        Finalizar
+FIN_ACCION

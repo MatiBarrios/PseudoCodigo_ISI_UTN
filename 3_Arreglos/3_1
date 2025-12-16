@@ -7,3 +7,58 @@ Para cada una de las consignas siguientes, genere un algoritmo que permita soluc
 
 */
 
+ACCION EJE_3_1 ES
+    Ambiente
+        vectorA : arreglo de [1..100] de entero
+        mayor, menor : entero
+        pos_mayor, pos_menor : entero
+        cont, sum, i : entero
+
+        PROCEDIMIENTO CARGAR_VALORES ES
+            PARA i := 1 HASTA 100 HACER
+                ESC("Ingrese valor")
+                LEER(vectorA[i])
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_VECTOR ES
+            mayor := vectorA[1]
+            menor := vectorA[1]
+            pos_mayor := 1
+            pos_menor := 1
+            cont := 0
+            sum := 0
+
+            PARA i := 1 HASTA 100 HACER
+                // Mayor
+                SI vectorA[i] > mayor ENTONCES
+                    mayor := vectorA[i]
+                    pos_mayor := i
+                FIN_SI
+
+                // Menor
+                SI vectorA[i] < menor ENTONCES
+                    menor := vectorA[i]
+                    pos_menor := i
+                FIN_SI
+
+                // Pares
+                SI (vectorA[i] MOD 2) = 0 ENTONCES
+                    cont := cont + 1
+                    sum := sum + vectorA[i]
+                FIN_SI
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("Mayor:", mayor, " Posición:", pos_mayor)
+            ESC("Menor:", menor, " Posición:", pos_menor)
+            ESC("Cantidad de pares:", cont)
+            ESC("Suma de pares:", sum)
+        FIN_PROCEDIMIENTO
+
+    Proceso
+        CARGAR_VALORES
+        BARRER_VECTOR
+        MOSTRAR_RESULTADOS
+FIN_ACCION

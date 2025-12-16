@@ -1,4 +1,4 @@
-ACCION EJE_2_3_2 ES
+ACCION EJE_2_3_4 ES
     Ambiente
         Clave = Registro
             Cod_Curso : N(4)
