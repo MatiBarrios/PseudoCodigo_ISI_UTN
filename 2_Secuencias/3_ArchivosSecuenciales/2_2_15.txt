@@ -1,6 +1,101 @@
 ACCION Eje_2_2_15 ES
     Ambiente
-        
+        Alumno = Registro
+            escuela: AN(120)
+            anio: N(4)
+            division: N(4)
+            Nombre: AN(120)
+            cant_inasist: N(4)
+        Fin_Registro
+
+        Alumnos: Archivo de Alumno ordenado por escuela, anio, division
+        al: Alumno
+
+        resg_division: N(4)
+        resg_anio: N(4)
+        resg_escuela: AN(120)
+
+        cant_division: N(4)
+
+        cant_anio_al: N(4)
+        cant_anio_reg: N(4)
+        cant_anio_ lib: N(4)
+
+        cant_alumnos: N(4)
+        cant_alumnos_reg: N(4)
+        cant_alumnos_lib: N(4)
+
+        porc_alumnos_lib: REAL
+
+        cant_inasist: N(4)
+        prom_inasist: REAL
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/(Alumnos)
+            LEER(Alumnos,al)
+
+            resg_division := al.division
+            resg_anio := al.anio
+            resg_escuela := al.escuela
+
+            cant_division:= 0
+
+            cant_anio_al:= 0
+            cant_anio_reg:= 0
+            cant_anio_lib:= 0
+
+            cant_alumnos:= 0
+            cant_alumnos_lib:= 0
+            cant_alumnos_reg:= 0
+
+            porc_alumnos_lib:= 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Alumnos)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO CALCULAR_VARIABLES ES
+            porc_alumnos_lib:= (cant_alumnos_lib*100)/cant_alumnos
+            prom_inasist:= cant_inasist/cant_alumnos
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Corte1 ES
+            ESC("DIVISION", resg_division)
+            ESC("CANTIDAD DE ALUMNOS", cant_division)
+
+            cant_anio_al:= cant_division
+            cant_division:= 0
+            
+            resg_division:= al.division
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Corte2 ES
+            ESC("Año:", resg_anio)
+            ESC("CANTIDAD DE ALUMNOS LIBRES:", cant_anio_lib)
+            ESC("CANTIDAD DE ALUMNOS REGULARES:", cant_anio_reg)
+            ESC("CANTIDAD TOTAL DE ALUMNOS:", cant_anio_al)
+
+            cant_alumnos:= cant_anio_al
+            cant_alumnos_lib:= cant_anio_lib
+            cant_alumnos_reg:= cant_anio_reg
+
+            cant_anio_lib:= 0
+            cant_anio_reg:= 0
+            cant_anio_al:= 0
+
+            resg_anio:= al.anio
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Tratar_Corte3 ES
+            ESC("ESCUELA:", resg_escuela)
+            ESC("CANTIDAD TOTAL DE ALUMNOS:", cant_alumnos)
+            CALCULAR_VARIABLES
+            ESC("PORCENTAJE DE ALUMNOS LIBRES:", porc_alumnos_lib)
+            ESC("PROMEDIO DE inasistencias:", prom_inasist)
+
+            cant
+        FIN_PROCEDIMIENTO
     Proceso
         
 FIN_ACCION
