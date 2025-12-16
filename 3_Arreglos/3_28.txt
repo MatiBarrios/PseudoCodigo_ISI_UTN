@@ -13,8 +13,6 @@ ACCION EJE_3_28 ES
 
         V : arreglo de [1..6] de REAL
 
-
-
         PROCEDIMIENTO TRATAR_CORTE1 ES
             ESC("ubicacion:", resg_ubi)
             ESC("valor ubicacion: ", val_ubi)
