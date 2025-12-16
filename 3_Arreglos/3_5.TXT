@@ -1,0 +1,37 @@
+ACCION EJE_3_5 ES
+    Ambiente
+        vectorA,vectorB: arreglo [1..30] de REAL
+        vectorC: arreglo [1..60] de REAL
+        contA, contB, contC: entero
+
+        PROCEDIMIENTO GRABAR_VECTOR(vec: arreglo [1..30] de REAL, cont: entero) ES
+            vectorC[contC]:=vec[cont]
+            cont:=cont+1
+            contC:=contC+1
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_VECTORES ES
+            MIENTRAS contA <= 30 o contB <= 30 HACER
+                si contA > 30 ENTONCES
+                    GRABAR_VECTOR(vectorB, contB)
+                sino
+                    SI contB > 30 ENTONCES
+                        GRABAR_VECTOR(vectorA, contA)
+                    SINO
+                        SI vectorA[contA] = vectorB[contB] ENTONCES
+                            GRABAR_VECTOR(vectorA,contA)
+                            GRABAR_VECTOR(vectorB,contB)
+                        SINO
+                            SI vectorA[contA] < vectorB[contB] ENTONCES
+                                GRABAR_VECTOR(vectorA,contA)
+                            SINO
+                                GRABAR_VECTOR(vectorB,contB)
+                            FIN_SI
+                        FIN_SI
+                    FIN_SI
+                FIN_SI
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+    Proceso
+        TRATAR_VECTORES
+FIN_ACCION
