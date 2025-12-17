@@ -1,0 +1,125 @@
+ACCION EJE_2_2_23 ES
+    Ambiente
+        Clave = Registro
+            Id_Casa : N(8)
+        Fin_Registro
+        
+        Fecha = Registro
+            dia: 1..31
+            mes: 1..12
+            anio: N(4)
+        Fin_Registro
+        
+        Cliente = Registro
+            clave_C : Clave
+            Fecha_Ult_Lectura: Fecha
+            Cant_Lecturas: N(4)
+            Prom_Lecturas: REAL
+            Tipo_Consumidor: ('A','B', 'C')
+        Fin_Registro
+
+        Medicion = Registro
+            clave_M : Clave
+            Fecha_Medicion : Fecha
+            Consumo : REAL
+        Fin_Registro
+
+        ult_lect : Fecha
+        cont_lec : N(4)
+        consumo : REAL
+        Fecha_final : Fecha
+
+        Clientes_old, Clientes : Archivo de Cliente ordenado por clave_C
+        Mediciones: Archivo de Meidcion ordenado por clave_M
+
+        cli_old, cli: Cliente
+        med: Medicion
+
+        PROCEDIMIENTO Procesar_Lote(cant_lect_old : N(4) , prom_lec_old: REAL)) ES
+            cont_lec := 0
+            consumo := 0
+            MIENTRAS (cli.clave_C = med.clave_M) y (med.Fecha_Medicion < Fecha_final)HACER
+                ult_lect:= med.Fecha_Medicion
+                cont_lec:= cont_lec + 1
+                consumo := consumo + med.Consumo
+                LEER_MOVIMIENTO
+            FIN_MIENTRAS
+            cli.Fecha_Ult_Lectura:= ult_lect
+            cli.Cant_Lecturas := cant_lect_old + cont_lec
+            cli.Prom_Lecturas := ((prom_lec_old*cant_lect_old) + consumo)/(cant_lect_old + cont_lec)
+            cli.Tipo_Consumidor := Obtener_Tipo_Consumidor(cli.Prom_Lecturas)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_TODO ES
+            MIENTRAS (cli_old.clave_C <> HV) o (med.clave_M <> HV) HACER
+                SI cli_old.clave_C < med.clave_M ENTONCES
+                    cli := cli_old
+                    ESCRIBIR_MAESTRO
+                    LEER_CLIENTE
+                SINO
+                    SI cli_old.clave_C = med.clave_M ENTONCES
+                        cli := cli_old
+                        Procesar_Lote(cli_old.Cant_Lecturas, cli_old.Prom_Lecturas)
+                        ESCRIBIR_MAESTRO
+                        LEER_CLIENTE
+                    SINO
+                        cli.clave_C := med.clave_M
+                        Procesar_Lote( 0 , 0)
+                        LEER_MOVIMIENTO
+                    FIN_SI
+                FIN_SI
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_MAESTRO ES
+            ESC(Clientes, cli)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_CLIENTE ES
+            LEER(Clientes_old, cli_old)
+            SI FDA(Clientes_old) ENTONCES
+                cli_old.clave_C := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_MOVIMIENTO ES
+            LEER(Mediciones, med)
+            SI FDA(Mediciones) ENTONCES
+                med.clave_M := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        FUNCION Obtener_Tipo_Consumidor(prom: REAL):('A','B','C') ES
+            SEGUN prom HACER
+                < 20000:
+                    Obtener_Tipo_Consumidor:= 'A'
+                < 40000:
+                    Obtener_Tipo_Consumidor:= 'B'
+                otro caso:
+                    Obtener_Tipo_Consumidor:= 'C'
+            FIN_SEGUN
+        FIN_FUNCION
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/ (Clientes_old)
+            ABRIR E/ (Mediciones)
+            ABRIR /S (Clientes)
+
+            LEER(Clientes_old, cli_old)
+            LEER(Mediciones, med)
+
+            Fecha_final.dia := 1
+            Fecha_final.mes := 1
+            Fecha_final.anio := 2015
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar es
+            CERRAR(Clientes_old)
+            CERRAR(Clientes)
+            CERRAR(Mediciones)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        BARRER_TODO
+        Finalizar
+FIN_ACCION

@@ -1,0 +1,45 @@
+ACCION EJE_3_15 ES
+    Ambiente
+        A : arreglo [1..100] de entero
+        N : entero
+        i, j : entero
+        aux : entero
+        k : entero
+
+        PROCEDIMIENTO ORDENAR ES
+            PARA i := 1 HASTA 99 HACER
+                PARA j := 1 HASTA 99 HACER
+                    SI A[j] > A[j+1] ENTONCES
+                        aux := A[j]
+                        A[j] := A[j+1]
+                        A[j+1] := aux
+                    FIN_SI
+                FIN_PARA
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ELIMINAR_REPETIDOS ES
+            k := 1   // posición del último distinto
+
+            PARA i := 2 HASTA 100 HACER
+                SI A[i] <> A[k] ENTONCES
+                    k := k + 1
+                    A[k] := A[i]
+                FIN_SI
+            FIN_PARA
+
+            N := k   // nuevo tamaño lógico del arreglo
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR ES
+            PARA i := 1 HASTA N HACER
+                ESC(A[i])
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+
+    Proceso
+        // Se asume A cargado y N definido
+        ORDENAR
+        ELIMINAR_REPETIDOS
+        MOSTRAR
+FIN_ACCION
