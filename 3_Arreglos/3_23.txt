@@ -1,0 +1,85 @@
+ACCION EJE_3_23 ES
+    Ambiente
+        mat_A : arreglo [1..50, 1..4, 1..7] de entero
+        mat_B : arreglo [1..50, 1..7] de REAL
+
+        x, i, j: entero
+        temp_max, temp_min: entero
+        dia_temp_max, dia_temp_min: entero
+        lect_temp_max, lect_temp_min: entero
+
+        FUNCION OBTENER_DIA_SEMANA(dia: entero):AN(20) ES
+            SEGUN dia HACER
+                =1:
+                    OBTENER_DIA_SEMANA:="domingo"
+                =2:
+                    OBTENER_DIA_SEMANA:="lunes"
+                =3:
+                    OBTENER_DIA_SEMANA:="martes"
+                =4:
+                    OBTENER_DIA_SEMANA:="miercoles"
+                =5:
+                    OBTENER_DIA_SEMANA:="jueves"
+                =6:
+                    OBTENER_DIA_SEMANA:="viernes"
+                =7:
+                    OBTENER_DIA_SEMANA:="sabado"
+            FIN_SEGUN
+        FIN_FUNCION
+
+        PROCEDIMIENTO BARRER_LECTURAS_PACIENTE ES
+            PARA i := 1 HASTA 4 HACER //lecturas
+                temp_max := mat_A[x,i,1]
+                temp_min := mat_A[x,i,1]
+
+                PARA j := 1 HASTA 7 HACER//dias
+                    SI temp_max < mat_A[x, i, j] ENTONCES
+                        temp_max := mat_A[x,i,j]
+                        lect_temp_max := i
+                        dia_temp_max := j
+                    FIN_SI
+                    SI temp_min > mat_A[x, i, j] ENTONCES
+                        temp_min := mat_A[x,i,j]
+                        lect_temp_min := i
+                        dia_temp_min := j
+                    FIN_SI
+                    mat_B[x, j] := mat_B[x, j] + mat_A[x, i, j]
+                FIN_PARA
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_PACIENTES ES
+            PARA x := 1 HASTA 50 HACER
+                lect_temp_max := 1
+                dia_temp_max := 1
+                lect_temp_min := 1
+                dia_temp_min := 1
+                BARRER_LECTURAS_PACIENTE
+                TRATAR_PROMEDIOS
+                MOSTRAR_TEMPERATURAS
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_PROMEDIOS ES
+            PARA j:=1 HASTA 7 HACER
+                mat_B[x, j] := mat_B[x, j]/7
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_TEMPERATURAS ES
+            ESC("PACIENTE:", x)
+            ESC("temperatura maxima: dia:",OBTENER_DIA_SEMANA(dia_temp_max),"lectura:", lect_temp_max, " temperatura:", temp_max)
+            ESC("temperatura minima: dia:",OBTENER_DIA_SEMANA(dia_temp_min),"lectura:", lect_temp_min, " temperatura:", temp_min)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            PARA i := 1 HASTA 50 HACER
+                PARA j := 1 HASTA 7 HACER
+                    mat_B[i, j] := 0
+                FIN_PARA
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        BARRER_PACIENTES
+FIN_ACCION

@@ -1,0 +1,166 @@
+ACCION Practica_Parcial_P1 ES
+    Ambiente
+        
+        Libro = Registro
+            Cod_lib : N(8)
+            Titulo : AN(60)
+            ISBN : N(13)
+            Descripcion : AN(255)
+            Tipo_Libro : ('A','D','L','N')
+            Cant_dias_max : N(2)
+        Fin_Registro
+
+        Fecha = Registro
+            dia : 1..31
+            mes : 1..12
+            anio : N(4)
+        Fin_Registro
+
+        Clave = Registro
+            Cod_lib : N(8)
+            Cod_Ejemplar : N(10)
+        Fin_Registro
+
+        Ejemplar = Registro
+            Clave_E : Clave
+            Disponible : Logico
+            Estado : ("Bien","Reparacion","Baja")
+            Fecha : Fecha
+        Fin_Registro
+
+        Novedad = Registro
+            Clave_N : Clave
+            Tipo_Novedad : (1,2,3,4,5)
+            Fecha_Novedad : Fecha
+            Id_Usuario : N(8)
+        Fin_Registro
+
+        Libros : Archivo de Libro indexado por Cod_lib
+        lib : Libro
+        Ejemplares, EjemplaresN : Archivo de Ejemplar ordenado por Clave_E
+        ej, ejn : Ejemplar
+        Novedades : Archivo de Novedad ordenado por Clave_N, Tipo_Novedad
+        nov: Novedad
+
+        cont_novedades_nuevas : N(8)
+
+        PROCEDIMIENTO BARRER_TODO ES
+            MIENTRAS (ej.Clave_E <> HV) y (nov.Clave_N <> HV) HACER
+                SI ej.Clave_E = nov.Clave_N ENTONCES
+                    TRATAR_IGUALES
+                    LEER_EJEMPLAR
+                SINO
+                    SI (ej.Clave_E < nov.Clave_N) ENTONCES
+                        ejn := ej
+                        ESCRIBIR_MAESTRO
+                        LEER_EJEMPLAR
+                    SINO
+                        TRATAR_NOVEDADES
+                        ESCRIBIR_MAESTRO
+                    FIN_SI
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_EJEMPLAR ES
+            LEER(Ejemplar, ej)
+            SI FDA(Ejemplar) ENTONCES
+                ej.Clave_E := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO LEER_NOVEDAD ES
+            LEER(Novedades, nov)
+            SI FDA(Novedades) ENTONCES
+                nov.Clave_N := HV
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_IGUALES ES
+            SI nov.Tipo_Novedad = 1 ENTONCES
+                esc("error, no se puede ingresar un ejemplar existente")
+            SINO
+                ejn := ej
+                MIENTRAS (nov.Clave_N = ejn.Clave_E) HACER
+                    PROCESAR_NOVEDAD
+                    LEER_NOVEDAD
+                FIN_MIENTRAS
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO PROCESAR_NOVEDAD ES
+            SEGUN nov.Tipo_Novedad HACER
+                =1:
+                    ejn.Clave_E := nov.Clave_N
+                    ejn.Disponible := Verdadero
+                    ejn.Estado := "Bien"
+                    ESCRIBIR_MAESTRO
+                =2:
+                    TRATAR_LIBRO_EJEMPLAR
+                =3:
+                    ejn.Disponible := Verdadero
+                    ejn.Fecha := ""
+                =4:
+                    ejn.Disponible := Falso
+                    ejn.Estado := "Reparacion"
+                    ejn.Fecha := nov.Fecha_Novedad
+                =5:
+                    ejn.Disponible := Falso
+                    ejn.Estado := "Baja"
+                    ejn.Fecha := nov.Fecha_Novedad
+            FIN_SEGUN
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO ESCRIBIR_MAESTRO ES
+            ESCRIBIR(EjemplaresN, ejn)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_LIBRO_EJEMPLAR ES
+            lib.Cod_lib := ejn.Clave_E.Cod_lib
+            LEER(Libros, lib)
+            Si EXISTE ENTONCES
+                ejn.Disponible := Falso
+                ejn.Fecha := sumar_dias(nov.Fecha_Novedad, lib.Cant_dias_max)
+            SINO
+                ESC("no existe libro a prestar")
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_NOVEDADES ES
+            SI nov.Tipo_Novedad <> 1 ENTONCES
+                ESC("ERROR, SE INTENTA HACER OPERACIONES CON UN LIBRO NO EXISTENTE")
+            SINO
+                cont_novedades_nuevas:= cont_novedades_nuevas+1
+                ejn.Clave_E := nov.Clave_N
+                MIENTRAS (nov.Clave_N = ejn.Clave_E) HACER
+                    TRATAR_NOVEDADES
+                    LEER_NOVEDAD
+                FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESC("la cantidad de novedades nuevas ingresadas es:", cont_novedades_nuevas)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            ABRIR E/(Libros)
+            ABRIR E/(Ejemplares)
+            ABRIR E/(Novedades)
+            ABRIR S/(EjemplaresN)
+            Leer( Ejemplares, ej)
+            LEER( Novedades, nov)
+
+            cont_novedades_nuevas:=0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Libros)
+            CERRAR(Ejemplares)
+            CERRAR(EjemplaresN)
+            CERRAR(Novedades)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        BARRER_TODO
+        MOSTRAR_RESULTADOS
+        Finalizar
+FIN_ACCION

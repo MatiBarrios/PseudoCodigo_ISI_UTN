@@ -1,0 +1,57 @@
+/*
+Ejercicio 3.19¶
+Escribir un algoritmo que emita cuál es y dónde está ubicado el mayor elemento de cada fila de una matriz, 
+e imprima un mensaje si todos los mayores se encuentran en la misma columna.
+*/
+
+ACCION Nombre_Accion ES
+    Ambiente
+        mat_A: arreglo [1..100,1..100] de entero
+        mayor_col, pos_mayor_col, aux_pos_mayor: entero
+        i,j: entero
+        posiciones_iguales: logico
+
+        PROCEDIMIENTO BARRER_MATRIZ ES
+            PARA i:=1 HASTA 100 HACER
+                //reinicio posiciones
+                mayor_col := mat_A[i,1]
+                pos_mayor_col := 1
+                PARA j := 1 HASTA 100 HACER
+                    Si mayor_col < mat_A[i,j] ENTONCES
+                        mayor_col:= mat_A[i,j]
+                        pos_mayor_col:= j
+                    FIN_SI
+                FIN_PARA
+                MOSTRAR_MAYOR
+                SI (aux_pos_mayor = 0) ENTONCES //PRIMER RECORRIDO
+                    aux_pos_mayor := pos_mayor_col
+                SINO
+                    SI aux_pos_mayor <> pos_mayor_col ENTONCES
+                        posiciones_iguales := FALSO
+                    FIN_SI
+                FIN_SI
+            FIN_PARA
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            posiciones_iguales := Verdadero
+            aux_pos_mayor := 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_MAYOR ES
+            ESC("MAYOR:",mayor_col)
+            ESC("posicion:",pos_mayor_col)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            SI posiciones_iguales ENTONCES
+                ESC("todos estan en la misma columna")
+            SINO
+                ESC("estan en distintas col")
+            FIN_SI
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        BARRER_MATRIZ
+        MOSTRAR_RESULTADOS
+FIN_ACCION
