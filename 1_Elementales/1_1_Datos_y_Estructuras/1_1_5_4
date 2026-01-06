@@ -1,0 +1,9 @@
+ACCION eje_1_1_5_4 ES
+    Ambiente
+        S, Bmay, Bmen, h : Real
+    Proceso
+        ESC("Ingrese las bases y la altura")
+        LEER(Bmay, Bmen, h)
+        S := (( Bmay + Bmen ) * h ) / 2
+        ESC("La superficie es:", S)
+FIN_ACCION

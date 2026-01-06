@@ -1,0 +1,21 @@
+ACCION Eje_1_1_9 ES
+    Ambiente
+        dolar, peso, peso_d, euro_n, dolar_d: real 
+    Proceso
+        ESCRIBIR("Ingrese el monto en dolares")
+        LEER(dolar)
+        ESCRIBIR("Ingrese cuantos euros necesita")
+        LEER(euro_n)
+        ESCRIBIR("Ingrese equivalencia del euro en dolares")
+        LEER(dolar_d)
+        ESCRIBIR("Ingrese equivalencia del peso en dolares")
+        LEER(peso_d)
+        peso := (dolar - (euro_n * dolar_d)) * peso_d
+
+        Si peso >= 0 ENTONCES
+            ESCRIBIR("Es suficiente, saldo a favor: ", peso)
+        Sino
+            ESCRIBIR("FALTA PLATA")
+        Fin_Si
+        
+FIN_ACCION

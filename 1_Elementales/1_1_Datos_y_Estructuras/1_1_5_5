@@ -1,0 +1,9 @@
+ACCION eje_1_1_5_5 ES
+    Ambiente
+        S,I,C: Real
+    Proceso
+        ESC("Ingrese la seccion y la corriente")
+        Leer(I,C)
+        S := (I/C)*1.25
+        ESC("El valor de la seccion es: ", S)
+FIN_ACCION

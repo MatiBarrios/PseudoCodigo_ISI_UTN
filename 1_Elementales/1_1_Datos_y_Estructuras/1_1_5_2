@@ -1,0 +1,9 @@
+ACCION Eje_1_1_5_2 ES
+    Ambiente
+        a, b, c, r : Real
+    Proceso
+        ESC("Ingrese el valor de a, b, c")
+        Leer(a, b, c)
+        r := (2*B - 4*a*c)
+        ESC("El valor del discriminante es:", r)
+FIN_ACCION

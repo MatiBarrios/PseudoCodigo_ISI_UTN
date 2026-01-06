@@ -1,0 +1,12 @@
+ACCION eje_1_1_5_6 ES
+    Ambiente
+        a, b, c, d, r1, r2: Real
+    Proceso
+        ESC("Ingrese el primer complejo separando las dos partes una coma")
+        LEER(a, b)
+        ESC("Ingrese el segundo complejo separando las dos partes una coma")
+        LEER(c, d)
+        r1 := a*c - b*d
+        r2 := a*d + b*c
+        ESC(r1," , ", r2)
+FIN_ACCION

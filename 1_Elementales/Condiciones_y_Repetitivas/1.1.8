@@ -1,0 +1,17 @@
+ACCION Eje_1_1_8 ES
+    Ambiente
+        dia_n, mes_n, dia, mes, edad: N(2)
+        anio_n, anio : N(4) 
+    Proceso
+        anio := 2026
+        mes := 1
+        dia := 5
+        ESC("Ingrese dia, mes, año de nacimiento")
+        Leer(dia_n, mes_n, anio_n)
+        SI ((anio > anio_n) o ((anio = anio_n) y (mes > mes_n)) o ((anio = anio_n) y (mes = mes_n) y ( dia > dia_n))) Entonces
+            edad := anio - anio_n
+        Sino
+            edad := (anio - anio_n) - 1
+        Fin_Si
+        ESC("La edad es: ", edad)
+FIN_ACCION

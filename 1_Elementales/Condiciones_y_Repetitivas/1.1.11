@@ -1,0 +1,16 @@
+ACCION Eje_1_1_11 ES
+    Ambiente
+        anio, anio_n: N(4)
+    Proceso
+        anio := 2026
+        ESC("INGRESE AÑO")
+        LEER(anio_n)
+        SEGUN anio_n HACER
+            < anio :
+                ESCRIBIR("Pasado")
+            = anio :
+                ESCRIBIR("Actual")
+            otros:
+                ESCRIBIR("FUTURO")
+        Fin_Segun
+FIN_ACCION

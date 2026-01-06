@@ -1,0 +1,14 @@
+ACCION Eje_1_1_10 ES
+    Ambiente
+        n1, n2: Real
+    Proceso
+        ESC("Ingrese los dos numeros")
+        LEER(n1, n2)
+        SI ( n1 % n2 == 0) ENTONCES
+            ESC(n1," es multiplo de ", n2)
+        Fin_Si
+
+        Si (n2 % n1 == 0) ENTONCES
+            ESC(n2," es multiplo de ", n1)
+        Fin_Si
+FIN_ACCION

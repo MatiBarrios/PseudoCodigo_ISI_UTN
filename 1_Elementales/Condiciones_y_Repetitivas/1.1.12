@@ -1,0 +1,23 @@
+ACCION Eje_1_1_12 ES
+    Ambiente
+        n, aux: N(3)
+    Proceso
+        n = 0
+        MIENTRAS (n < 100 o n > 1000) HACER
+            ESCRIBIR("Ingrese el valor, debe ser mayor a 100 y menor a 1000")
+            Leer(n)
+        FIN_MIENTRAS
+        
+        Si (n mod 3 == 0) ENTONCES
+            ESCRIBIR("Es multiplo de 3")
+        Sino
+            ESCRIBIR("No es multiplo de 3")
+        Fin_Si
+        
+        Mientras (n > 0) Hacer
+            aux := n mod 10
+            ESCRIBIR(aux)
+            n := n div 10
+        FIN_ACCION
+
+FIN_ACCION

@@ -1,0 +1,18 @@
+ACCION Eje_1_1_7 ES
+    Ambiente
+        n1, n2, res : Real
+    Proceso
+        ESC("Ingrese los dos numeros")
+        LEER(n1, n2)
+        res := n1 + n2
+        SEGUN res HACER
+            <= 50:
+                ESC("<=50")
+            <= 100:
+                ESC(">50 && <= 100")
+            <= 200:
+                ESC(">100 && <= 200")
+            otros : 
+                ESC(">200")
+        FIN_SEGUN
+FIN_ACCION

@@ -1,0 +1,13 @@
+ACCION Eje1_1_5_1 ES
+    Ambiente
+        P, C, R : Real
+        N, A: N(4)
+
+    Proceso
+        ESC("Ingrese año actual y año futuro")
+        Leer(A, N)
+        ESC("Ingrese precio actual y tasa de inflación")
+        Leer(C, R)
+        P := C * ((1 + R) ** ( N - A))
+        ESC("El precio será: ", P)
+FIN_ACCION

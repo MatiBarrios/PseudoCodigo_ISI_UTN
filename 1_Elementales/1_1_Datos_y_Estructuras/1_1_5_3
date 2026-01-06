@@ -1,0 +1,13 @@
+ACCION eje_1_1_5_3 ES
+    Ambiente
+        costo_pc, costo_pc_tot, costo_imp, costo_imp_tot, total: Real
+    Proceso
+        ESC("Ingrese el costo total de la pc:", costo_pc)
+        LEER(costo_pc)
+        ESC("Ingrese el costo total de la impresora:", costo_imp)
+        LEER(costo_imp)
+        costo_pc_tot := costo_pc * 1.12 * 1.21
+        costo_imp_tot := costo_imp * 1.07 * 1.21
+        total := costo_imp_tot + costo_pc_tot
+        ESC("El costo total es: ", total) 
+FIN_ACCION

@@ -1,0 +1,12 @@
+ACCION eje_1_1_5_7 ES
+    Ambiente
+        X,Y,Z,R: Real
+    Proceso
+        ESC("Ingrese los 3 valores")
+        Leer(X,Y,Z)
+        R := (X*Y*Z)/3
+        ESC("X = ", X)
+        ESC("Y = ", Y)
+        ESC("Z = ", Z)
+        ESC("Resultado = ", R)
+FIN_ACCION

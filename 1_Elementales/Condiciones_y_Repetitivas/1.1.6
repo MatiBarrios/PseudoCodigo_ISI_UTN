@@ -1,0 +1,28 @@
+ACCION Eje_1_1_6 ES
+    Ambiente
+        a, b, c, aux: Real
+    Proceso
+        ESC("Ingrese los 3 numeros")
+        LEER(a,b,c)
+        Si a < b entonces
+            aux := a
+            a := b
+            b := aux
+        Fin_Si
+
+        Si b < c entonces
+            aux := b
+            b := c
+            c := aux
+        Fin_Si
+
+        Si a < b entonces
+            aux := a
+            a := b
+            b := aux
+        Fin_Si
+
+        ESC("mayor: ", a)
+        ESC("medio: ", b)
+        ESC("menor: ", c)
+FIN_ACCION

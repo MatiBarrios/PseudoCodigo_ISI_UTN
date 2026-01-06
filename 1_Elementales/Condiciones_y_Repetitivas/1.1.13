@@ -1,0 +1,19 @@
+ACCION Eje_1_1_13 ES
+    Ambiente
+        n, aux, den: N(3)
+    Proceso
+        n = 0
+        MIENTRAS (n < 100 o n > 1000) HACER
+            ESCRIBIR("Ingrese el valor, debe ser mayor a 100 y menor a 1000")
+            Leer(n)
+        FIN_MIENTRAS
+
+        den := 1
+        Mientras (n > 0) Hacer
+            aux := n mod 10
+            ESCRIBIR(aux, " de denominación: ", den)
+            den := den * 10
+            n := n div 10
+        FIN_ACCION
+
+FIN_ACCION
