@@ -1,0 +1,13 @@
+ACCION Eje_1_1_19 ES
+    Ambiente
+        v, aux : Entero
+    Proceso
+        ESCRIBIR("ingrese el valor")
+        LEER(v)
+
+        ESCRIBIR(v)
+        aux := v ** 2
+        ESCRIBIR(aux)
+        aux := v ** 3
+        ESCRIBIR(aux)
+FIN_ACCION

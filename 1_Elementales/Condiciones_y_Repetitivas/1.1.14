@@ -1,0 +1,63 @@
+ACCION Eje_1_1_14 ES
+    Ambiente
+        ver, s, v, s_p, s_m, s_cont, s_dob, s_n: Entero
+    Proceso
+        s_dob := 0
+        s_n := 0
+        s_m := SV
+        s_cont := 0
+
+        ESCRIBIR("desea ingresar valores? 1=si")
+        LEER(ver)
+        SI (ver = 1) ENTONCES
+            ESCRIBIR("ingrese los valores s,v")
+            LEER(s,v)
+            s_p := s
+
+            Si s > v y s_m <> SV ENTONCES
+                s_m := s
+            Fin_Si
+
+            Si s = 2*v ENTONCES
+                s_dob := s_dob + 1
+            Fin_Si
+
+            Si s <> Null y v = Null ENTONCES
+                s_n := s_n + 1
+            Fin_Si
+        FIN_SI
+
+        ESCRIBIR("desea ingresar valores? 1=si")
+        LEER(ver)
+        
+        Mientras ver = 1 HACER
+            ESCRIBIR("ingrese los valores s,v")
+            LEER(s,v)
+            
+            Si s = s_p ENTONCES
+                s_cont := s_cont + 1
+            Fin_Si
+
+            Si s > v y s_m <> SV ENTONCES
+                s_m := s
+            Fin_Si
+
+            Si s = 2*v ENTONCES
+                s_dob := s_dob + 1
+            Fin_Si
+
+            Si s <> Null y v = Null ENTONCES
+                s_n := s_n + 1
+            Fin_Si
+
+            ESCRIBIR("desea ingresar valores? 1=si")
+            LEER(ver)
+        
+        Fin_Mientras
+
+        ESCRIBIR("primer valor de s mayor que v:", s_m)
+        ESCRIBIR("cantidad de pares s,v donde s es igual al primer valor de s :", s_cont)
+        ESCRIBIR("cantidad de pares s,v donde s es igual al doble de v :", s_dob)
+        ESCRIBIR("cantidad de pares donde s es no nulo y v es nulo :", s_n)
+
+FIN_ACCION

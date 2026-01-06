@@ -1,0 +1,49 @@
+ACCION Eje_1_1_15_1 ES
+    Ambiente
+        pisos_metros, pisos_pies: REAL
+        pisos_cant : Entero  
+    Proceso
+        ESCRIBIR("ingrese cantidad de pisos")
+        LEER(pisos_cant)
+        ESCRIBIR("ingrese la altura promedio")
+        LEER(pisos_metros)
+        pisos_pies := pisos_metros * pisos_cant * 3.28
+        ESCRIBIR("altura en pies: ", pisos_pies)
+FIN_ACCION
+
+ACCION Eje_1_1_15_2 ES
+    Ambiente
+        pisos_metros, pisos_pies: REAL
+        pisos_cant, edificios : Entero
+         
+    Proceso
+        PARA edificios := 1 HASTA 50 HACER
+            ESCRIBIR("ingrese cantidad de pisos")
+            LEER(pisos_cant)
+            ESCRIBIR("ingrese la altura promedio")
+            LEER(pisos_metros)
+            pisos_pies := pisos_metros * pisos_cant * 3.28
+            ESCRIBIR("altura en pies: ", pisos_pies)
+        FIN_PARA
+FIN_ACCION
+
+ACCION Eje_1_1_15_3 ES
+    Ambiente
+        pisos_metros, pisos_pies: REAL
+        pisos_cant, ver : Entero
+         
+    Proceso
+        ESCRIBIR("desea ingresar un edificio 1 = si")
+        LEER(ver)
+
+        MIENTRAS (ver = 1) HACER
+            ESCRIBIR("ingrese cantidad de pisos")
+            LEER(pisos_cant)
+            ESCRIBIR("ingrese la altura promedio")
+            LEER(pisos_metros)
+            pisos_pies := pisos_metros * pisos_cant * 3.28
+            ESCRIBIR("altura en pies: ", pisos_pies)
+            ESCRIBIR("desea ingresar un edificio 1 = si")
+            LEER(ver)
+        FIN_MIENTRAS
+FIN_ACCION

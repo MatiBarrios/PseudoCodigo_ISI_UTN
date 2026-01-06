@@ -1,0 +1,27 @@
+ACCION Eje_1_1_17 ES
+    Ambiente
+        a , b, aux, i: Entero
+    Proceso
+        ESCRIBIR("Ingrese dos numeros a, b")
+        LEER(a, b)
+        Si a = 0 o b = 0 ENTONCES
+            a := 0
+        Sino
+            Si b < 0 ENTONCES
+                aux := b * (-1)
+            Sino
+                aux := b
+            Fin_Si
+            
+            Para i := 1 HASTA aux HACER
+                a := a + a
+            FIN_PARA
+
+            Si b < 0 ENTONCES
+                a := a * (-1)
+            Fin_Si
+        Fin_Si
+
+        ESCRIBIR("el resultado de la multiplicación es:", a)
+
+FIN_ACCION

@@ -1,0 +1,70 @@
+ACCION Eje_1_1_16_1 ES
+    Ambiente
+        isi, iq, iem, tot: Entero
+        isi_p, iq_p, iem_p : Real
+    Proceso
+        ESCRIBIR("INGRESE CANTIDAD DE ALUMNOS EGRESADOS DE ISI")
+        LEER(isi)
+        ESCRIBIR("INGRESE CANTIDAD DE ALUMNOS EGRESADOS DE IQ")
+        LEER(iq)
+        ESCRIBIR("INGRESE CANTIDAD DE ALUMNOS EGRESADOS DE IEM")
+        LEER(iem)
+        tot := isi + iq + iem
+        isi_p := (isi * 100) / tot
+        iq_p := (iq * 100) / tot
+        iem_p := (iem * 100) / tot
+
+        ESCRIBIR("porcentaje de alumnos egresados de isi: ", isi_p)
+        ESCRIBIR("porcentaje de alumnos egresados de iq: ", iq_p)
+        ESCRIBIR("porcentaje de alumnos egresados de iem: ", iem_p)
+FIN_ACCION
+
+ACCION Eje_1_1_16_2 ES
+    Ambiente
+        isi, iq, iem, tot, isi_g, iq_g, iem_g, tot_g, ver: Entero
+        isi_p, iq_p, iem_p, isi_pg, iq_pg, iem_pg : Real
+    Proceso
+        isi_g := 0
+        iq_g := 0
+        iem_g := 0
+
+        ESCRIBIR("desea ingresar una facultad? 1=si")
+        LEER(ver)
+
+        Mientras ver = 1 HACER
+            ESCRIBIR("INGRESE CANTIDAD DE ALUMNOS EGRESADOS DE ISI")
+            LEER(isi)
+            isi_g := isi + isi_g
+            ESCRIBIR("INGRESE CANTIDAD DE ALUMNOS EGRESADOS DE IQ")
+            LEER(iq)
+            iq_g := iq + iq_g
+            ESCRIBIR("INGRESE CANTIDAD DE ALUMNOS EGRESADOS DE IEM")
+            LEER(iem)
+            iem_g := iem + iem_g
+
+            tot := isi + iq + iem
+            
+            isi_p := (isi * 100) / tot
+            iq_p := (iq * 100) / tot
+            iem_p := (iem * 100) / tot
+
+            ESCRIBIR("porcentaje de alumnos egresados de isi: ", isi_p)
+            ESCRIBIR("porcentaje de alumnos egresados de iq: ", iq_p)
+            ESCRIBIR("porcentaje de alumnos egresados de iem: ", iem_p)
+
+            ESCRIBIR("desea ingresar una facultad? 1=si")
+            LEER(ver)
+        Fin_Mientras
+
+        tot_g := isi_g + iq_g + iem_g
+
+        isi_pg := (isi_g * 100) / tot_g
+        iq_pg := (iq_g * 100) / tot_g
+        iem_pg := (iem_g * 100) / tot_g
+
+        ESCRIBIR("porcentaje general de alumnos egresados de isi: ", isi_pg)
+        ESCRIBIR("porcentaje general de alumnos egresados de iq: ", iq_pg)
+        ESCRIBIR("porcentaje general de alumnos egresados de iem: ", iem_pg)
+        ESCRIBIR("total general de alumnos egresados: ", tot_g)
+
+FIN_ACCION

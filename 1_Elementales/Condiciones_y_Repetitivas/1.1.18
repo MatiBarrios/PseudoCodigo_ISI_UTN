@@ -1,0 +1,40 @@
+ACCION Eje_1_1_18 ES
+    Ambiente
+        a, b, a_aux, b_aux, aux : Entero
+        resul, rest : REAL
+    Proceso
+        resul := -1
+        
+        ESCRIBIR("Ingrese dos numeros a, b")
+        LEER(a ,b)
+        Si b = 0 ENTONCES
+            ESCRIBIR("NO SE PUEDE DIVIDIR ENTRE 0")
+        SINO
+            Si a < 0 ENTONCES
+                a_aux := a * (-1)
+            Sino
+                a_aux := a
+            Fin_Si
+
+            Si b < 0 ENTONCES
+                b_aux := b * (-1)
+            Sino
+                b_aux := b
+            Fin_Si
+
+            Mientras a_aux >= 0 HACER
+                a_aux := a_aux - b_aux
+                resul := resul + 1
+            Fin_Mientras
+
+            rest := a_aux + b_aux
+
+            Si (a < 0 y b > 0) o (a > 0 y b < 0) ENTONCES
+                resul := resul * (-1)
+            Fin_Si
+            
+            ESCRIBIR("resultado: ", resul)
+            ESCRIBIR("resto: ", rest)
+        Fin_Si
+
+FIN_ACCION

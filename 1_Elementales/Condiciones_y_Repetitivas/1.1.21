@@ -1,0 +1,24 @@
+ACCION Eje_1_1_19 ES
+    Ambiente
+        v, aux , cont, res: Entero
+    Proceso
+        res := 0
+
+        ESCRIBIR("ingrese el valor")
+        LEER(v)
+        ESCRIBIR("ingrese la cantidad de veces que quiere que cresca el valor")
+        LEER(cont)
+
+        PARA i := 1 HASTA cont HACER
+            aux := (v + (i - 1))
+            ESCRIBIR(aux)
+            aux := (v + (i - 1)) ** 2
+            res := aux + res
+            ESCRIBIR(aux)
+            aux := (v + (i - 1)) ** 3
+            ESCRIBIR(aux)
+        FIN_PARA
+
+        ESCRIBIR("suma de todos los cuadrados: ",res)
+
+FIN_ACCION
