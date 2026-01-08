@@ -20,6 +20,4 @@ ACCION Eje_1_1_29 ES
                 ESCRIBIR(i)
             FIN_SI
         Fin_Para
-                
-        
 FIN_ACCION

@@ -1,0 +1,32 @@
+ACCION Eje_1_1_31 ES
+    Ambiente
+        peso, peso_metro, long_pieza: Real 
+        tipo_tela, material: Entero
+        FIN : Alfanumerico
+    Proceso
+        FIN := 'NO'
+        Mientras FIN <> 'SI' HACER
+            ESCRIBIR("Ingrese peso del metro cuadrado")
+            LEER(peso_metro)
+            ESCRIBIR("Ingrese longitud de la pieza")
+            LEER(long_pieza)
+            peso := peso_metro * long_pieza
+            ESCRIBIR("Ingrese material de la tela 1-seda 2-algodon")
+            LEER(tipo_tela)
+            SI (tipo_tela = 1) ENTONCES
+                peso := peso * 1.02
+            SINO
+                peso := peso * 1.07
+            FIN_SI
+            ESCRIBIR("Ingrese calidad 1-primera 2-segunda")
+            LEER(material)
+            SI (material = 1) ENTONCES
+                peso := peso + 400
+            SINO
+                peso := peso + 300
+            FIN_SI
+            ESCRIBIR("El peso es: ", peso)
+            ESCRIBIR("ESCRIBA [SI] PARA FINALIZAR EL PROGRAMA")
+            LEER(FIN)
+        Fin_Mientras
+FIN_ACCION

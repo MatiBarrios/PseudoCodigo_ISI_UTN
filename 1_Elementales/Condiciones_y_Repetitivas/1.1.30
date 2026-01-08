@@ -1,0 +1,27 @@
+ACCION Eje_1_1_30 ES
+    Ambiente
+        sueldo: Real
+        categoria, antiguedad, asistencia, bandera: Entero
+    Proceso
+        bandera := Verdadero
+        bandera := 0
+        MIENTRAS (bandera <> 1) HACER
+            ESCRIBIR("Ingrese categoria 1 o 2")
+            LEER(categoria)
+            SI (categoria = 1) ENTONCES
+                sueldo := 700
+            SINO
+                sueldo := 500
+            FIN_SI
+            ESCRIBIR("Ingrese antiguedad")
+            LEER(antiguedad)
+            sueldo := sueldo * (1.02 * antiguedad)
+            ESCRIBIR("¿asistencia perfecta? 1-si")
+            LEER(asistencia)
+            SI (asistencia = 1) ENTONCES
+                sueldo := sueldo + 200
+            FIN_SI
+            ESCRIBIR("desea continuar? 1-si")
+            LEER(bandera)
+        FIN_MIENTRAS
+FIN_ACCION
