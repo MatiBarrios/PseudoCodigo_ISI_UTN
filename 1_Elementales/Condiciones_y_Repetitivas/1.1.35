@@ -1,0 +1,27 @@
+ACCION Eje_1_1_35 ES
+    Ambiente
+        n : Real
+        aux, den: N(3)
+    Proceso
+        ESCRIBIR("Ingrese el monto")
+        LEER(n)
+        aux := n mod 500
+        n := n div 500
+        ESCRIBIR("Cantidad de billetes de 500: ", aux)
+        aux := n mod 100
+        n := n div 100
+        ESCRIBIR("Cantidad de billetes de 100: ", aux)
+        aux := n mod 50
+        n := n div 50
+        ESCRIBIR("Cantidad de billetes de 50: ", aux)
+        aux := n mod 20
+        n := n div 20
+        ESCRIBIR("Cantidad de billetes de 20: ", aux)
+        aux := n mod 10
+        n := n div 10
+        ESCRIBIR("Cantidad de billetes de 10: ", aux)
+        aux := n mod 5
+        n := n div 5
+        ESCRIBIR("Cantidad de billetes de 5: ", aux)
+        ESCRIBIR("Cantidad de billetes de 1: ", n)
+FIN_ACCION

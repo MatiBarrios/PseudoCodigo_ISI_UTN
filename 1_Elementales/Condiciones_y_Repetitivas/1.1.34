@@ -1,0 +1,12 @@
+ACCION Eje_1_1_34 ES
+    Ambiente
+        i, j, n: Entero
+    Proceso
+        ESCRIBIR("Ingrese el numero por favor")
+        LEER(n)
+        PARA i := 0 HASTA (n / 2) HACER
+            PARA j := 1 HASTA ((n / 2) - i) HACER
+                ESCRIBIR(j * 2)
+            FIN_PARA
+        FIN_PARA
+FIN_ACCION

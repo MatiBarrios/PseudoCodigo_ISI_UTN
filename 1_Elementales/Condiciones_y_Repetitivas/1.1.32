@@ -1,0 +1,22 @@
+ACCION Eje_1_1_32 ES
+    Ambiente
+        A, B, C, D, E, N, anio: Entero
+    Proceso
+        PARA anio := 1970 HASTA 2010 HACER
+            A = anio mod 19
+            B = anio mod 4
+            C = anio mod 7
+            D = ( 19 * A + 24 ) mod 30 
+            E = ( 2 * B + 4 * C + 6 * D + 5 ) mod 7
+            N = ( 22 + D + E )
+            ESCRIBIR("año: ",anio)
+            SI (N > 31) ENTONCES
+                ESCRIBIR("mes: ", 4)
+                N := N - 31
+                ESCRIBIR("dia: ", N)
+            SINO
+                ESCRIBIR("mes: ", 3)
+                ESCRIBIR("dia: ", N)
+            FIN_SI
+        FIN_PARA
+FIN_ACCION

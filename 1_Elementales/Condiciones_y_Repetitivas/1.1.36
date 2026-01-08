@@ -1,0 +1,27 @@
+ACCION Eje_1_1_36 ES
+    Ambiente
+        n, aux : Entero
+        bandera : Logico
+    Proceso
+        ESCRIBIR("Ingrese el numero por favor")
+        LEER(n)
+        bandera := Verdaro
+        aux := 0
+        MIENTRAS (bandera) HACER
+            MIENTRAS (n > 10) HACER
+                aux := n mod 10 + aux
+                n := n div 10
+            FIN_MIENTRAS
+            SI (aux > 10) ENTONCES
+                n := aux
+                aux := 0
+            SINO
+                SI (aux mod 10 = 3) ENTONCES
+                    ESCRIBIR("es multiplo")
+                SINO
+                    ESCRIBIR("no es multiplo")
+                FIN_SI
+                bandera := falso
+            FIN_SI
+        FIN_MIENTRAS
+FIN_ACCION
