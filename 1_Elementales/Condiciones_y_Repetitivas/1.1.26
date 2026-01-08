@@ -1,0 +1,18 @@
+ACCION Eje_1_1_26 ES
+    Ambiente
+        x, y, a, b, c: REAL
+        i : Entero
+    Proceso
+        ESCRIBIR("INGRESE EL VALOR DE a")
+        LEER(a)
+        ESCRIBIR("INGRESE EL VALOR DE b")
+        LEER(b)
+        ESCRIBIR("INGRESE EL VALOR DE c")
+        LEER(c)
+        x := 20
+        PARA i := 0 HASTA 20 HACER
+            x := x - 2 * i
+            y := a * ( x ** 2 ) + b * x + c
+            ESCRIBIR("x:", x, " y:", y)
+        FIN_PARA
+FIN_ACCION

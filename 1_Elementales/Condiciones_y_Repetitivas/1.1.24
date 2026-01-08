@@ -1,0 +1,23 @@
+ACCION Eje_1_1_24 ES
+    Ambiente
+        valor, imp, val_cuota: REAL
+        cant_cuotas: Entero
+    Proceso
+        ESCRIBIR("INGRESE EL IMPORTE")
+        LEER(valor)
+        MIENTRAS (valor <> 9999) HACER
+            imp := valor * 0.1
+            SEGUN valor HACER
+                <=500:
+                    cant_cuotas := 1
+                <=1000:
+                    cant_cuotas := 2
+                otros : 
+                    cant_cuotas := 3
+            FIN_SEGUN
+            val_cuota := valor / cant_cuotas
+            ESCRIBIR("cantidad de cuotas: ", cant_cuotas, " con el valor de :", val_cuota)
+            ESCRIBIR("INGRESE EL IMPORTE")
+            LEER(valor)
+        FIN_MIENTRAS
+FIN_ACCION

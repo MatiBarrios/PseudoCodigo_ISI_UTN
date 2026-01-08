@@ -1,0 +1,19 @@
+ACCION Eje_1_1_28 ES
+    Ambiente
+        i, aux, n1, n2, n3, cant: Entero
+    Proceso
+        cant := 0
+        PARA i := 1 HASTA 999 HACER
+            aux := i
+            n1 := aux div 100
+            aux := aux mod 100
+            n2 := aux div 10
+            aux := aux mod 10
+            n3 := aux
+            Si (((n1**3)+(n2**3)+(n3**3)) = i) ENTONCES
+                ESCRIBIR(" se cumple en el nro:", i)
+                cant := cant + 1
+            Fin_Si
+        FIN_PARA
+        ESCRIBIR("la cantidad de nros que cumplen la condición:", cant)
+FIN_ACCION

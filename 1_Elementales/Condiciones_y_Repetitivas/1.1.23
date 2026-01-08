@@ -1,0 +1,22 @@
+ACCION Eje_1_1_23 ES
+    Ambiente
+        val_unit, precio_total : Real
+        cant_vendida, bandera: Entero
+    Proceso
+        bandera := 0
+
+        MIENTRAS (bandera <> 1) HACER
+            ESCRIBIR("INGRESE EL VALOR UNITARIO")
+            LEER(val_unit)
+            SI (val_unit > 0) ENTONCES
+                ESCRIBIR("INGRESE LA CANTIDAD VENDIDA")
+                LEER(cant_vendida)
+                precio_total := precio_total + (cant_vendida * val_unit)
+            SINO
+                ESCRIBIR("ERROR, VALOR UNITARIO INVALIDO")
+            FIN_SI
+            ESCRIBIR("desea terminar el programa? 1 = si")
+            LEER(bandera)
+        FIN_MIENTRAS
+        ESCRIBIR("el precio total de todos los productos es:", precio_total)
+FIN_ACCION

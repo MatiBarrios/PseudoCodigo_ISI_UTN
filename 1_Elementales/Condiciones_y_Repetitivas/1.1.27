@@ -1,0 +1,23 @@
+ACCION Eje_1_1_27 ES
+    Ambiente
+        x, y, a, b, c: REAL
+        i : Entero
+    Proceso
+    a := 0
+    MIENTRAS (a <> 9999) HACER
+        ESCRIBIR("INGRESE EL VALOR DE a")
+        LEER(a)
+        Si a <> 9999
+            ESCRIBIR("INGRESE EL VALOR DE b")
+            LEER(b)
+            ESCRIBIR("INGRESE EL VALOR DE c")
+            LEER(c)
+            x := 20
+            PARA i := 0 HASTA 20 HACER
+                x := x - 2 * i
+                y := a * ( x ** 2 ) + b * x + c
+                ESCRIBIR("x:", x, " y:", y)
+            FIN_PARA
+        Fin_Si
+    FIN_MIENTRAS
+FIN_ACCION

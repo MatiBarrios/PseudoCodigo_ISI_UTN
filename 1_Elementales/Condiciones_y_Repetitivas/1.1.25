@@ -1,0 +1,16 @@
+ACCION Eje_1_1_25 ES
+    Ambiente
+        aux, n1, n2: Entero
+    Proceso
+        ESCRIBIR(0)
+        ESCRIBIR(1)
+        ESCRIBIR(1)
+        n1:=1
+        n2:=1
+        PARA i := 2 HASTA 50 HACER
+           aux := n1
+           n1 := n1 + n2
+           ESCRIBIR(n1)
+           n2 := aux 
+        FIN_PARA
+FIN_ACCION

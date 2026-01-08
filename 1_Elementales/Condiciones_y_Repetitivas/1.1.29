@@ -1,0 +1,25 @@
+ACCION Eje_1_1_29 ES
+    Ambiente
+        n, valor, aux: Entero
+        bandera: Logico
+    Proceso
+        ESCRIBIR("Ingrese el numero")
+        LEER(n)
+        Para i := 2 Hasta n HACER
+            aux := 2
+            bandera := true
+            Mientras (aux + 1) < n y bandera HACER
+                SI (aux mod n == 0) ENTONCES
+                    bandera := Falso
+                FIN_SI
+                aux := aux + 1
+            Fin_Mientras
+            SI (bandera) ENTONCES
+                ESCRIBIR(i)
+            SINO
+                ESCRIBIR(i)
+            FIN_SI
+        Fin_Para
+                
+        
+FIN_ACCION
