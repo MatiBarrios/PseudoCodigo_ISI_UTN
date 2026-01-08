@@ -1,6 +1,13 @@
 ACCION Eje_1_2_1 ES
     Ambiente
-        
+        n : Entero
+
+        FUNCION ObtenerCuadrado(num : Entero): Entero ES
+            ObtenerCuadrado := num * num    
+        FIN_FUNCION
     Proceso
-        
+        ESCRIBIR("Ingrese el numero")
+        LEER(n)
+        n := ObtenerCuadrado(n)
+        ESCRIBIR("Cuadrado: ", n)
 FIN_ACCION

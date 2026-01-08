@@ -1,0 +1,48 @@
+ACCION Eje_1_2_3 ES
+    Ambiente
+        
+        PROCEDIMIENTO Inicializar ES
+            Ambiente Local
+                FIN : Entero
+            Proceso
+                FIN := 0
+                MIENTRAS (FIN <> 1) HACER
+                    Operar
+                    ESCRIBIR("Desea volver a ingresar numeros? 1-si")
+                    LEER(FIN)
+                FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Operar ES
+            Ambiente Local
+                n1, n2, n3, min: Entero
+            Proceso
+                ESCRIBIR("Ingrese primer valor")
+                LEER(n1)
+                ESCRIBIR("Ingrese primer valor")
+                LEER(n2)
+                ESCRIBIR("Ingrese primer valor")
+                LEER(n3)
+                ESCRIBIR("El menor es: ", ObtenerMenor(n1, n2, n3))
+        FIN_PROCEDIMIENTO
+
+        FUNCION ObtenerMenor(num1, num2, num3 : Entero):Entero ES
+            Ambiente Local
+                aux: Entero
+            Proceso
+                SI (num1 < num2) ENTONCES
+                    aux := num1
+                SINO
+                    aux := num2
+                FIN_SI
+                SI (aux > num3) ENTONCES
+                    aux := num3
+                FIN_SI
+                ObtenerMenor := aux
+        FIN_FUNCION
+
+    Proceso
+
+        Inicializar
+        
+FIN_ACCION

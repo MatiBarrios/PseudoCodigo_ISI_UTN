@@ -1,0 +1,21 @@
+ACCION Eje_1_2_2 ES
+    Ambiente
+        n : Entero
+
+        FUNCION SumarDigitos(num : Entero):Entero ES
+            Ambiente Local
+                aux : Entero
+            Proceso
+                aux := 0
+                MIENTRAS (num > 10) HACER
+                    aux := num mod 10 + aux
+                    num := num div 10
+                FIN_MIENTRAS
+                SumarDigitos := aux
+        FIN_FUNCION
+    Proceso
+        ESCRIBIR("Ingrese el numero")
+        LEER(n)
+        n := SumarDigitos(n)
+        ESCRIBIR("La sumatoria de digitos es: ", n)
+FIN_ACCION

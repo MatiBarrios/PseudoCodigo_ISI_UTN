@@ -1,0 +1,45 @@
+ACCION Eje_1_2_4 ES
+    Ambiente
+        PROCEDIMIENTO Inicializar ES
+            Ambiente Local
+                FIN : Entero
+            Proceso
+                FIN := 0
+                MIENTRAS (FIN <> 1) HACER
+                    Operar
+                    ESCRIBIR("Desea finalizar el programa? 1-si")
+                    LEER(FIN)
+                FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Operar ES
+            Ambiente Local
+                num: Entero
+            Proceso
+                ESCRIBIR("Ingrese numero")
+                LEER(num)
+                ESCRIBIR(Tratar_Valor(num))
+        FIN_PROCEDIMIENTO
+
+        FUNCION Tratar_Valor(n : Entero):Entero ES
+            SI (n < 0) ENTONCES
+                Tratar_Valor := -1
+            SINO
+                Tratar_Valor := SumarDigitos(n) mod 7
+            FIN_SI
+        FIN_FUNCION
+
+        FUNCION SumarDigitos(dig : Entero):Entero ES
+            Ambiente Local
+                aux : Entero
+            Proceso
+                aux := 0
+                MIENTRAS (dig > 0) HACER
+                    aux := dig mod 10 + aux
+                    dig := dig div 10
+                FIN_MIENTRAS
+                SumarDigitos := aux
+        FIN_FUNCION
+    Proceso
+        Inicializar
+FIN_ACCION

@@ -1,0 +1,57 @@
+ACCION Eje_1_2_5 ES
+    Ambiente
+        
+        PROCEDIMIENTO Inicializar ES
+            Ambiente Local
+                FIN : Entero
+            Proceso
+                FIN := 0
+                MIENTRAS (FIN <> 1) HACER
+                    Operar
+                    ESCRIBIR("Desea finalizar el programa? 1- si")
+                    LEER(FIN)
+                FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Operar ES
+            Ambiente Local
+                c : Caracter
+            Proceso
+                ESCRIBIR("Ingrese un caracter")
+                LEER(c)
+                SI (EsNumero(c)) ENTONCES
+                    ESCRIBIR("El caracter es un numero")
+                SINO
+                    ESCRIBIR("El caracter no es un numero")
+                FIN_SI
+        FIN_PROCEDIMIENTO
+
+        FUNCION EsNumero(car : Caracter):Logico ES
+            SEGUN car HACER
+                ='1':
+                    EsNumero := Verdadero
+                ='2':
+                    EsNumero := Verdadero
+                ='3':
+                    EsNumero := Verdadero
+                ='4':
+                    EsNumero := Verdadero
+                ='5':
+                    EsNumero := Verdadero
+                ='6':
+                    EsNumero := Verdadero
+                ='7':
+                    EsNumero := Verdadero
+                ='8':
+                    EsNumero := Verdadero
+                ='9':
+                    EsNumero := Verdadero
+                ='0':
+                    EsNumero := Verdadero
+                otros :
+                    EsNumero := Falso
+            FIN_SEGUN
+        FIN_FUNCION
+    Proceso
+        Inicializar
+FIN_ACCION
