@@ -1,0 +1,40 @@
+ACCION Eje_2_1_5 ES
+    Ambiente
+        Sec_entrada, Sec_salida : Secuencia de Entero
+        socio, socio_resg : Entero
+
+        PROCEDIMIENTO Recorrer_secuencia ES
+            MIENTRAS NFDS(Sec_entrada) HACER
+                GRABAR_SECUENCIA
+                TRATAR_RESGUARDOS
+                AVZ(Sec_entrada, socio)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_RESGUARDOS ES
+            socio_resg := socio
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO GRABAR_SECUENCIA ES
+            MIENTRAS (socio_resg + 1) < socio HACER
+                GRABAR(Sec_salida, socio_resg + 1)
+                socio_resg := socio_resg + 1
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            ARR(Sec_entrada)
+            CREAR(Sec_salida)
+            AVZ(Sec_entrada, socio)
+            cont := 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Sec_entrada)
+            CERRAR(Sec_entrada)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        Recorrer_secuencia
+        Finalizar
+FIN_ACCION
