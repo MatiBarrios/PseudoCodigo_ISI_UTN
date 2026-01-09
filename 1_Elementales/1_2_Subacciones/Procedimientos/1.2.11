@@ -1,0 +1,65 @@
+ACCION 1_2_11 ES
+    Ambiente
+        num1, num2, res : Real
+        op : Entero
+
+        PROCEDIMIENTO Ingresar_Variables ES
+            ESCRIBIR("Ingrese el primer numero")
+            LEER(num1)
+            ESCRIBIR("Ingrese el segundo numero")
+            LEER(num2)
+            ESCRIBIR("Ingrese la operacion: 1-sumar 2-restar 3-multiplicar 4-dividir")
+            LEER(op)
+        FIN_PROCEDIMIENTO
+
+        FUNCION SUMAR(n1, n2 : Real):Real ES
+            SUMAR := n1 + n2
+        FIN_FUNCION
+        
+        FUNCION RESTAR(n1, n2 : Real):Real ES
+            RESTAR := n1 - n2
+        FIN_FUNCION
+        
+        FUNCION MULTIPLICAR(n1, n2 : Real):Real ES
+            MULTIPLICAR := n1 * n2
+        FIN_FUNCION
+        
+        FUNCION DIVIDIR(n1, n2 : Real):Real ES
+            DIVIDIR := n1 / n2
+        FIN_FUNCION
+        
+        PROCEDIMIENTO Operar ES
+            SEGUN op HACER
+                =1:
+                    res := SUMAR(num1, num2)
+                =2:
+                    res := RESTAR(num1, num2)
+                =3:
+                    res := MULTIPLICAR(num1, num2)
+                =4:
+                    res := DIVIDIR(num1, num2)
+            FIN_SEGUN
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_Resultados ES
+            ESCRIBIR("Numero 1 : ", num1)
+            ESCRIBIR("Numero 2 : ", num2)
+            ESCRIBIR("Resultado : ", res)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            Ambiente Local
+                FIN : Entero
+            Proceso
+                FIN := 0
+                MIENTRAS (FIN <> 1) HACER
+                    Ingresar_Variables
+                    Operar
+                    Mostrar_Resultados
+                    ESCRIBIR("Desea finalizar el programa? 1- si")
+                    LEER(FIN)
+                FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+FIN_ACCION
