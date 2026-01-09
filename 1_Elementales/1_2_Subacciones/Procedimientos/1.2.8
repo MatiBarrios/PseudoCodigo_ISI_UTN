@@ -1,0 +1,39 @@
+ACCION Eje_1_2_8 ES
+    Ambiente
+        PROCEDIMIENTO Inicializar ES
+            Ambiente Local
+                FIN : Entero
+            Proceso
+                FIN := 0
+                MIENTRAS (FIN <> 1) HACER
+                    Ingresar_Variables
+                    Operar
+                    ESCRIBIR("Desea finalizar el programa? 1- si")
+                    LEER(FIN)
+                FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Ingresar_Variables ES
+            ESCRIBIR("ingrese el primer caracter")
+            LEER(car1)
+            ESCRIBIR("Ingrese el segundo caracter")
+            LEER(car2)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Operar ES
+            Mostrar
+
+            aux := car1
+            car1 := car2
+            car2 := car1
+            
+            Mostrar
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar ES
+            ESCRIBIR("El contenido de la primera variable: ", car1)
+            ESCRIBIR("El contenido de la primera variable: ", car2)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+FIN_ACCION

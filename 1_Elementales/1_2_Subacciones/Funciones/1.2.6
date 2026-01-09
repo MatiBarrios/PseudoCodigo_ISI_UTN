@@ -1,0 +1,42 @@
+ACCION Eje_1_2_6 ES
+    Ambiente
+        PROCEDIMIENTO Inicializar ES
+            Ambiente Local
+                FIN : Entero
+            Proceso
+                FIN := 0
+                MIENTRAS (FIN <> 1) HACER
+                    Operar
+                    ESCRIBIR("Desea finalizar el programa? 1- SI")
+                    LEER(FIN)
+                FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Operar ES
+            Ambiente Local
+                precio, descuento, precio_desc : Real
+                cantidad: Entero
+            Proceso
+                ESCRIBIR("Ingrese precio del producto")
+                LEER(precio)
+                ESCRIBIR("Ingrese la cantidad de producto")
+                LEER(cantidad)
+                descuento := precio * obtenerDescuento(precio, cantidad)
+                ESCRIBIR("el descuento por unidad es: $", descuento)
+                precio_desc := (precio - descuento) * cantidad
+                ESCRIBIR("el precio del total con descuento: $", precio_desc)
+        FIN_PROCEDIMIENTO
+
+        FUNCION obtenerDescuento(pre, cant : Real):Real ES
+            SEGUN cant HACER
+                <=6:
+                    obtenerDescuento := 0
+                <=12:
+                    obtenerDescuento := 0.04
+                otros : 
+                    obtenerDescuento := 0.1
+            FIN_SEGUN
+        FIN_FUNCION
+    Proceso
+        Inicializar
+FIN_ACCION

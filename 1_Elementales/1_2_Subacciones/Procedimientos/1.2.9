@@ -1,0 +1,129 @@
+ACCION Eje_1_2_9 ES
+    Ambiente
+        numero : Entero
+
+        PROCEDIMIENTO Mostrar_0 ES
+            ESCRIBIR("*****")
+            ESCRIBIR("*   *")
+            ESCRIBIR("*   *")
+            ESCRIBIR("*   *")
+            ESCRIBIR("*****")
+        FIN_PROCEDIMIENTO
+        
+        PROCEDIMIENTO Mostrar_1 ES
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_2 ES
+            ESCRIBIR("*****")
+            ESCRIBIR("    *")
+            ESCRIBIR("*****")
+            ESCRIBIR("*    ")
+            ESCRIBIR("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_3 ES
+            ESCRIBIR("*****")
+            ESCRIBIR("    *")
+            ESCRIBIR("*****")
+            ESCRIBIR("    *")
+            ESCRIBIR("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_4 ES
+            ESCRIBIR("*   *")
+            ESCRIBIR("*   *")
+            ESCRIBIR("*****")
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_5 ES
+            ESCRIBIR("*****")
+            ESCRIBIR("*    ")
+            ESCRIBIR("*****")
+            ESCRIBIR("    *")
+            ESCRIBIR("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_6 ES
+            ESCRIBIR("*****")
+            ESCRIBIR("*    ")
+            ESCRIBIR("*****")
+            ESCRIBIR("*   *")
+            ESCRIBIR("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_7 ES
+            ESCRIBIR("*****")
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_8 ES
+            ESCRIBIR("*****")
+            ESCRIBIR("*   *")
+            ESCRIBIR("*****")
+            ESCRIBIR("*   *")
+            ESCRIBIR("*****")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_9 ES
+            ESCRIBIR("*****")
+            ESCRIBIR("*   *")
+            ESCRIBIR("*****")
+            ESCRIBIR("    *")
+            ESCRIBIR("    *")
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_Nro(nro: Entero) ES
+            SEGUN nro HACER
+                =0:
+                    Mostrar_0
+                =1:
+                    Mostrar_1
+                =2:
+                    Mostrar_2
+                =3:
+                    Mostrar_3
+                =4:
+                    Mostrar_4
+                =5:
+                    Mostrar_5
+                =6:
+                    Mostrar_6
+                =7:
+                    Mostrar_7
+                =8:
+                    Mostrar_8
+                =9: 
+                    Mostrar_9
+            FIN_SEGUN
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            Ambiente Local
+                FIN : Entero
+            Proceso
+                FIN := 0
+                MIENTRAS (FIN <> 1) HACER
+                    Ingresar_Variables
+                    Mostrar_Nro(numero)
+                    ESCRIBIR("Desea finalizar el programa? 1-SI")
+                    LEER(FIN)
+                FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Ingresar_Variables ES
+            ESCRIBIR("Ingrese el numero que desea ver")
+            LEER(numero)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+FIN_ACCION
