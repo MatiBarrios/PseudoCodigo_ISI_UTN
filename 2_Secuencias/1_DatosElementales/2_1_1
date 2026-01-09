@@ -1,0 +1,42 @@
+ACCION Eje_2_1_1 ES
+    Ambiente
+        Sec : Secuencia de Caracter
+        car : Caracter
+        cont : Entero
+
+        FUNCION EsA(c : Caracter):Logico ES
+            SI (c = 'A') ENTONCES
+                EsA := Verdadero
+            SINO
+                EsA := Falso
+            FIN_SI
+        FIN_FUNCION
+
+        PROCEDIMIENTO Mostrar_Resultados ES
+            ESCRIBIR("cantidad de letras A: ", cont)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Recorrer_secuencia ES
+            MIENTRAS car <> '*' y NFDS(Sec) HACER
+                SI EsA(car) ENTONCES
+                    cont := cont + 1
+                Fin_Si
+                AVZ(Sec, car)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            ARR(Sec)
+            AVZ(Sec, car)
+            cont := 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Sec)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        Recorrer_secuencia
+        Mostrar_Resultados
+        Finalizar
+FIN_ACCION
