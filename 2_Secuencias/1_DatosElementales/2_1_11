@@ -1,0 +1,50 @@
+ACCION Eje_2_1_11 ES
+    AMBIENTE
+        Sec : Secuencia de Caracter
+        car : Caracter
+        contPal4 : Entero
+        contLetras : Entero
+
+        FUNCION EsLetra(c : Caracter) : Logico ES
+            EsLetra := (c <> ' ')
+        FIN_FUNCION
+
+        PROCEDIMIENTO Inicializar ES
+            ARR(Sec)
+            contPal4 := 0
+            contLetras := 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Barrer_Secuencia ES
+            MIENTRAS NFDS(Sec) HACER
+                AVZ(Sec, car)
+
+                SI EsLetra(car) ENTONCES
+                    contLetras := contLetras + 1
+                SINO
+                    SI contLetras = 4 ENTONCES
+                        contPal4 := contPal4 + 1
+                    FIN_SI
+                    contLetras := 0
+                FIN_SI
+            FIN_MIENTRAS
+
+            SI contLetras = 4 ENTONCES
+                contPal4 := contPal4 + 1
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_Resultados ES
+            ESCRIBIR("La cantidad de palabras de 4 letras es: ", contPal4)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Sec)
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        Inicializar
+        Barrer_Secuencia
+        Mostrar_Resultados
+        Finalizar
+FIN_ACCION
