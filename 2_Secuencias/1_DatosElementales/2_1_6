@@ -1,0 +1,64 @@
+ACCION Eje_2_1_6 ES
+    Ambiente
+        cantMM, cantFM, cantMN, cantFN, pbtotal: Entero
+        porMasc, porFem, mayores, menores : REAL
+        Sec : Secuencia de Entero
+        habitantes : Entero
+
+        PROCEDIMIENTO Barrer_Secuencia ES
+            MIENTRAS NFDS(Sec) HACER
+                PROCESAR
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO PROCESAR ES
+            cantMM := cantMM + habitantes
+            pbtotal := pbtotal + habitantes
+            AVZ(Sec, habitantes)
+            cantFM := cantFM + habitantes
+            pbtotal := pbtotal + habitantes
+            AVZ(Sec, habitantes)
+            cantMN := cantMN + habitantes
+            pbtotal := pbtotal + habitantes
+            AVZ(Sec, habitantes)
+            cantFN  := cantFN + habitantes
+            pbtotal := pbtotal + habitantes
+            AVZ(Sec, habitantes)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO OPERAR ES
+            porMasc :=  (cantMM + cantMN) / pbtotal
+            porFem := (cantFM + cantFN) / pbtotal
+            mayores := (cantMM + cantFM) / pbtotal
+            menores := (cantMN + cantFN) / pbtotal
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_Resultados ES
+            ESCRIBIR("Porcentaje de masculinos ", porMasc)
+            ESCRIBIR("Porcentaje de femeninos ", porFem)
+            ESCRIBIR("Porcentaje de mayores ", mayores)
+            ESCRIBIR("Porcentaje de menores", menores)
+            ESCRIBIR("Cantidad total de población", pbtotal)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Inicializar ES
+            ARR(Sec)
+            AVZ(Sec, habitantes)
+
+            cantMM := 0
+            cantFM := 0
+            cantMN := 0
+            cantFN := 0
+            pbtotal := 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Sec)
+        FIN_PROCEDIMIENTO
+    Proceso
+        Inicializar
+        Barrer_Secuencia
+        OPERAR
+        Mostrar_Resultados
+        Finalizar
+FIN_ACCION

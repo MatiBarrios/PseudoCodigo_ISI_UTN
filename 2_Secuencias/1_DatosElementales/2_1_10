@@ -1,0 +1,42 @@
+ACCION Eje_2_1_9 ES
+    Ambiente
+        Sec : Secuencia de Caracter
+        car, resg_car, letra: Caracter
+        cont: Entero
+
+        PROCEDIMIENTO BARRER_SECUENCIA ES
+            MIENTRAS NFDS(Sec) HACER
+                TRATAR_CARACTER
+                AVZ(Sec, car)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_CARACTER ES
+            SI (resg_car = ' ' y car = letra) ENTONCES
+                cont := cont + 1
+            FIN_SI
+            resg_car := car
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO INICIALIZAR ES
+            ARR(Sec)
+            AVZ(Sec, car)
+            cont := 0
+
+            ESCRIBIR("ingrese la letra")
+            LEER(letra)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO FINALIZAR ES
+            CERRAR(Sec)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESCRIBIR("LA CANTIDAD DE PALABRAS QUE INICIAN CON LA LETRA DADA es: ", cont)
+        FIN_PROCEDIMIENTO
+    Proceso
+        INICIALIZAR
+        BARRER_SECUENCIA
+        MOSTRAR_RESULTADOS
+        FINALIZAR
+FIN_ACCION
