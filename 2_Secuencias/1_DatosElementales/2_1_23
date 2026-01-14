@@ -1,0 +1,84 @@
+ACCION Eje_2_1_23 ES
+    Ambiente
+        Sec_Nomb, Sec_DNI, Sec_Salida : Secuencia de Caracter
+        nomb, dni : Caracter
+        VerifImpar, i : ENTERO
+
+        PROCEDIMIENTO BARRER_SECUENCIAS ES
+            MIENTRAS NFDS(Sec_Nomb) o NFDS(Sec_DNI) HACER
+                SI (VerifImpar mod 2 = 1) y EsImparCar(dni) ENTONCES
+                    TRATAR_DNI
+                    TRATAR_NOMBRE
+                SINO
+                    MIENTRAS NFDS(Sec_Nomb) y nomb <> ' ' HACER
+                        AVZ(Sec_Nomb, nomb)
+                    FIN_MIENTRAS
+                    SI NFDS(Sec_Nomb) ENTONCES
+                        AVZ(Sec_Nomb, nomb)
+                    FIN_SI
+                    PARA i := 1 HASTA 8 HACER
+                        AVZ(Sec_DNI, dni)
+                    FIN_PARA
+                FIN_SI
+                VerifImpar := VerifImpar + 1
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        FUNCION EsImparCar(car : Caracter):Logico ES
+            SEGUN car HACER
+                ='1':
+                    EsImparCar := Verdadero
+                ='3':
+                    EsImparCar := Verdadero
+                ='5':
+                    EsImparCar := Verdadero
+                ='7':
+                    EsImparCar := Verdadero
+                ='9':
+                    EsImparCar := Verdadero
+                otros : 
+                    EsImparCar := Falso
+            FIN_SEGUN
+        FIN_FUNCION
+
+        PROCEDIMIENTO TRATAR_DNI ES
+            PARA i := 1 HASTA 8 HACER
+                GRABAR(Sec_Salida, dni)
+                AVZ(Sec_DNI, dni)
+            FIN_PARA
+            GRABAR(Sec_Salida, ',')
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_NOMBRE ES
+            MIENTRAS NFDS(Sec_Nomb) y nomb <> ' ' HACER
+                GRABAR(Sec_Salida, nomb)
+                AVZ(Sec_Nomb, nomb)
+            FIN_MIENTRAS
+            GRABAR(Sec_Salida, '#')
+            SI NFDS(Sec_Nomb) ENTONCES
+                AVZ(Sec_Nomb, nomb)
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO INICIALIZAR ES
+            ARR(Sec_Nomb)
+            ARR(Sec_DNI)
+            CREAR(Sec_Salida)
+            AVZ(Sec_Nomb, nomb)
+            AVZ(Sec_DNI, dni)
+
+            VerifImpar := 1
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO FINALIZAR ES
+            CERRAR(Sec_Nomb)
+            CERRAR(Sec_DNI)
+            CERRAR(Sec_Salida)
+        FIN_PROCEDIMIENTO
+    Proceso
+
+        INICIALIZAR
+        BARRER_SECUENCIAS
+        FINALIZAR
+
+FIN_ACCION
