@@ -1,0 +1,72 @@
+//es el mismo que el ejercicio anterior
+ACCION Eje_2_1_21 ES
+    Ambiente
+        Sec_Sujeto, Sec_Predicado, Sec_Oracion: Secuencia de Caracter
+        car, car_s, car_p : Caracter
+        cont_s, cont_p, cont_o : Entero
+
+        PROCEDIMIENTO BARRER_SECUENCIAS ES
+            MIENTRAS NFDS(Sec_Sujeto) o NFDS(Sec_Predicado) HACER
+                TRATAR_SUJETO
+                GRABAR(Sec_Oracion, ',')
+                TRATAR_PREDICADO
+                GRABAR(Sec_Oracion, '.')
+                cont_o := cont_o + 1
+            FIN_MIENTRAS
+            cont_s := cont_s + 1
+            cont_p := cont_p + 1
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_SUJETO ES
+            MIENTRAS NFDS(Sec_Sujeto) y car_s <> ','  HACER
+                GRABAR(Sec_Oracion, car_s)
+                AVZ(Sec_Sujeto, car_s)
+            FIN_MIENTRAS
+            //descartar el contar si la secuencia termino, no se cuenta la ultima oración en esta secuencia por eso, se debe sumar al final
+            SI NFDS(Sec_Sujeto) ENTONCES
+                AVZ(Sec_Sujeto, car_s)
+                cont_s := cont_s + 1
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_PREDICADO ES
+            MIENTRAS NFDS(Sec_Predicado) y car_p <> ','  HACER
+                GRABAR(Sec_Oracion, car_p)
+                AVZ(Sec_Predicado, car_p)
+            FIN_MIENTRAS
+            //descartar el contar si la secuencia termino, no se cuenta la ultima oración en esta secuencia por eso, se debe sumar al final
+            SI NFDS(Sec_Predicado) ENTONCES
+                AVZ(Sec_Predicado, car_p)
+                cont_p := cont_p + 1
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO INICIALIZAR ES
+            ARR(Sec_Sujeto)
+            ARR(Sec_Predicado)
+            CREAR(Sec_Oracion)
+            AVZ(Sec_Sujeto, car_s)
+            AVZ(Sec_Predicado, car_p)
+            
+            cont_s := 0
+            cont_p := 0
+            cont_o := 0
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESCRIBIR("la cantidad de oraciones en la secuencia del sujeto son: ", cont_s)
+            ESCRIBIR("La cantidad de oraciones en la secuencia del predicado son: ", cont_p)
+            ESCRIBIR("La cantidad de oraciones formadas con sujeto predicado son: ", cont_o)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO FINALIZAR ES
+            CERRAR(Sec_Sujeto)
+            CERRAR(Sec_Predicado)
+            CERRAR(Sec_Oracion)
+        FIN_PROCEDIMIENTO
+    Proceso
+        INICIALIZAR
+        BARRER_SECUENCIAS
+        MOSTRAR_RESULTADOS
+        FINALIZAR
+FIN_ACCION

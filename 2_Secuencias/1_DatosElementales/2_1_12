@@ -1,0 +1,58 @@
+ACCION Eje_2_1_12 ES
+    Ambiente
+        Sec : Secuencia de caracter
+        car, resg_car : Caracter
+        cont : Entero
+
+        PROCEDIMIENTO BARRER_SECUENCIA ES
+            MIENTRAS NFDS(Sec) HACER
+                OPERAR_PALABRA
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO OPERAR_PALABRA ES
+            SI resg_car = ' ' y car = 'A' ENTONCES
+                AVZ(Sec, car)
+                SI (car = 'L') ENTONCES
+                    AVZ(Sec, car)
+                    SI (car = 'G') ENTONCES
+                        cont := cont + 1
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+            BARRER_PALABRA
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO BARRER_PALABRA ES
+            MIENTRAS NFDS(Sec) y car <> ' ' HACER
+                AVZ(Sec, car)
+            FIN_MIENTRAS
+            resg_car := car
+            SI NFDS(Sec) ENTONCES
+                AVZ(Sec, car)
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESCRIBIR("La cantidad de palabras que ocmienzan por ALG son:", cont)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO FINALIZAR ES
+            CERRAR(Sec)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO INICIALIZAR ES
+            ARR(Sec)
+            AVZ(Sec, car)
+            resg_car := ' '
+            cont := 0
+        FIN_PROCEDIMIENTO
+
+    Proceso
+
+        INICIALIZAR
+        BARRER_SECUENCIA
+        MOSTRAR_RESULTADOS
+        FINALIZAR
+
+FIN_ACCION

@@ -1,0 +1,33 @@
+ACCION Eje_2_1_16 ES
+    Ambiente
+        Sec_Entrada, Sec_Salida: Secuencia de entero
+        DNI : Entero
+
+        PROCEDIMIENTO BARRER_SECUENCIA ES
+            MIENTRAS NFDS(Sec_Entrada) HACER
+                TRATAR_REGISTRO
+                AVZ(Sec_Entrada, DNI)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_REGISTRO ES
+            SI (DNI MOD 3 = 0) ENTONCES
+                GRABAR(Sec_Salida, DNI)
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO INICIALIZAR ES
+            ARR(Sec_Entrada)
+            AVZ(Sec_Entrada, DNI)
+            CREAR(Sec_Salida)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO FINALIZAR ES
+            CERRAR(Sec_Entrada)
+            CERRAR(Sec_Salida)
+        FIN_PROCEDIMIENTO
+    Proceso
+        INICIALIZAR
+        BARRER_SECUENCIA
+        FINALIZAR
+FIN_ACCION

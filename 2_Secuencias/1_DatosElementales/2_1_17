@@ -1,0 +1,68 @@
+ACCION Eje_2_1_17 ES
+    Ambiente
+        Sec : Secuencia de caracter
+        car : Caracter
+        cont_letras, cont_pal : Entero
+        promedio, cost_V1, cost_V2, cost : REAL
+
+        PROCEDIMIENTO BARRER_SECUENCIA ES
+            MIENTRAS NFDS(Sec) HACER
+                TRATAR_ESPACIOS
+                TRATAR_PALABRA
+                TRATAR_ESPACIOS
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_PALABRA ES
+            MIENTRAS NFDS(Sec) y car <> ' ' HACER
+                cont_letras := cont_letras + 1
+                AVZ(Sec, car)
+            FIN_MIENTRAS
+            SI NFDS(Sec) ENTONCES
+                cont_pal := cont_pal + 1
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO TRATAR_ESPACIOS ES
+            MIENTRAS NFDS(Sec) y car = ' ' HACER
+                AVZ(Sec, car)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO MOSTRAR_RESULTADOS ES
+            ESCRIBIR("Mostrar resultados es: ", cost)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO OPERAR ES
+            promedio := cont_letras / cont_pal
+            SI (promedio <= 5) ENTONCES
+                cost := cost_V1 * cont_pal
+            SINO
+                cost := cost_V2 * cont_pal
+            FIN_SI
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO INICIALIZAR ES
+            ARR(Sec)
+            AVZ(Sec, car)
+            cont_letras := 0
+            cont_pal := 0
+
+            ESCRIBIR("Ingrese costo V1")
+            LEER(cost_V1)
+            ESCRIBIR("Ingrese costo V2")
+            LEER(cost_V2)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO FINALIZAR ES
+            CERRAR(Sec)
+        FIN_PROCEDIMIENTO
+    Proceso
+        
+        INICIALIZAR
+        BARRER_SECUENCIA
+        OPERAR
+        MOSTRAR_RESULTADOS
+        FINALIZAR
+
+FIN_ACCION
