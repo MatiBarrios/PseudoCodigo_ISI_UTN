@@ -18,20 +18,12 @@ ACCION Ejer4_2Elim ES
 
         NPrim, NUlt, NP : Puntero a Nodo   // nueva lista (copia de nodos con dato terminado en 0)
 
-        Funcion TerminaCero(nro : N(8)) : Logico ES
-            Si (nro MOD 10) = 0 ENTONCES
-                TerminaCero := Verdadero
-            Sino
-                TerminaCero := Falso
-            Fin_Si
-        Fin_Funcion
-
         Procedimiento GenerarNuevaLista ES
             NPrim := NIL
             NUlt := NIL
             P := Prim
             Mientras P <> NIL HACER
-                Si TerminaCero(*P.Dato) ENTONCES
+                Si (*P.Dato MOD 10 = 0) ENTONCES
                     NUEVO(NP)
                     *NP.Dato := *P.Dato
                     *NP.prox := NIL
@@ -54,7 +46,7 @@ ACCION Ejer4_2Elim ES
             Mientras P <> NIL HACER
                 //variable de recorrido
                 Sig := *P.prox 
-                Si TerminaCero(*P.Dato) ENTONCES
+                Si (*P.Dato MOD 10 = 0) ENTONCES
                     // Ajustar enlaces
                     Si Ant = NIL ENTONCES
                         Prim := Sig          // era primer nodo
