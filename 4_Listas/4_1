@@ -13,7 +13,7 @@ ACCION Ejer4_2(Prim: Puntero a Nodo) ES //lista original (entrada / salida)
             prox : Puntero a Nodo
         Fin_Registro
 
-        P, Ant, Sig, NP : Puntero a Nodo        // ESTOS PUNTEROS SON LOS BÁSICOS, CASI SIEMPRE LOS VAS A TENER
+        P, Ant, Sig : Puntero a Nodo        // ESTOS PUNTEROS SON LOS BÁSICOS, CASI SIEMPRE LOS VAS A TENER
 
         NPrim, NUlt, NP : Puntero a Nodo   // nueva lista (copia de nodos con dato terminado en 0)
 
