@@ -6,7 +6,7 @@ Luego eliminar esos nodos de la lista original.
 Se asume lista original cargada (Prim).
 */
 
-ACCION Ejer4_2Elim ES
+ACCION Ejer4_2Elim ES //en lugar de declarar prim se podría colocar como que recibe el puntero colocandolo aquí
     Ambiente
         Nodo = Registro
             Dato : N(8)
