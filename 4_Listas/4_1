@@ -18,7 +18,6 @@ ACCION Ejer4_2(Prim: Puntero a Nodo) ES //lista original (entrada / salida)
         NPrim, NUlt, NP : Puntero a Nodo   // nueva lista (copia de nodos con dato terminado en 0)
 
         PROCEDIMIENTO GenerarBorrando ES
-            Prim := NIL
             NPrim := NIL
             Sig := NIL
             Ant := NIL
