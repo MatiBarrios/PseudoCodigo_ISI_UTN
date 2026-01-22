@@ -1,0 +1,2 @@
+//no se puede hacer con los recursos enseñados en la materia hasta ese punto, porque no se especifica que los alfanumericos se puedan recorrer por caracter.
+//entonces al necesitar la primera y ultima letra de una palabra para guardarla no se la peude recorrer guardando los valores salvo que se utilicen listas.

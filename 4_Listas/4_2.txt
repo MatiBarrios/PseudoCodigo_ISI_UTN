@@ -18,13 +18,13 @@ ACCION Ejer4_2Elim ES
 
         NPrim, NUlt, NP : Puntero a Nodo   // nueva lista (copia de nodos con dato terminado en 0)
 
-        Procedimiento TerminaCero(nro : N(8)) : Logico ES
+        Funcion TerminaCero(nro : N(8)) : Logico ES
             Si (nro MOD 10) = 0 ENTONCES
                 TerminaCero := Verdadero
             Sino
                 TerminaCero := Falso
             Fin_Si
-        Fin_Procedimiento
+        Fin_Funcion
 
         Procedimiento GenerarNuevaLista ES
             NPrim := NIL

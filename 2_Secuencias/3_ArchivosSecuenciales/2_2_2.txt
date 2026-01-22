@@ -63,3 +63,60 @@ ACCION EJE_2_2_2 ES
         Barrer_Principal
         Finalizar
 FIN_ACCION
+
+
+//FORMA 2
+ACCION EJE_2_2_2 ES
+    AMBIENTE
+        Fecha = REGISTRO
+            dia : 1..31
+            mes : 1..12
+            anio : N(4)
+        FIN_REGISTRO
+
+        Factura = REGISTRO
+            nro   : N(16)
+            fecha : Fecha
+            total : REAL
+        FIN_REGISTRO
+
+        Facturas : SECUENCIA DE Factura
+        fact     : Factura
+        ing_fec  : Fecha
+
+        PROCEDIMIENTO Inicializar ES
+            ARR(Facturas)
+            AVZ(Facturas, fact)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO CARGAR_VARIABLES ES
+            ESC("Ingrese fecha límite (dia, mes, año):")
+            LEER(ing_fec.dia,ing_fec.mes,ing_fec.anio)  
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Finalizar ES
+            CERRAR(Facturas)
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO Mostrar_Resultados ES
+            ESC("Nro factura: ", fact.nro)
+            ESC("Fecha: ", fact.fecha.dia, "/", fact.fecha.mes, "/", fact.fecha.anio)
+            ESC("Importe total: ", fact.total)
+        FIN_PROCEDIMIENTO
+
+
+        PROCEDIMIENTO Barrer_Principal ES
+            MIENTRAS NFDS(Facturas) HACER
+                SI (fact.fecha > ing_fec) Y (fact.total < 1000) ENTONCES
+                    Mostrar_Resultados
+                FIN_SI
+                AVZ(Facturas, fact)
+            FIN_MIENTRAS
+        FIN_PROCEDIMIENTO
+
+    PROCESO
+        Inicializar
+        CARGAR_VARIABLES
+        Barrer_Principal
+        Finalizar
+FIN_ACCION

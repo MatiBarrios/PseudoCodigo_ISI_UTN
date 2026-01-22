@@ -1,0 +1,22 @@
+ACCION Eje_2_1_28 ES
+    Ambiente
+        ARTISTAS, OBRAS, Sec_Salida: Secuencia de caracter
+        mayor_obras_vend, aux_obras_vend, cant_obras, cant_obras_ren: Entero
+        porc_obras_ren: REAL
+
+        PROCEDIMIENTO BARRER_ARTISTAS ES
+            Ambiente Local
+                
+            Proceso
+            
+            MIENTRAS NFDS(ARTISTAS) HACER
+                TRATAR_ARTISTA
+                TRATAR_OBRAS
+                AVZ(ARTISTAS, artista)
+                AVZ(OBRAS, obra)
+            FIN_MIENTRAS
+
+        FIN_PROCEDIMIENTO
+    Proceso
+        
+FIN_ACCION
