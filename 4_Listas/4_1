@@ -1,0 +1,63 @@
+/*
+Ejercicio 4.2
+
+Generar otra lista con los nodos cuyos datos terminan en cero.
+Luego eliminar esos nodos de la lista original.
+Se asume lista original cargada (Prim).
+*/
+
+ACCION Ejer4_2(Prim: Puntero a Nodo) ES //lista original (entrada / salida)
+    Ambiente
+        Nodo = Registro
+            Dato : N(8)
+            prox : Puntero a Nodo
+        Fin_Registro
+
+        P, Ant, Sig, NP : Puntero a Nodo        // ESTOS PUNTEROS SON LOS BÁSICOS, CASI SIEMPRE LOS VAS A TENER
+
+        NPrim, NUlt, NP : Puntero a Nodo   // nueva lista (copia de nodos con dato terminado en 0)
+
+        PROCEDIMIENTO GenerarBorrando ES
+            Prim := NIL
+            NPrim := NIL
+            Sig := NIL
+            Ant := NIL
+            NUlt := NIL                 //este puntero lo vamos a usar para guardar el ultimo elemento de la lista que estamos creando
+            P := Prim                   //SE LE DA EL VALOR DEL PRIMER ELEMENTO DE LA LISTA
+
+            Mientras P <> NIL HACER //se recorre mientras no sea nulo
+                Si (*P.Dato MOD 10 = 0) ENTONCES //SI TERMINA EN 0
+                    NUEVO(NP) //GENERAMOS UN NUEVO PUNTERO Y LE AGREGAMOS LOS DATOS DEL PUNTERO ACTUAL
+                    *NP.Dato := *P.Dato
+                    *NP.prox := NIL
+
+                                            //ESTA PARTE DE ACÁ ESTA HECHA PARA GENERACIÓN DE LA LISTA UNICAMENTE
+
+                    Si NPrim = NIL ENTONCES //EN CASO DE SER EL PRIMER ELEMENTO DE LA NUEVA LISTA
+                        NPrim := NP /*El primer nodo de la nueva lista apunta al puntero creado*/
+                        NUlt := NP /*El ultimo nodo ACTUAL de la nueva lista apunta al puntero creado*/
+                    Sino                    //si no es el primer elemento, apuntamos el ultimo elemento al nuevo, y luego guardamos este nuevo como el ultimo elemento
+                        *NUlt.prox := /*El proximo nodo del ultimo nodo ACTUAL de la nueva lista apunta al puntero creado*/
+                        NUlt := NP /*El ultimo nodo ACTUAL de la nueva lista apunta al puntero creado*/
+                    Fin_Si
+                                            //TRATAMOS LA ELIMINACIÓN 
+                                            //LO PRIMERO QUE HACEMOS ES DESCONECTAR EL NODO, LO AISLAMOS de la lista, 
+                                            //COLOCANDO EL ANTERIOR PUNTERO APUNTANDO AL SIGUIENTE
+                                            //TENEMOS QUE GUARDAR EL SIGUIENTE PARA SEGUIR RECORRIENDO LA LISTA
+                    Sig := *P.prox /*Se guarda el siguiente*/
+                    *Ant.prox := Sig /*El anterior apunta al siguiente*/
+                    DISPONER(P) /*Se elimina el nodo que aislamos para liberar memoria*/
+                    P := Sig /* PARA PODER APUNTAR EL NODO ACTUAL AL SIGUIENTE ES QUE LO ALMACENAMOS PRIMERO*/
+                SINO
+                    Ant := P
+                    P := *P.prox
+                Fin_Si
+
+            Fin_Mientras
+
+        FIN_PROCEDIMIENTO
+
+    Proceso
+        GenerarBorrando
+    Fin_Proceso
+FIN_ACCION
