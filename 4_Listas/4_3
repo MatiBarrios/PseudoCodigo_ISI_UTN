@@ -21,7 +21,7 @@ ACCION Eje4_3(Prim : Puntero a Nodo) ES
             sum_impar := 0
 
             MIENTRAS (P <> NIL) HACER
-                SI (P <> NIL) y (*P.Dato mod 2 = 0) ENTONCES
+                SI (*P.Dato mod 2 = 0) ENTONCES
                     sum_par := sum_par + *P.Dato
                 SINO
                     sum_impar := sum_impar + *P.Dato
